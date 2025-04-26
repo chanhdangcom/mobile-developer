@@ -1,0 +1,32 @@
+[
+  {
+    "IdAlbum": "1",
+    "TenAlbum": "Những Bản Ballad Hay Nhất",
+    "TenCaSiAlbum": "Nhiều Ca Sĩ",
+    "HinhAlbum": "https://picsum.photos/640/360?random=11"
+  },
+  {
+    "IdAlbum": "2",
+    "TenAlbum": "Hits Nhạc Trẻ 2024",
+    "TenCaSiAlbum": "Jack, Sơn Tùng MTP, Hoàng Thùy Linh",
+    "HinhAlbum": "https://picsum.photos/640/360?random=12"
+  },
+  {
+    "IdAlbum": "3",
+    "TenAlbum": "Rock Việt Bất Hủ",
+    "TenCaSiAlbum": "Bức Tường, Microwave, Ngũ Cung",
+    "HinhAlbum": "https://picsum.photos/640/360?random=13"
+  },
+  {
+    "IdAlbum": "4",
+    "TenAlbum": "Nhạc EDM Sôi Động",
+    "TenCaSiAlbum": "Hoaprox, Touliver, SlimV",
+    "HinhAlbum": "https://picsum.photos/640/360?random=14"
+  },
+  {
+    "IdAlbum": "5",
+    "TenAlbum": "Lofi Chill Cho Ngày Mưa",
+    "TenCaSiAlbum": "Nhiều Ca Sĩ",
+    "HinhAlbum": "https://picsum.photos/640/360?random=15"
+  }
+]

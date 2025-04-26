@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/framlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/img_danhsachallBH"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_danhsachallplaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:lines="2"
+        android:maxWidth="200dp"
+        android:maxLines="2"
+        android:text="Nhạc Việt Hot Tháng 12"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_tenCaSiPlaylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Various Artists"
+        android:textColor="#545452"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:textStyle="bold" />
+</LinearLayout>

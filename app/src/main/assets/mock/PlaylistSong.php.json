@@ -1,0 +1,32 @@
+[
+  {
+    "IdPlaylist": "1",
+    "Ten": "Nhạc Trẻ Hot",
+    "hinhAnhPlaylist": "https://media.istockphoto.com/id/1144987766/vector/popular-music-concept-banner-header.jpg?s=170667a&w=0&k=20&c=Ygfp4CiZXXUGtFat8sEcL_ovti6ry6Ul1Qwwk__utSA=",
+    "Icon": "https://media.istockphoto.com/id/1396074026/vector/classic-80s-90s-elements-stickers-vector-icons.jpg?s=612x612&w=0&k=20&c=Ja4ZmR0tpve49BsQ_h_VAssjgA1Bri0D56fHdtNuO8Y="
+  },
+  {
+    "IdPlaylist": "2",
+    "Ten": "Acoustic Việt",
+    "hinhAnhPlaylist": "https://i.pinimg.com/originals/12/5f/24/125f240406307e86944af329408638c8.jpg",
+    "Icon": "https://media.istockphoto.com/id/689660242/vector/banner-for-live-music-with-acoustic-guitar.jpg?s=612x612&w=is&k=20&c=yV8jSCWEbhzcZLE8DJ0gR2Ub0eHSFuXVPCd4NMRyJVI="
+  },
+  {
+    "IdPlaylist": "3",
+    "Ten": "Chill Lofi",
+    "hinhAnhPlaylist": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/6bb98014-62eb-4a53-9ba4-45c6cc5016e2/dea7ozu-0bd43438-1b26-441e-bb19-b4b2efc9a1f1.png/v1/fill/w_1200,h_480,q_80,strp/window_into_the_lofi_chill_by_thelordjoshua_dea7ozu-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDgwIiwicGF0aCI6IlwvZlwvNmJiOTgwMTQtNjJlYi00YTUzLTliYTQtNDVjNmNjNTAxNmUyXC9kZWE3b3p1LTBiZDQzNDM4LTFiMjYtNDQxZS1iYjE5LWI0YjJlZmM5YTFmMS5wbmciLCJ3aWR0aCI6Ijw9MTIwMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.F4ddVnPyFtFhvS1PnV5rnj3Wdmlx7SGIJ8A2As0fW38",
+    "Icon": "https://img.freepik.com/free-photo/girl-sits-bench-looking-moon-star-is-visible-sky_1340-39008.jpg"
+  },
+  {
+    "IdPlaylist": "4",
+    "Ten": "EDM Sôi Động",
+    "hinhAnhPlaylist": "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/edm-music-banner-design-template-a7a04b8182bac4dd9ea57f6b14e3601e_screen.jpg?ts=1599558499",
+    "Icon": "https://thumbs.dreamstime.com/b/edm-club-music-party-template-dance-party-flyer-brochure-night-party-club-sound-banner-poster-72485529.jpg"
+  },
+  {
+    "IdPlaylist": "5",
+    "Ten": "Nhạc Không Lời",
+    "hinhAnhPlaylist": "https://png.pngtree.com/thumb_back/fh260/back_our/20190622/ourmid/pngtree-purple-minimalist-music-note-banner-background-image_210612.jpg",
+    "Icon": "https://thumbs.dreamstime.com/b/listen-to-music-hipster-beard-listenning-fun-avatar-concept-vector-flat-design-illustration-51005480.jpg"
+  }
+]

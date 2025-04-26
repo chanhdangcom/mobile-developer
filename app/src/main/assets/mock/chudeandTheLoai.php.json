@@ -1,0 +1,56 @@
+{
+  "TheLoai": [
+    {
+      "IdTheLoai": "1",
+      "TenTheLoai": "Nhạc Trẻ",
+      "HinhTheLoai": "https://picsum.photos/640/360?random=1"
+    },
+    {
+      "IdTheLoai": "2",
+      "TenTheLoai": "Nhạc Trữ Tình",
+      "HinhTheLoai": "https://picsum.photos/640/360?random=2"
+    },
+    {
+      "IdTheLoai": "3",
+      "TenTheLoai": "Nhạc Rock",
+      "HinhTheLoai": "https://picsum.photos/640/360?random=3"
+    },
+    {
+      "IdTheLoai": "4",
+      "TenTheLoai": "Nhạc EDM",
+      "HinhTheLoai": "https://picsum.photos/640/360?random=4"
+    },
+    {
+      "IdTheLoai": "5",
+      "TenTheLoai": "Nhạc Lofi",
+      "HinhTheLoai": "https://picsum.photos/640/360?random=5"
+    }
+  ],
+  "ChuDe": [
+    {
+      "IdChuDe": "1",
+      "TenChuDe": "Tình Yêu",
+      "HinhChuDe": "https://picsum.photos/640/360?random=6"
+    },
+    {
+      "IdChuDe": "2",
+      "TenChuDe": "Thư Giãn",
+      "HinhChuDe": "https://picsum.photos/640/360?random=7"
+    },
+    {
+      "IdChuDe": "3",
+      "TenChuDe": "Party",
+      "HinhChuDe": "https://picsum.photos/640/360?random=8"
+    },
+    {
+      "IdChuDe": "4",
+      "TenChuDe": "Học Tập",
+      "HinhChuDe": "https://picsum.photos/640/360?random=9"
+    },
+    {
+      "IdChuDe": "5",
+      "TenChuDe": "Thể Thao",
+      "HinhChuDe": "https://picsum.photos/640/360?random=10"
+    }
+  ]
+}

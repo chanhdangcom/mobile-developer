@@ -1,0 +1,32 @@
+[
+  {
+    "IdPlaylist": "1",
+    "Ten": "Nhạc Việt Hot",
+    "HinhNen": "https://picsum.photos/640/360?random=101",
+    "Icon": "https://picsum.photos/150/150?random=201"
+  },
+  {
+    "IdPlaylist": "2",
+    "Ten": "Rap Việt",
+    "HinhNen": "https://picsum.photos/640/360?random=102",
+    "Icon": "https://picsum.photos/150/150?random=202"
+  },
+  {
+    "IdPlaylist": "3",
+    "Ten": "Top 50 Bài Hát Quốc Tế",
+    "HinhNen": "https://picsum.photos/640/360?random=103",
+    "Icon": "https://picsum.photos/150/150?random=203"
+  },
+  {
+    "IdPlaylist": "4",
+    "Ten": "Lofi Chill",
+    "HinhNen": "https://picsum.photos/640/360?random=104",
+    "Icon": "https://picsum.photos/150/150?random=204"
+  },
+  {
+    "IdPlaylist": "5",
+    "Ten": "Nhạc Không Lời Thư Giãn",
+    "HinhNen": "https://picsum.photos/640/360?random=105",
+    "Icon": "https://picsum.photos/150/150?random=205"
+  }
+]

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:weightSum="10"
+    tools:context=".Activity.PlayMusicActivity">
+
+<!--     Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toobarPlayNhac"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize" />
+
+    <!-- ViewPager cho hình album -->
+
+        <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerPlayNhac"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:layout_weight="5"
+        android:contentDescription="Ảnh bài hát" />
+
+
+    <ImageView
+        android:id="@+id/img_song"
+        android:layout_width="358dp"
+        android:layout_height="421dp"
+        android:layout_gravity="center"
+        android:background="@drawable/rounded_corner"
+        android:clipToOutline="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/no_music" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:orientation="vertical"
+        android:scaleType="centerCrop"
+        android:padding="8dp"
+        android:paddingStart="30dp"
+        android:layout_marginTop="20dp">
+
+
+
+        <!-- TextView tên bài hát -->
+        <TextView
+            android:id="@+id/tv_songName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên bài hát"
+            android:textColor="#FFFFFF"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+        <!-- TextView tên ca sĩ (mới thêm nè) -->
+        <TextView
+            android:id="@+id/tv_singerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tên ca sĩ"
+            android:textColor="#CCCCCC"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+    <!-- Thanh SeekBar + Thời gian -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_timeSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0:00"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <SeekBar
+            android:id="@+id/seekbarSong"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:progressTint="#FFFFFF"
+            android:thumbTint="#FFFFFF"
+            android:backgroundTint="#A9A9A9"
+        />
+
+        <TextView
+            android:id="@+id/tv_totalTimeSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0:00"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Các nút điều khiển -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:gravity="center_vertical"
+        android:weightSum="3">
+
+        <!-- Nút random bên trái -->
+        <ImageButton
+            android:id="@+id/btn_random"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/iconsuffle"
+            android:contentDescription="Phát ngẫu nhiên"
+            android:layout_gravity="center" />
+
+        <!-- Nhóm 3 nút giữa -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/iconpreview"
+                android:contentDescription="Bài trước" />
+
+            <ImageButton
+                android:id="@+id/btn_play"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/iconplay"
+                android:contentDescription="Phát / Tạm dừng" />
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/iconnext"
+                android:contentDescription="Bài tiếp theo" />
+        </LinearLayout>
+
+        <!-- Nút lặp lại bên phải -->
+        <ImageButton
+            android:id="@+id/btn_lapLai"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+
+            android:background="@android:color/transparent"
+            android:src="@drawable/iconrepeat"
+            android:contentDescription="Lặp lại bài hát"
+            android:layout_gravity="center" />
+    </LinearLayout>
+
+    <!-- TAB Up Next / Lyric / Related -->
+
+</LinearLayout>
