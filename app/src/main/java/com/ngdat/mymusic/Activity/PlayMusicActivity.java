@@ -119,13 +119,15 @@ public class PlayMusicActivity extends AppCompatActivity {
     // Thiết lập toolbar, adapter cho ViewPager và play bài đầu tiên
     private void init() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //set cho thành phần toolbar
+        getSupportActionBar().setDisplayShowTitleEnabled(false); //bỏ title trên toolbar
+        mToolbar.setNavigationIcon(R.drawable.iconback);
         mToolbar.setNavigationOnClickListener(v -> {
             finish();
             mMediaPlayer.stop();
             baiHatList.clear();
         });
-        mToolbar.setTitleTextColor(Color.WHITE);
+//        mToolbar.setTitleTextColor(Color.WHITE);
 
         mFragmentCDMusic = new FragmentCDMusic();
         mFragmentPlayDanhSachBaiHat = new FragmentPlayDanhSachBaiHat();

@@ -12,16 +12,24 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toobarPlayNhac"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize"
+        android:title="Music"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+            android:id="@+id/tv_customTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Music"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+    </androidx.appcompat.widget.Toolbar>
 
     <!-- ViewPager cho hình album -->
 
-        <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPagerPlayNhac"
-        android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:layout_weight="5"
-        android:contentDescription="Ảnh bài hát" />
+
 
 
     <ImageView
@@ -32,6 +40,7 @@
         android:background="@drawable/rounded_corner"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
+        android:layout_marginTop="25dp"
         android:src="@drawable/no_music" />
 
     <LinearLayout
@@ -74,7 +83,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
         <TextView
             android:id="@+id/tv_timeSong"
@@ -88,13 +99,13 @@
             android:id="@+id/seekbarSong"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.8"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:progressTint="#FFFFFF"
             android:thumbTint="#FFFFFF"
             android:backgroundTint="#A9A9A9"
-        />
+            />
 
         <TextView
             android:id="@+id/tv_totalTimeSong"
@@ -172,6 +183,11 @@
             android:layout_gravity="center" />
     </LinearLayout>
 
-    <!-- TAB Up Next / Lyric / Related -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPagerPlayNhac"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="5"
+        android:contentDescription="Ảnh bài hát" />
 
 </LinearLayout>
