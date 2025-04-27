@@ -98,6 +98,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         btnPlay.setImageResource(mMediaPlayer.isPlaying() ? R.drawable.iconpause : R.drawable.iconplay);
     }
 
+
     // Ánh xạ các view trong layout
     private void initView() {
         mToolbar = findViewById(R.id.toobarPlayNhac);
@@ -123,9 +124,9 @@ public class PlayMusicActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false); //bỏ title trên toolbar
         mToolbar.setNavigationIcon(R.drawable.iconback);
         mToolbar.setNavigationOnClickListener(v -> {
-            finish();
-            mMediaPlayer.stop();
-            baiHatList.clear();
+            finish(); // Đóng Activity
+            stopAndReleaseMediaPlayer(); // Dừng và giải phóng MediaPlayer
+            baiHatList.clear(); // Xóa danh sách bài hát
         });
 //        mToolbar.setTitleTextColor(Color.WHITE);
 
@@ -170,6 +171,15 @@ public class PlayMusicActivity extends AppCompatActivity {
             btnPlay.setImageResource(R.drawable.iconpause); // Thay đổi icon play
         }
     }
+
+    private void stopAndReleaseMediaPlayer() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.release(); // Giải phóng tài nguyên của MediaPlayer
+            mMediaPlayer = null; // Đảm bảo mMediaPlayer không còn tham chiếu đến đối tượng đã bị giải phóng
+        }
+    }
+
 
     // Lấy dữ liệu bài hát từ Intent
     private void GetDataFromItent() {
@@ -348,5 +358,6 @@ public class PlayMusicActivity extends AppCompatActivity {
             TimeSong();
             UpdateTime();
         }
+
     }
 }
