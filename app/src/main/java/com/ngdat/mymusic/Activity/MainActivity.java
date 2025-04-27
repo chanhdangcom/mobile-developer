@@ -7,7 +7,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.ngdat.mymusic.Adapter.ViewPagerAdapter;
-import com.ngdat.mymusic.Fragment.FragmentMV;
 import com.ngdat.mymusic.Fragment.Fragment_TimKiem;
 import com.ngdat.mymusic.Fragment.Fragment_TrangChu;
 import com.ngdat.mymusic.Fragment.baocao.FragmentBaoCao;
@@ -29,16 +28,14 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
-        mViewPagerAdapter.addFragment(new FragmentMV(), "MV");
         mViewPagerAdapter.addFragment(new Fragment_TimKiem(), "Tìm Kiếm");
         mViewPagerAdapter.addFragment(new FragmentBaoCao(), "Báo cáo ");
 
         mViewPager.setAdapter(mViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.getTabAt(0).setIcon(R.drawable.icontrangchu);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_video);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
         mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
-        mTabLayout.getTabAt(3).setIcon(R.drawable.ic_search);
 
     }
 
