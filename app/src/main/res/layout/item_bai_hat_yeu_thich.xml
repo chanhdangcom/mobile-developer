@@ -18,7 +18,9 @@
         android:layout_height="80dp"
         android:layout_margin="5dp"
         android:layout_toRightOf="@id/tvRank"
-        android:scaleType="fitXY" />
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
+        android:background="@drawable/rounded_corner" />
 
     <TextView
         android:id="@+id/tv_tenBaiHat"
