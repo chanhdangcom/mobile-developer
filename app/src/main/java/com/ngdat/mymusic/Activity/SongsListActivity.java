@@ -40,12 +40,14 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.util.Log;
 
 public class SongsListActivity extends AppCompatActivity {
     CoordinatorLayout mCoordinatorLayout;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     Toolbar mToolbar;
     RecyclerView mRecyclerView;
+    RecyclerView mRecyclerViewBaiHat;
     Button mButtonNgheTatCa;
     ImageView mImageView;
     Quangcao mQuangcao;
@@ -60,13 +62,16 @@ public class SongsListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_songs_list);
+
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
         DataItent();
+        logIntentData();
         initView();
-        init();
+        initToolbar();
 
         if (mQuangcao != null && !mQuangcao.getTenbaihat().equals("")) {
             setValuesInView(mQuangcao.getTenbaihat(), mQuangcao.getHinhbaihat());
@@ -92,75 +97,105 @@ public class SongsListActivity extends AppCompatActivity {
 
     private void getDataAlbum(String idAlbum) {
         DataService dataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> mCall = dataService.getDataBaiHatTheoAlbum(idAlbum);
-        mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoAlbum(idAlbum);
+        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
             @Override
             public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
                 listBaiHat = response.body();
-                mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(SongsListActivity.this));
-                mRecyclerView.setAdapter(mAdapter);
-                eventClick();
+                if (listBaiHat != null && !listBaiHat.isEmpty()) {
+                    mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
+                    setupRecyclerViews();
+                    eventClick();
+                }
             }
 
             @Override
             public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
-
+                Log.e("SongsListActivity", "getDataAlbum Error: " + t.getMessage());
             }
         });
     }
 
     private void getDataTheLoai(String idtheloai) {
-        DataService mDataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> mCall = mDataService.getDataBaiHatTheoTheLoai(idtheloai);
-        mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        DataService dataService = APIService.getService();
+        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoTheLoai(idtheloai);
+        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
             @Override
             public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
                 listBaiHat = response.body();
-                mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(SongsListActivity.this));
-                mRecyclerView.setAdapter(mAdapter);
-                eventClick();
+                if (listBaiHat != null && !listBaiHat.isEmpty()) {
+                    mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
+                    setupRecyclerViews();
+                    eventClick();
+                }
             }
 
             @Override
             public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
-
+                Log.e("SongsListActivity", "getDataTheLoai Error: " + t.getMessage());
             }
         });
     }
 
     private void getDataPlaylist(String idplaylist) {
-        DataService mDataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> call = mDataService.getDataBaiHatTheoPlaylist(idplaylist);
+        DataService dataService = APIService.getService();
+        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoPlaylist(idplaylist);
         call.enqueue(new Callback<List<BaiHatYeuThich>>() {
             @Override
             public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
                 listBaiHat = response.body();
-                mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(SongsListActivity.this));
-                mRecyclerView.setAdapter(mAdapter);
-                eventClick();
+                if (listBaiHat != null && !listBaiHat.isEmpty()) {
+                    mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
+                    setupRecyclerViews();
+                    eventClick();
+                }
             }
 
             @Override
             public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
-
+                Log.e("SongsListActivity", "getDataPlaylist Error: " + t.getMessage());
             }
         });
     }
 
-    // lấy data tên bài hát để gắn lên toolbar
+    private void getDataQuangCao(String idquangcao) {
+        DataService dataService = APIService.getService();
+        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoQuangCao(idquangcao);
+        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
+            @Override
+            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
+                listBaiHat = response.body();
+                if (listBaiHat != null && !listBaiHat.isEmpty()) {
+                    mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
+                    setupRecyclerViews();
+                    eventClick();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+                Log.e("SongsListActivity", "getDataQuangCao Error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void setupRecyclerViews() {
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerViewBaiHat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mRecyclerViewBaiHat.setAdapter(mAdapter);
+    }
+
     private void setValuesInView(String name, String image) {
         mCollapsingToolbarLayout.setTitle(name);
         try {
-            URL mUrl = new URL(image);
-            Bitmap mBitmap = BitmapFactory.decodeStream(mUrl.openConnection().getInputStream());
-            BitmapDrawable mBitmapDrawable = new BitmapDrawable(getResources(), mBitmap);
+            URL url = new URL(image);
+            Bitmap bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mCollapsingToolbarLayout.setBackground(mBitmapDrawable);
+                mCollapsingToolbarLayout.setBackground(drawable);
             }
-
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -169,42 +204,20 @@ public class SongsListActivity extends AppCompatActivity {
         Picasso.get().load(image).into(mImageView);
     }
 
-    private void getDataQuangCao(String idquangcao) {
-        DataService mDataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> mCall = mDataService.getDataBaiHatTheoQuangCao(idquangcao);
-        mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
-            @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
-                listBaiHat = response.body();
-                mAdapter = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(SongsListActivity.this));
-                mRecyclerView.setAdapter(mAdapter);
-                eventClick();
-            }
-
-            @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
-
-            }
+    private void eventClick() {
+        mButtonNgheTatCa.setEnabled(true);
+        mButtonNgheTatCa.setOnClickListener(v -> {
+            Intent intent = new Intent(SongsListActivity.this, PlayMusicActivity.class);
+            intent.putParcelableArrayListExtra("allbaihat", (ArrayList<? extends Parcelable>) listBaiHat);
+            startActivity(intent);
         });
     }
 
-
-    private void init() {
+    private void initToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-//        mCollapsingToolbarLayout.setExpandedTitleColor(Color.BLUE);
-//        mCollapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
-//        mCollapsingToolbarLayout.setExpandedTitleMarginStart(25);
-//        mCollapsingToolbarLayout.setExpandedTitleTextAppearance(18);
-//        mCollapsingToolbarLayout.setCollapsedTitleTextAppearance(18);
+        mToolbar.setNavigationOnClickListener(v -> finish());
         mButtonNgheTatCa.setEnabled(false);
     }
 
@@ -213,6 +226,7 @@ public class SongsListActivity extends AppCompatActivity {
         mCoordinatorLayout = findViewById(R.id.myCooridinerLayout);
         mToolbar = findViewById(R.id.my_toolbarList);
         mRecyclerView = findViewById(R.id.recycleDanhSachBH);
+        mRecyclerViewBaiHat = findViewById(R.id.recyclerViewBaiHat);
         mButtonNgheTatCa = findViewById(R.id.btn_nghetatca);
         mImageView = findViewById(R.id.img_danhSachbaihat);
     }
@@ -235,19 +249,24 @@ public class SongsListActivity extends AppCompatActivity {
             if (intent.hasExtra("album")) {
                 mAlbum = (Album) intent.getSerializableExtra("album");
             }
-
         }
     }
 
-    private void eventClick() {
-        mButtonNgheTatCa.setEnabled(true);
-        mButtonNgheTatCa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SongsListActivity.this, PlayMusicActivity.class);
-                intent.putParcelableArrayListExtra("allbaihat", (ArrayList<? extends Parcelable>) listBaiHat);
-                startActivity(intent);
-            }
-        });
+    private void logIntentData() {
+        if (mQuangcao != null) {
+            Log.d("SongsListActivity", "Nhận mQuangcao: " + mQuangcao.getTenbaihat() + ", ID: " + mQuangcao.getIdQuangCao());
+        }
+        if (mPlaylist != null) {
+            Log.d("SongsListActivity", "Nhận mPlaylist: " + mPlaylist.getTen() + ", ID: " + mPlaylist.getIdPlaylist());
+        }
+        if (mPlaylistAll != null) {
+            Log.d("SongsListActivity", "Nhận mPlaylistAll: " + mPlaylistAll.getTen() + ", ID: " + mPlaylistAll.getIdPlaylist());
+        }
+        if (mTheLoai != null) {
+            Log.d("SongsListActivity", "Nhận mTheLoai: " + mTheLoai.getTenTheLoai() + ", ID: " + mTheLoai.getIDTheLoai());
+        }
+        if (mAlbum != null) {
+            Log.d("SongsListActivity", "Nhận mAlbum: " + mAlbum.getTenAlbum() + ", ID: " + mAlbum.getIdAlbum());
+        }
     }
 }

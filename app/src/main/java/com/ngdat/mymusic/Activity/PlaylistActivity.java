@@ -20,11 +20,17 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.ngdat.mymusic.Adapter.BaiHatAdapter;
+import com.ngdat.mymusic.Model.BaiHatYeuThich;
 
 public class PlaylistActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     Toolbar mToolbar;
     DanhSachAllPlaylistAdapter mAdapter;
+    RecyclerView recyclerViewBaiHat;
+    BaiHatAdapter baiHatAdapter;
+    ArrayList<BaiHatYeuThich> baiHatYeuThichArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +39,7 @@ public class PlaylistActivity extends AppCompatActivity {
         initView();
         init();
         Getdata();
+        loadBaiHatYeuThich();
     }
 
     private void Getdata() {
@@ -68,8 +75,35 @@ public class PlaylistActivity extends AppCompatActivity {
         });
     }
 
+    private void loadBaiHatYeuThich() {
+        baiHatYeuThichArrayList = new ArrayList<>();
+
+        baiHatYeuThichArrayList.add(new BaiHatYeuThich(
+                "1",
+                "Anh chưa một lần nói",
+                "https://cdn.chanhdang.com/singer_khanh_vin.jpg",
+                "Ê Kê Vin",
+                "https://cdn.chanhdang.com/music_rap_with_tran_nha.mp3",
+                "765384"
+        ));
+
+        baiHatYeuThichArrayList.add(new BaiHatYeuThich(
+                "2",
+                "Tháp drill tự do",
+                "https://cdn.chanhdang.com/cover_thap_drill_tu_do.jpg",
+                "Ê Kê Vin",
+                "https://cdn.chanhdang.com/music_thap_drill_tu_do.mp3",
+                "765344"
+        ));
+
+        baiHatAdapter = new BaiHatAdapter(this, baiHatYeuThichArrayList);
+        recyclerViewBaiHat.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewBaiHat.setAdapter(baiHatAdapter);
+    }
+
     private void initView() {
         mRecyclerView = findViewById(R.id.myRecycleViewPlaylist);
         mToolbar = findViewById(R.id.toobarPlaylist);
+        recyclerViewBaiHat = findViewById(R.id.recyclerViewBaiHat);
     }
 }

@@ -22,7 +22,8 @@
         app:tabIndicatorColor="#8b47d9"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="#e70a1d"
+        app:tabSelectedTextColor="#333333"
+        android:background="#E0E0E0"
         />
 
 </LinearLayout>

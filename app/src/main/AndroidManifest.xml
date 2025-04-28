@@ -38,18 +38,7 @@
         <activity android:name=".Activity.DanhSachTheLoaiTheoChuDeActivity" />
         <activity android:name=".Activity.DanhSachAllAlbumActivity" />
         <activity android:name=".Activity.PlayMusicActivity" />
-        <activity
-            android:name=".Activity.PlayVideoActivity"
-            android:configChanges="orientation|screenSize" />
-        <activity
-            android:name=".Activity.MediaplayerVideoActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".Activity.KaraokeActivity"
-            android:configChanges="screenSize|orientation" />
-        <activity
-            android:name=".Activity.PlayVideoKaraokeActivity"
-            android:screenOrientation="landscape" />
+
     </application>
 
 </manifest>

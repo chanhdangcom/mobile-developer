@@ -111,7 +111,7 @@ public class PlayMusicActivity extends AppCompatActivity {
         btnPlay = findViewById(R.id.btn_play);
         btnNext = findViewById(R.id.btn_next);
         btnRandom = findViewById(R.id.btn_random);
-        // 🆕 Ánh xạ thêm 2 TextView mới
+        // 🆕 Ánh xạ thêm 3 TextView mới
         txtSongName = findViewById(R.id.tv_songName);
         txtSingerName = findViewById(R.id.tv_singerName);
         imgSong = findViewById(R.id.img_song); // 🆕 ánh xạ ImageView
@@ -149,23 +149,13 @@ public class PlayMusicActivity extends AppCompatActivity {
             Log.d("DEBUG_IMAGE", "Link ảnh: " + baiHat.getHinhBaiHat());
 
             // Dùng Picasso để tải ảnh từ URL có trong dữ liệu
-            Picasso.get()
-                    .load(baiHat.getHinhBaiHat())
-                    .placeholder(R.drawable.no_music)
-                    .error(R.drawable.iconfloatingactionbutton)
-                    .fit()  // Tự động resize cho vừa ImageView
-                    .centerCrop() // Cắt vừa khung
-                    .into(imgSong, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d("DEBUG_PICASSO", "Load ảnh thành công");
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Log.e("DEBUG_PICASSO", "Lỗi load ảnh: " + e.getMessage());
-                        }
-                    });
+            if (baiHat.getHinhBaiHat() != null && !baiHat.getHinhBaiHat().isEmpty()) {
+                Picasso.get()
+                        .load(baiHat.getHinhBaiHat())
+                        .placeholder(R.drawable.no_music)
+                        .error(R.drawable.iconfloatingactionbutton)
+                        .into(imgSong);
+            }
 
             new PlayMusic().execute(baiHat.getLinkBaiHat()); // Phát nhạc
             btnPlay.setImageResource(R.drawable.iconpause); // Thay đổi icon play
@@ -344,7 +334,7 @@ public class PlayMusicActivity extends AppCompatActivity {
             try {
                 mMediaPlayer = new MediaPlayer();
                 mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mMediaPlayer.setDataSource(baihat);
+                mMediaPlayer.setDataSource(getApplicationContext(), Uri.parse(baihat));
                 mMediaPlayer.prepare();
                 mMediaPlayer.start();
             } catch (IOException e) {
@@ -354,6 +344,23 @@ public class PlayMusicActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(baiHatList.get(position).getTenBaiHat());
             txtSongName.setText(baiHatList.get(position).getTenBaiHat());
             txtSingerName.setText(baiHatList.get(position).getCaSi());
+            Picasso.get()
+                    .load(baiHatList.get(position).getHinhBaiHat())
+                    .placeholder(R.drawable.no_music)
+                    .error(R.drawable.iconfloatingactionbutton)
+                    .fit()
+                    .centerCrop()
+                    .into(imgSong, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d("DEBUG_PICASSO", "Load ảnh thành công");
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+                            Log.e("DEBUG_PICASSO", "Lỗi load ảnh: " + e.getMessage());
+                        }
+                    });
 
             TimeSong();
             UpdateTime();
