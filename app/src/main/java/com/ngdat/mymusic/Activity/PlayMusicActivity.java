@@ -98,6 +98,29 @@ public class PlayMusicActivity extends AppCompatActivity {
         btnPlay.setImageResource(mMediaPlayer.isPlaying() ? R.drawable.iconpause : R.drawable.iconplay);
     }
 
+    private void playSong(String linkBaiHat) {
+        stopAndReleaseMediaPlayer(); // Ngưng bài cũ trước
+
+        mMediaPlayer = new MediaPlayer();
+        try {
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setDataSource(getApplicationContext(), Uri.parse(linkBaiHat));
+            mMediaPlayer.prepareAsync();
+            mMediaPlayer.setOnPreparedListener(mp -> {
+                mp.start();
+                TimeSong();
+                UpdateTime();
+                btnPlay.setImageResource(R.drawable.iconpause);
+            });
+
+            mMediaPlayer.setOnCompletionListener(mp -> {
+                next = true;
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Ánh xạ các view trong layout
     private void initView() {
@@ -150,14 +173,14 @@ public class PlayMusicActivity extends AppCompatActivity {
 
             // Dùng Picasso để tải ảnh từ URL có trong dữ liệu
             if (baiHat.getHinhBaiHat() != null && !baiHat.getHinhBaiHat().isEmpty()) {
-                Picasso.get()
+                Glide.with(this)
                         .load(baiHat.getHinhBaiHat())
                         .placeholder(R.drawable.no_music)
                         .error(R.drawable.iconfloatingactionbutton)
                         .into(imgSong);
             }
 
-            new PlayMusic().execute(baiHat.getLinkBaiHat()); // Phát nhạc
+            playSong(baiHat.getLinkBaiHat());
             btnPlay.setImageResource(R.drawable.iconpause); // Thay đổi icon play
         }
     }
@@ -241,7 +264,7 @@ public class PlayMusicActivity extends AppCompatActivity {
             }
             if (position > baiHatList.size() - 1) position = 0;
 
-            new PlayMusic().execute(baiHatList.get(position).getLinkBaiHat());
+            playSong(baiHatList.get(position).getLinkBaiHat());
             mFragmentCDMusic.Playnhac(baiHatList.get(position).getHinhBaiHat());
             getSupportActionBar().setTitle(baiHatList.get(position).getTenBaiHat());
 
@@ -314,57 +337,17 @@ public class PlayMusicActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> {
             if (position > 0) position--;
             else position = baiHatList.size() - 1;
-            new PlayMusic().execute(baiHatList.get(position).getLinkBaiHat());
+            playSong(baiHatList.get(position).getLinkBaiHat());
             mFragmentCDMusic.Playnhac(baiHatList.get(position).getHinhBaiHat());
             getSupportActionBar().setTitle(baiHatList.get(position).getTenBaiHat());
             TimeSong();
             UpdateTime();
         });
     }
-
-    // AsyncTask dùng để load và phát nhạc từ URL
-    class PlayMusic extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... strings) {
-            return strings[0];
-        }
-
-        @Override
-        protected void onPostExecute(String baihat) {
-            try {
-                mMediaPlayer = new MediaPlayer();
-                mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mMediaPlayer.setDataSource(getApplicationContext(), Uri.parse(baihat));
-                mMediaPlayer.prepare();
-                mMediaPlayer.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            getSupportActionBar().setTitle(baiHatList.get(position).getTenBaiHat());
-            txtSongName.setText(baiHatList.get(position).getTenBaiHat());
-            txtSingerName.setText(baiHatList.get(position).getCaSi());
-            Picasso.get()
-                    .load(baiHatList.get(position).getHinhBaiHat())
-                    .placeholder(R.drawable.no_music)
-                    .error(R.drawable.iconfloatingactionbutton)
-                    .fit()
-                    .centerCrop()
-                    .into(imgSong, new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            Log.d("DEBUG_PICASSO", "Load ảnh thành công");
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-                            Log.e("DEBUG_PICASSO", "Lỗi load ảnh: " + e.getMessage());
-                        }
-                    });
-
-            TimeSong();
-            UpdateTime();
-        }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopAndReleaseMediaPlayer(); // Dừng nhạc khi thoát
+        baiHatList.clear(); // Xóa danh sách bài hát nếu cần
     }
 }
