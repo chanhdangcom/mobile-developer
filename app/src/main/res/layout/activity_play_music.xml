@@ -29,9 +29,6 @@
 
     <!-- ViewPager cho hình album -->
 
-
-
-
     <ImageView
         android:id="@+id/img_song"
         android:layout_width="358dp"
