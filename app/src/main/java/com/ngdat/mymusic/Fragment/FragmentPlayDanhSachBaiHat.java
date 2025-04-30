@@ -13,7 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ngdat.mymusic.Activity.PlayMusicActivity;
 import com.ngdat.mymusic.Adapter.PlayMusicAdapter;
+import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
+
+import java.util.ArrayList;
 
 public class FragmentPlayDanhSachBaiHat extends Fragment {
     View view;
@@ -25,11 +28,17 @@ public class FragmentPlayDanhSachBaiHat extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_play_danh_sach_bai_hat, container, false);
         mRecyclerView = view.findViewById(R.id.recyclePlayDanhSachBH);
-        if (PlayMusicActivity.baiHatList.size() > 0) {
-            musicAdapter = new PlayMusicAdapter(getActivity(), PlayMusicActivity.baiHatList);
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mRecyclerView.setAdapter(musicAdapter);
+
+        if (getActivity() instanceof PlayMusicActivity) {
+            PlayMusicActivity playMusicActivity = (PlayMusicActivity) getActivity();
+            ArrayList<BaiHatYeuThich> baiHatList = playMusicActivity.getBaiHatList();
+            if (baiHatList != null && baiHatList.size() > 0) {
+                musicAdapter = new PlayMusicAdapter(getActivity(), baiHatList);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mRecyclerView.setAdapter(musicAdapter);
+            }
         }
+
         return view;
     }
 }

@@ -49,6 +49,12 @@ public class PlayMusicActivity extends AppCompatActivity {
             MusicService.LocalBinder binder = (MusicService.LocalBinder) service;
             musicService = binder.getService();
             serviceBound = true;
+
+            // Khi đã kết nối, mới bắt đầu phát nhạc
+            if (baiHatList.size() > 0) {
+                BaiHatYeuThich baiHat = baiHatList.get(position);
+                startPlaying(baiHat.getLinkBaiHat());
+            }
         }
 
         @Override
@@ -66,6 +72,9 @@ public class PlayMusicActivity extends AppCompatActivity {
         img_Song = findViewById(R.id.img_song);  // Đảm bảo ID trong XML là img_song
     }
 
+    public ArrayList<BaiHatYeuThich> getBaiHatList() {
+        return baiHatList;
+    }
     private void init() {
         // Get the first song details
         if (baiHatList.size() > 0) {
@@ -77,7 +86,7 @@ public class PlayMusicActivity extends AppCompatActivity {
                     .placeholder(R.drawable.no_music)
                     .error(R.drawable.iconfloatingactionbutton)
                     .into(img_Song);  // imgSong là một đối tượng ImageView
-            startPlaying(baiHat.getLinkBaiHat());
+//            startPlaying(baiHat.getLinkBaiHat());
         }
 
         btnPlay.setOnClickListener(v -> {
@@ -141,9 +150,19 @@ public class PlayMusicActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Bind to MusicService
-        Intent intent = new Intent(this, MusicService.class);
-        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+
+        // Gửi intent kèm đường link để phát nhạc
+        BaiHatYeuThich baiHat = baiHatList.size() > 0 ? baiHatList.get(position) : null;
+        if (baiHat != null) {
+            Intent startIntent = new Intent(this, MusicService.class);
+            startIntent.putExtra("linkBaiHat", baiHat.getLinkBaiHat());
+            Log.d("PlayMusicActivity", "Starting service with link: " + baiHat.getLinkBaiHat());
+            startService(startIntent); // Đảm bảo phát nhạc ngay khi bắt đầu
+        }
+
+        // Rồi mới bind
+        Intent bindIntent = new Intent(this, MusicService.class);
+        bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
     }
 
     @Override
