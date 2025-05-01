@@ -17,9 +17,12 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+
 import com.ngdat.mymusic.R;
 
 import java.io.IOException;
+
+import com.ngdat.mymusic.Model.BaiHatYeuThich;
 
 public class MusicService extends Service {
 
@@ -102,53 +105,44 @@ public class MusicService extends Service {
             startForeground(1, notification);
         }
 
-        String link = intent.getStringExtra("LinkBaiHat");
-        if (link != null) {
-            Log.d(TAG, "Received link: " + link);
-            playSong(link);
+        BaiHatYeuThich song = (BaiHatYeuThich) intent.getSerializableExtra("cakhuc");
+        if (song != null) {
+            Log.d(TAG, "Received song: " + song.getTenBaiHat());
+            playSong(song);
         } else {
-            Log.w(TAG, "No song link received");
+            Log.w(TAG, "No song data received");
         }
+
         return START_STICKY;
     }
 
-    public void playSong(String url) {
-        Log.d(TAG, "Attempting to play song: " + url);
+    public void playSong(BaiHatYeuThich song) {
+        Log.d(TAG, "Attempting to play song: " + song.getLinkBaiHat());
         try {
             if (mediaPlayer == null) {
-                Log.d(TAG, "MediaPlayer is null, initializing");
                 initMediaPlayer();
             }
 
             mediaPlayer.reset();
-            Log.d(TAG, "MediaPlayer reset");
-
-            mediaPlayer.setDataSource(this, Uri.parse(url));
-            Log.d(TAG, "DataSource set");
+            mediaPlayer.setDataSource(this, Uri.parse(song.getLinkBaiHat()));
 
             mediaPlayer.setOnPreparedListener(mp -> {
-                Log.d(TAG, "MediaPlayer prepared, starting playback");
                 mp.start();
-            });
+                Log.d(TAG, "Playing: " + song.getTenBaiHat());
 
-            mediaPlayer.setOnErrorListener((mp, what, extra) -> {
-                Log.e(TAG, "MediaPlayer error - what: " + what + ", extra: " + extra);
-                return true;
-            });
+                // Cập nhật bài hát hiện tại
+                CurrentSongHolder.currentSong = song;
 
-            mediaPlayer.setOnCompletionListener(mp -> {
-                Log.d(TAG, "MediaPlayer completed");
+                // Gửi Broadcast cho MainActivity
+                Intent intent = new Intent("com.ngdat.mymusic.UPDATE_NOW_PLAYING");
+                intent.putExtra("songName", song.getTenBaiHat());
+                sendBroadcast(intent);
             });
 
             mediaPlayer.prepareAsync();
-            Log.d(TAG, "prepareAsync called");
 
-        } catch (IOException e) {
-            Log.e(TAG, "IOException while setting data source", e);
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "IllegalArgumentException while setting data source", e);
-        } catch (IllegalStateException e) {
-            Log.e(TAG, "IllegalStateException while setting data source", e);
+        } catch (Exception e) {
+            Log.e(TAG, "Error playing song", e);
         }
     }
 
@@ -164,6 +158,10 @@ public class MusicService extends Service {
             mediaPlayer.start();
             Log.d(TAG, "MediaPlayer resumed");
         }
+    }
+
+    public static class CurrentSongHolder {
+        public static BaiHatYeuThich currentSong;
     }
 
     public boolean isPlaying() {
@@ -182,6 +180,9 @@ public class MusicService extends Service {
             mediaPlayer = null;
             Log.d(TAG, "MediaPlayer released");
         }
+    }
+    public BaiHatYeuThich getCurrentPlayingSong() {
+        return CurrentSongHolder.currentSong;
     }
 
     @Override
