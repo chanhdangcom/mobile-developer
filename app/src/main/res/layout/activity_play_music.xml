@@ -183,7 +183,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerPlayNhac"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="104dp"
         android:layout_weight="5"
         android:contentDescription="Ảnh bài hát" />
 

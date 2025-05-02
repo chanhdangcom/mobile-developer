@@ -17,7 +17,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-
 import com.ngdat.mymusic.R;
 
 import java.io.IOException;
@@ -31,6 +30,15 @@ public class MusicService extends Service {
 
     private final IBinder binder = new LocalBinder();
     private MediaPlayer mediaPlayer;
+    private OnMediaPreparedListener onMediaPreparedListener;
+
+    public interface OnMediaPreparedListener {
+        void onPrepared(int duration);
+    }
+
+    public void setOnMediaPreparedListener(OnMediaPreparedListener listener) {
+        this.onMediaPreparedListener = listener;
+    }
 
     public class LocalBinder extends Binder {
         public MusicService getService() {
@@ -73,6 +81,23 @@ public class MusicService extends Service {
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             }
 
+            mediaPlayer.setOnPreparedListener(mp -> {
+                mp.start();
+                Log.d(TAG, "Playing: " + CurrentSongHolder.currentSong.getTenBaiHat() + ", Duration: " + mp.getDuration());
+
+                if (onMediaPreparedListener != null) {
+                    onMediaPreparedListener.onPrepared(mp.getDuration());
+                }
+
+                // Cập nhật bài hát hiện tại
+                CurrentSongHolder.currentSong = getCurrentPlayingSong(); // Đảm bảo currentSong được cập nhật
+
+                // Gửi Broadcast cho MainActivity (nếu bạn vẫn muốn giữ)
+                Intent intent = new Intent("com.ngdat.mymusic.UPDATE_NOW_PLAYING");
+                intent.putExtra("songName", CurrentSongHolder.currentSong.getTenBaiHat());
+                sendBroadcast(intent);
+            });
+
         } catch (Exception e) {
             Log.e(TAG, "initMediaPlayer: Error initializing MediaPlayer", e);
         }
@@ -108,7 +133,11 @@ public class MusicService extends Service {
         BaiHatYeuThich song = (BaiHatYeuThich) intent.getSerializableExtra("cakhuc");
         if (song != null) {
             Log.d(TAG, "Received song: " + song.getTenBaiHat());
+            CurrentSongHolder.currentSong = song; // Cập nhật ngay khi nhận bài hát
             playSong(song);
+        } else if (CurrentSongHolder.currentSong != null) {
+            // Nếu service khởi động lại và có bài hát đang phát
+            playSong(CurrentSongHolder.currentSong);
         } else {
             Log.w(TAG, "No song data received");
         }
@@ -121,24 +150,11 @@ public class MusicService extends Service {
         try {
             if (mediaPlayer == null) {
                 initMediaPlayer();
+            } else {
+                mediaPlayer.reset();
             }
-
-            mediaPlayer.reset();
+            CurrentSongHolder.currentSong = song; // Cập nhật trước khi setDataSource
             mediaPlayer.setDataSource(this, Uri.parse(song.getLinkBaiHat()));
-
-            mediaPlayer.setOnPreparedListener(mp -> {
-                mp.start();
-                Log.d(TAG, "Playing: " + song.getTenBaiHat());
-
-                // Cập nhật bài hát hiện tại
-                CurrentSongHolder.currentSong = song;
-
-                // Gửi Broadcast cho MainActivity
-                Intent intent = new Intent("com.ngdat.mymusic.UPDATE_NOW_PLAYING");
-                intent.putExtra("songName", song.getTenBaiHat());
-                sendBroadcast(intent);
-            });
-
             mediaPlayer.prepareAsync();
 
         } catch (Exception e) {
@@ -160,10 +176,6 @@ public class MusicService extends Service {
         }
     }
 
-    public static class CurrentSongHolder {
-        public static BaiHatYeuThich currentSong;
-    }
-
     public boolean isPlaying() {
         boolean playing = mediaPlayer != null && mediaPlayer.isPlaying();
         Log.d(TAG, "isPlaying: " + playing);
@@ -181,8 +193,35 @@ public class MusicService extends Service {
             Log.d(TAG, "MediaPlayer released");
         }
     }
+
     public BaiHatYeuThich getCurrentPlayingSong() {
         return CurrentSongHolder.currentSong;
+    }
+
+    // Phương thức để lấy tổng thời gian của bài hát
+    public int getDuration() {
+        if (mediaPlayer != null) {
+            return mediaPlayer.getDuration();
+        }
+        return 0;
+    }
+
+    // Phương thức để lấy vị trí hiện tại của bài hát
+    public int getCurrentPosition() {
+        if (mediaPlayer != null) {
+            return mediaPlayer.getCurrentPosition();
+        }
+        return 0;
+    }
+
+    public void seekTo(int position) {
+        if (mediaPlayer != null) {
+            mediaPlayer.seekTo(position);
+        }
+    }
+
+    public static class CurrentSongHolder {
+        public static BaiHatYeuThich currentSong;
     }
 
     @Override
