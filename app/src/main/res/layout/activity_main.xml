@@ -18,10 +18,7 @@
         android:id="@+id/nowPlayingToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_margin="5dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:background="@drawable/rounded_corner"
@@ -74,6 +71,14 @@
                     android:ellipsize="end"
                     android:textStyle="bold"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_timeSong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0:00"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 

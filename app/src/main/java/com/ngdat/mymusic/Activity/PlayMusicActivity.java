@@ -111,6 +111,8 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
 
         setSupportActionBar(toobarPlayNhac);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false); // Ẩn chữ "MyMusic"
+        toobarPlayNhac.setNavigationIcon(R.drawable.iconback);
         toobarPlayNhac.setNavigationOnClickListener(v -> onBackPressed());
     }
 
@@ -228,7 +230,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
                 .placeholder(R.drawable.no_music)
                 .error(R.drawable.iconfloatingactionbutton)
                 .into(imgSong);
-        tvCustomTitle.setText(baiHat.getTenBaiHat());
+
     }
 
     private void GetDataFromIntent() {
