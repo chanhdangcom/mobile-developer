@@ -8,6 +8,8 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_margin="3dp"
+        android:clipToOutline="true"
+        android:background="@drawable/rounded_corner"
         android:scaleType="fitXY" />
 
     <TextView
