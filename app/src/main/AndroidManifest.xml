@@ -45,7 +45,12 @@
         <activity android:name=".Activity.DanhSachTheLoaiTheoChuDeActivity" />
         <activity android:name=".Activity.DanhSachAllAlbumActivity" />
         <activity android:name=".Activity.PlayMusicActivity" />
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.SignupActivity" />
+        <activity android:name=".Activity.AdminActivity" />
 
     </application>
+
+
 
 </manifest>

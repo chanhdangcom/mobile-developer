@@ -8,4 +8,10 @@
     <string name="app_name_music">My Music</string> <string name="no_music_playing">Không có nhạc đang phát</string>
     <string name="error_loading_song">Lỗi tải thông tin bài hát</string>
     <string name="no_music_selected">Chưa chọn bài hát</string>
+    <string-array name="roles_array">
+        <item>Chọn quyền</item> <!-- Mặc định -->
+        <item>User</item>
+        <item>Admin</item>
+    </string-array>
+
 </resources>
