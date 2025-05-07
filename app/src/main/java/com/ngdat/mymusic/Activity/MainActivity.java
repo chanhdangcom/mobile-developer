@@ -1,14 +1,10 @@
 package com.ngdat.mymusic.Activity;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.pm.PackageManager;
-import android.widget.Toast;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -20,12 +16,7 @@ import com.ngdat.mymusic.Adapter.CurrentSongHolder;
 import com.ngdat.mymusic.Adapter.ViewPagerAdapter;
 import com.ngdat.mymusic.Fragment.Fragment_TimKiem;
 import com.ngdat.mymusic.Fragment.Fragment_TrangChu;
-import com.ngdat.mymusic.Fragment.Fragment_device_music;
-import com.ngdat.mymusic.Fragment.baocao.FragmentBaoCao;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.utils.MyMediaPlayer;
-import com.ngdat.mymusic.utils.PermissionHelper;
-import com.ngdat.mymusic.utils.SongLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,37 +25,16 @@ public class MainActivity extends AppCompatActivity {
     Toolbar nowPlayingToolbar;
     TextView tvNowPlaying, tvNowPlayingSinger;
     ImageView imgNowPlaying;
-    MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initView();
         init();
         setupNowPlayingToolbar();
-        if (PermissionHelper.hasPermissions(this)) {
-            // Nếu đã có quyền, gọi load ngay
-            SongLoader.loadSongs(this);
-        } else {
-            // Nếu chưa có quyền, yêu cầu cấp quyền
-            PermissionHelper.requestPermission(this);
-        }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 123) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Nếu quyền đã được cấp, gọi SongLoader để tải bài hát
-                SongLoader.loadSongs(this);
-            } else {
-                // Nếu quyền bị từ chối, hiển thị thông báo
-                Toast.makeText(this, "Bạn cần cấp quyền truy cập để sử dụng tính năng này", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
 
     private void initView() {
         mTabLayout = findViewById(R.id.myTablayout);
@@ -79,19 +49,12 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
         mViewPagerAdapter.addFragment(new Fragment_TimKiem(), "Tìm Kiếm");
-        mViewPagerAdapter.addFragment(new FragmentBaoCao(), "Báo Cáo");
-        mViewPagerAdapter.addFragment(new Fragment_device_music(), "Device Music");
-
-
 
         mViewPager.setAdapter(mViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
         if (mTabLayout.getTabAt(0) != null) mTabLayout.getTabAt(0).setIcon(R.drawable.icontrangchu);
         if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
-        if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
-        if (mTabLayout.getTabAt(3) != null) mTabLayout.getTabAt(3).setIcon(R.drawable.ic_search);
-
     }
 
     private void setupNowPlayingToolbar() {

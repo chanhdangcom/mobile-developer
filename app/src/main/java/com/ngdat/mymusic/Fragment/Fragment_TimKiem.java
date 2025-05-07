@@ -1,99 +1,147 @@
 package com.ngdat.mymusic.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ngdat.mymusic.Adapter.SearchBaiHatAdapter;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.Service.APIService;
-import com.ngdat.mymusic.Service.DataService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Locale;
 
 public class Fragment_TimKiem extends Fragment {
-    View view;
-    Toolbar toolbar;
-    RecyclerView mRecyclerView;
-    TextView mTextViewKoCoData;
-    SearchBaiHatAdapter mAdapter;
+
+    Toolbar toolbarTimKiemBaiHat;
+    RecyclerView recyclerViewTimKiem;
+    TextView tvDataNull;
+    SearchBaiHatAdapter searchBaiHatAdapter;
+    List<BaiHatYeuThich> tatCaBaiHat; // Danh sách tất cả bài hát từ JSON
+    List<BaiHatYeuThich> mangBaiHatTimKiem; // Danh sách kết quả tìm kiếm
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_tim_kiem, container, false);
-        toolbar = view.findViewById(R.id.toolbartimkiembaihat);
-        mTextViewKoCoData = view.findViewById(R.id.tv_DataNull);
-        mRecyclerView = view.findViewById(R.id.recycleviewTimKiem);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle("");
-        setHasOptionsMenu(true);
+        View view = inflater.inflate(R.layout.fragment_tim_kiem, container, false);
+        toolbarTimKiemBaiHat = view.findViewById(R.id.toolbartimkiembaihat);
+        recyclerViewTimKiem = view.findViewById(R.id.recycleviewTimKiem);
+        tvDataNull = view.findViewById(R.id.tv_DataNull);
         return view;
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_view, menu);
-        MenuItem menuItem = menu.findItem(R.id.mySearchBH);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                SearchBaiHat(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSupportActionBar();
+        initRecyclerView();
+        loadBaiHatFromJSON(); // Đọc dữ liệu từ JSON khi Fragment được tạo
     }
 
-    public void SearchBaiHat(String keyword) {
-        DataService dataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> call = dataService.getSearchBaiHat(keyword);
-        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
+    private void setSupportActionBar() {
+        // Thêm EditText vào Toolbar программно
+        EditText edtSearch = new EditText(getContext());
+        edtSearch.setHint("Nhập tên bài hát");
+        edtSearch.setTextColor(getResources().getColor(android.R.color.black));
+        edtSearch.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        edtSearch.setLayoutParams(params);
+        toolbarTimKiemBaiHat.addView(edtSearch);
+
+        edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
-                List<BaiHatYeuThich> listBH = response.body();
-                if (listBH.size() > 0) {
-                    mAdapter = new SearchBaiHatAdapter(getActivity(), listBH);
-                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    mRecyclerView.setAdapter(mAdapter);
-                    mTextViewKoCoData.setVisibility(View.GONE);
-                    mRecyclerView.setVisibility(View.VISIBLE);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 1) { // Bắt đầu tìm kiếm khi người dùng nhập ít nhất 2 ký tự
+                    timKiemBaiHat(s.toString());
                 } else {
-                    mRecyclerView.setVisibility(View.GONE);
-                    mTextViewKoCoData.setVisibility(View.VISIBLE);
+                    mangBaiHatTimKiem.clear();
+                    searchBaiHatAdapter.notifyDataSetChanged();
+                    tvDataNull.setVisibility(View.GONE);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+            public void afterTextChanged(Editable s) {
 
             }
         });
+    }
+
+    private void initRecyclerView() {
+        mangBaiHatTimKiem = new ArrayList<>();
+        recyclerViewTimKiem.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchBaiHatAdapter = new SearchBaiHatAdapter(getActivity(), mangBaiHatTimKiem);
+        recyclerViewTimKiem.setAdapter(searchBaiHatAdapter);
+    }
+
+    private void loadBaiHatFromJSON() {
+        try {
+            InputStream inputStream = getActivity().getAssets().open("BaiHatDuocYeuThich.php.json");
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            String json = new String(buffer, StandardCharsets.UTF_8);
+
+            Gson gson = new Gson();
+            Type listType = new TypeToken<List<BaiHatYeuThich>>() {}.getType();
+            tatCaBaiHat = gson.fromJson(json, listType);
+
+            if (tatCaBaiHat == null || tatCaBaiHat.isEmpty()) {
+                tvDataNull.setVisibility(View.VISIBLE);
+            }
+        } catch (IOException e) {
+            Log.e("JSON Loading Error", "Error loading JSON from assets", e);
+            tvDataNull.setVisibility(View.VISIBLE);
+            tvDataNull.setText("Lỗi khi tải dữ liệu bài hát");
+        }
+    }
+
+    private void timKiemBaiHat(String keyword) {
+        mangBaiHatTimKiem.clear();
+        if (tatCaBaiHat != null && !tatCaBaiHat.isEmpty()) {
+            keyword = keyword.toLowerCase(Locale.getDefault());
+            for (BaiHatYeuThich baiHat : tatCaBaiHat) {
+                if (baiHat.getTenBaiHat().toLowerCase(Locale.getDefault()).contains(keyword)) {
+                    mangBaiHatTimKiem.add(baiHat);
+                }
+            }
+        }
+
+        if (mangBaiHatTimKiem.isEmpty()) {
+            tvDataNull.setVisibility(View.VISIBLE);
+        } else {
+            tvDataNull.setVisibility(View.GONE);
+        }
+        searchBaiHatAdapter.notifyDataSetChanged();
     }
 }

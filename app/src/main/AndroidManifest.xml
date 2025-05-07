@@ -41,9 +41,6 @@
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.SongsListActivity" />
         <activity android:name=".Activity.PlaylistActivity" />
-        <activity android:name=".Activity.DanhSachAllChuDeActivity" />
-        <activity android:name=".Activity.DanhSachTheLoaiTheoChuDeActivity" />
-        <activity android:name=".Activity.DanhSachAllAlbumActivity" />
         <activity android:name=".Activity.PlayMusicActivity" />
 
     </application>
