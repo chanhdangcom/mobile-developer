@@ -29,7 +29,7 @@ public class MusicService extends Service {
     private static final String CHANNEL_ID = "music_channel";
 
     private final IBinder binder = new LocalBinder();
-    private MediaPlayer mediaPlayer;
+    static MediaPlayer mediaPlayer;
     private OnMediaPreparedListener onMediaPreparedListener;
 
     public interface OnMediaPreparedListener {

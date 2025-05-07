@@ -14,7 +14,7 @@ public class MyMediaPlayer extends MediaPlayer
         return instance;
     }
 
-    public static int currentIndex = 0;
+    public static int currentIndex = -1;
     public static boolean isPaused = true;
     public static boolean isStopped = true;
 }

@@ -1,7 +1,11 @@
 package com.ngdat.mymusic.Activity;
 
+import static com.ngdat.mymusic.utils.SongLoader.songsList;
+
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +23,9 @@ import com.ngdat.mymusic.Adapter.ViewPagerAdapter;
 import com.ngdat.mymusic.Fragment.Fragment_TimKiem;
 import com.ngdat.mymusic.Fragment.Fragment_TrangChu;
 import com.ngdat.mymusic.Fragment.Fragment_device_music;
+import com.ngdat.mymusic.Model.Song;
 import com.ngdat.mymusic.R;
+import com.ngdat.mymusic.utils.MyMediaPlayer;
 import com.ngdat.mymusic.utils.PermissionHelper;
 import com.ngdat.mymusic.utils.SongLoader;
 
@@ -76,7 +82,12 @@ public class MainActivity extends AppCompatActivity {
         nowPlayingToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CurrentSongHolder.currentSong != null) {
+                if(MyMediaPlayer.currentIndex >= 0 && MyMediaPlayer.currentIndex < songsList.size()) {
+                    Intent intent = new Intent(MainActivity.this, MusicPlayerActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    MainActivity.this.startActivity(intent);
+                }
+                else if (CurrentSongHolder.currentSong != null) {
                     Intent intent = new Intent(MainActivity.this, PlayMusicActivity.class);
                     intent.putExtra("cakhuc", CurrentSongHolder.currentSong);
                     startActivity(intent);
@@ -88,7 +99,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateNowPlayingText() {
-        if (CurrentSongHolder.currentSong != null) {
+        if (MyMediaPlayer.currentIndex >= 0 && MyMediaPlayer.currentIndex < songsList.size()) {
+            // Dữ liệu từ songsList và MyMediaPlayer
+            Song song = songsList.get(MyMediaPlayer.currentIndex);
+            tvNowPlaying.setText(song.getTitle());
+            tvNowPlayingSinger.setText(""); // Không có ca sĩ
+
+            byte[] imageBytes = song.getEmbeddedPicture();
+            if (imageBytes != null) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                imgNowPlaying.setImageBitmap(bitmap);
+            } else {
+                imgNowPlaying.setImageResource(R.drawable.no_music);
+            }
+        }
+        else if (CurrentSongHolder.currentSong != null) {
+            // Dữ liệu từ CurrentSongHolder
             tvNowPlaying.setText(CurrentSongHolder.currentSong.getTenBaiHat());
             tvNowPlayingSinger.setText(CurrentSongHolder.currentSong.getCaSi());
 
@@ -101,11 +127,13 @@ public class MainActivity extends AppCompatActivity {
                 imgNowPlaying.setImageResource(R.drawable.no_music);
             }
         } else {
+            // Không có bài hát nào đang phát
             tvNowPlaying.setText("Bài hát");
             tvNowPlayingSinger.setText("Ca sĩ");
             imgNowPlaying.setImageResource(R.drawable.no_music);
         }
     }
+
 
     @Override
     protected void onResume() {

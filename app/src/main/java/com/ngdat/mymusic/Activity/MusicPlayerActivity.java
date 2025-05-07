@@ -19,8 +19,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ngdat.mymusic.Adapter.CurrentSongHolder;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Model.Song;
+import com.ngdat.mymusic.Service.MusicService;
 import com.ngdat.mymusic.utils.AudioPlayerUtils;
 import com.ngdat.mymusic.utils.MyMediaPlayer;
 import com.ngdat.mymusic.utils.SongLoader;
@@ -34,6 +36,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private Song currentSong;
     private Handler handler = new Handler();
     MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
+    private MusicService musicService;
 
     private boolean isShuffle = false;
     private boolean isRepeat = false;
@@ -52,7 +55,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_player);
-
+        Intent intent = new Intent(this, MusicService.class);
+        stopService(intent);
         initViews();
         loadSongData();
         setupSeekBar();
