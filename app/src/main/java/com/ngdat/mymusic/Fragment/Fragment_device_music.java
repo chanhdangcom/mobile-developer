@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ngdat.mymusic.Activity.MainActivity;
+import com.ngdat.mymusic.Activity.MusicPlayerActivity;
 import com.ngdat.mymusic.Adapter.SongListAdapter;
 import com.ngdat.mymusic.Model.Song;
 import com.ngdat.mymusic.R;
@@ -65,5 +66,8 @@ public class Fragment_device_music extends Fragment implements SongListAdapter.O
         MyMediaPlayer.currentIndex = position;
         AudioPlayerUtils.playAudio(requireContext());
 
+        Intent intent = new Intent(requireContext(), MusicPlayerActivity.class);
+        intent.putExtra("selected_song", song); // nhớ song phải implements Serializable hoặc Parcelable
+        startActivity(intent);
     }
 }
