@@ -1,10 +1,15 @@
 package com.ngdat.mymusic.Fragment;
 
+import static com.ngdat.mymusic.utils.SongLoader.songsList;
+
+import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,18 +17,24 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ngdat.mymusic.Activity.MainActivity;
 import com.ngdat.mymusic.Adapter.SongListAdapter;
 import com.ngdat.mymusic.Model.Song;
 import com.ngdat.mymusic.R;
+import com.ngdat.mymusic.Service.MediaPlayerService;
 import com.ngdat.mymusic.utils.AudioPlayerUtils;
 import com.ngdat.mymusic.utils.MyMediaPlayer;
 import com.ngdat.mymusic.utils.SongLoader;
+
+import java.io.IOException;
 
 public class Fragment_device_music extends Fragment implements SongListAdapter.OnSongClickListener{
     View view;
     private RecyclerView recyclerView;
     private TextView noMusicAvailable;
     private SongListAdapter songListAdapter;
+
+    private final MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
 
     @Nullable
     @Override
@@ -53,5 +64,6 @@ public class Fragment_device_music extends Fragment implements SongListAdapter.O
     public void onSongClick(Song song, int position) {
         MyMediaPlayer.currentIndex = position;
         AudioPlayerUtils.playAudio(requireContext());
+
     }
 }

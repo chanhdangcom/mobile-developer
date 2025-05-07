@@ -1,10 +1,12 @@
 package com.ngdat.mymusic.Activity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,7 +18,10 @@ import com.ngdat.mymusic.Adapter.CurrentSongHolder;
 import com.ngdat.mymusic.Adapter.ViewPagerAdapter;
 import com.ngdat.mymusic.Fragment.Fragment_TimKiem;
 import com.ngdat.mymusic.Fragment.Fragment_TrangChu;
+import com.ngdat.mymusic.Fragment.Fragment_device_music;
 import com.ngdat.mymusic.R;
+import com.ngdat.mymusic.utils.PermissionHelper;
+import com.ngdat.mymusic.utils.SongLoader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
         initView();
         init();
         setupNowPlayingToolbar();
+        PermissionHelper.checkAndRequestPermissions(this);
+        boolean hasPermission = PermissionHelper.hasPermissions(this);
+        Toast.makeText(this, "Permission: " + hasPermission, Toast.LENGTH_SHORT).show();
+
+
     }
 
     private void initView() {
@@ -49,13 +59,18 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
         mViewPagerAdapter.addFragment(new Fragment_TimKiem(), "Tìm Kiếm");
+        mViewPagerAdapter.addFragment(new Fragment_device_music(), "Device Music");
+
 
         mViewPager.setAdapter(mViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
         if (mTabLayout.getTabAt(0) != null) mTabLayout.getTabAt(0).setIcon(R.drawable.icontrangchu);
         if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
+        if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
+
     }
+
 
     private void setupNowPlayingToolbar() {
         nowPlayingToolbar.setOnClickListener(new View.OnClickListener() {

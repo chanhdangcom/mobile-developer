@@ -4,6 +4,7 @@ import static com.ngdat.mymusic.utils.SongLoader.songsList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.ngdat.mymusic.Model.Song;
 import com.ngdat.mymusic.Service.MediaPlayerService;
