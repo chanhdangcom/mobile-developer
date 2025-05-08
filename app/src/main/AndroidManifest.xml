@@ -37,7 +37,8 @@
         <!-- Nếu MediaPlayerService là service, không nên đăng ký là receiver -->
         <service
             android:name=".Service.MediaPlayerService"
-            android:exported="false" />
+            android:foregroundServiceType="mediaPlayback"
+            android:exported="false"/>
 
         <!-- Launcher -->
         <activity
@@ -58,6 +59,12 @@
         <activity android:name=".Activity.LoginActivity" android:exported="false"/>
         <activity android:name=".Activity.SignupActivity" android:exported="false"/>
         <activity android:name=".Activity.AdminActivity" android:exported="false"/>
+
+        <receiver android:name=".Service.MediaPlayerService" android:exported="true">
+            <intent-filter>
+                <action android:name="ACTION_SONG_CHANGED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 </manifest>
