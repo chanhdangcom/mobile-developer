@@ -31,7 +31,6 @@
             android:name=".Service.MusicService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
-        <service android:name=".Service.MediaPlayerService" android:enabled="true" android:exported="false" />
 
         <activity
             android:name=".Activity.SplashScreenActivity"
@@ -44,9 +43,12 @@
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.SongsListActivity" />
         <activity android:name=".Activity.PlaylistActivity" />
-        <activity android:name=".Activity.PlayMusicActivity" />
         <activity android:name=".Activity.MusicPlayerActivity" />
+        <activity android:name=".Activity.PlayMusicActivity" />
 
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.SignupActivity" />
+        <activity android:name=".Activity.AdminActivity" />
         <receiver
             android:name=".Service.MediaPlayerService"
             android:exported="false">
@@ -54,7 +56,6 @@
                 <action android:name="ACTION_SONG_CHANGED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>
