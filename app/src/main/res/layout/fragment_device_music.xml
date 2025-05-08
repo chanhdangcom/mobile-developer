@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#0A0A0A">
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/activity_title"
@@ -14,9 +14,9 @@
         android:padding="5dp"
         android:text="@string/device_music"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="20sp"
-        android:fontFamily="@font/montserrat_bold"/>
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/no_music_available"
@@ -27,7 +27,7 @@
         android:padding="5dp"
         android:text="@string/no_audio_files_available"
         android:textAlignment="center"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textSize="20sp"
         android:fontFamily="@font/montserrat_light"
         android:visibility="gone"/>
@@ -37,15 +37,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/activity_title"/>
-
-
-
-<!--    <com.example.servplayer.components.MiniPlayerView-->
-<!--        android:id="@+id/mini_player"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="64dp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:background="#FAFAFA"-->
-<!--        android:visibility="gone" />-->
 
 </RelativeLayout>
