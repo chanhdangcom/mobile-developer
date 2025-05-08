@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
-    <!-- Quyền truy cập Internet -->
+
+    <!-- Quyền cần thiết -->
     <uses-permission android:name="android.permission.INTERNET" />
-
-    <!-- Thêm quyền gửi thông báo cho Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+
+    <!-- Quyền đọc file nhạc -->
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:name=".Service.MVPApp"
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="31"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules">
 
+        <!-- Service phát nhạc -->
         <service
             android:name=".Service.MusicService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
+        <!-- Nếu MediaPlayerService là service, không nên đăng ký là receiver -->
+        <service
+            android:name=".Service.MediaPlayerService"
+            android:exported="false" />
+
+        <!-- Launcher -->
         <activity
             android:name=".Activity.SplashScreenActivity"
             android:exported="true">
@@ -40,22 +48,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.MainActivity" />
-        <activity android:name=".Activity.SongsListActivity" />
-        <activity android:name=".Activity.PlaylistActivity" />
-        <activity android:name=".Activity.MusicPlayerActivity" />
-        <activity android:name=".Activity.PlayMusicActivity" />
 
-        <activity android:name=".Activity.LoginActivity" />
-        <activity android:name=".Activity.SignupActivity" />
-        <activity android:name=".Activity.AdminActivity" />
-        <receiver
-            android:name=".Service.MediaPlayerService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="ACTION_SONG_CHANGED" />
-            </intent-filter>
-        </receiver>
+        <!-- Các Activity khác -->
+        <activity android:name=".Activity.MainActivity" android:exported="false"/>
+        <activity android:name=".Activity.SongsListActivity" android:exported="false"/>
+        <activity android:name=".Activity.PlaylistActivity" android:exported="false"/>
+        <activity android:name=".Activity.MusicPlayerActivity" android:exported="false"/>
+        <activity android:name=".Activity.PlayMusicActivity" android:exported="false"/>
+        <activity android:name=".Activity.LoginActivity" android:exported="false"/>
+        <activity android:name=".Activity.SignupActivity" android:exported="false"/>
+        <activity android:name=".Activity.AdminActivity" android:exported="false"/>
+
     </application>
-
 </manifest>

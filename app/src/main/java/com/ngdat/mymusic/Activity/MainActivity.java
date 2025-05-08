@@ -3,11 +3,12 @@ package com.ngdat.mymusic.Activity;
 import static com.ngdat.mymusic.utils.SongLoader.songsList;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,12 +37,19 @@ public class MainActivity extends AppCompatActivity {
     Toolbar nowPlayingToolbar;
     TextView tvNowPlaying, tvNowPlayingSinger;
     ImageView imgNowPlaying;
+    Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
+        if (!isLoggedIn) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish(); // Không cho quay lại MainActivity
+        }
         initView();
         init();
         setupNowPlayingToolbar();
@@ -50,6 +58,19 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Permission: " + hasPermission, Toast.LENGTH_SHORT).show();
 
 
+        btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = getSharedPreferences("UserPrefs", MODE_PRIVATE).edit();
+                editor.putBoolean("isLoggedIn", false);
+                editor.apply();
+
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void initView() {

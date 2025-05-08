@@ -167,8 +167,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     private void updatePlayPauseIcon() {
         int iconRes = !mediaPlayer.isPlaying() ?
-                R.drawable.baseline_play_arrow_50 :
-                R.drawable.baseline_pause_45;
+                R.drawable.baseline_pause_45 :
+                R.drawable.baseline_play_arrow_50;
         playPauseButton.setImageResource(iconRes);
     }
 

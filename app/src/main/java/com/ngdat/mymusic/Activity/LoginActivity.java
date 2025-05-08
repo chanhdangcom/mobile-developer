@@ -48,13 +48,16 @@ public class LoginActivity extends AppCompatActivity {
 
         if (inputUsername.equals(savedUsername) && inputPassword.equals(savedPassword)) {
             Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-
+            SharedPreferences.Editor editor = getSharedPreferences("UserPrefs", MODE_PRIVATE).edit();
+            editor.putBoolean("isLoggedIn", true); // Đánh dấu là đã đăng nhập
+            editor.apply();
             // Chuyển màn theo vai trò
             if (savedRole.equals("admin")) {
                 startActivity(new Intent(this, AdminActivity.class));
             } else {
                 startActivity(new Intent(this, MainActivity.class));
             }
+
             finish();
         } else {
             Toast.makeText(this, "Sai tài khoản hoặc mật khẩu", Toast.LENGTH_SHORT).show();
