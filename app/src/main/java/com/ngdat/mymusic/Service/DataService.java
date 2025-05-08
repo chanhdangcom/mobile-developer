@@ -27,7 +27,6 @@ public interface DataService {
 
         // nhận dữ liệu
     Call<List<Quangcao>> getDataBanner();
-
     @GET("PlaylistSong.php")
     Call<List<Playlist>> getDataPlaylist();
 

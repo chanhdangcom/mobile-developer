@@ -71,10 +71,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         updateNowPlayingText();
     }
-
     private void updateNowPlayingText() {
         if (CurrentSongHolder.currentSong != null) {
             tvNowPlaying.setText(CurrentSongHolder.currentSong.getTenBaiHat());
@@ -94,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             imgNowPlaying.setImageResource(R.drawable.no_music);
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();

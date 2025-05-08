@@ -3,6 +3,7 @@ package com.ngdat.mymusic.Service;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.AudioAttributes;
@@ -13,6 +14,8 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+import com.ngdat.mymusic.Service.NotificationUtils;
+
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -31,6 +34,11 @@ public class MusicService extends Service {
     private final IBinder binder = new LocalBinder();
     private MediaPlayer mediaPlayer;
     private OnMediaPreparedListener onMediaPreparedListener;
+    // PendingIntent cho các nút điều khiển
+    PendingIntent playPauseIntent = PendingIntent.getService(this, 0, new Intent(this, MusicService.class).setAction("ACTION_PLAY_PAUSE"), PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent nextIntent = PendingIntent.getService(this, 0, new Intent(this, MusicService.class).setAction("ACTION_NEXT"), PendingIntent.FLAG_UPDATE_CURRENT);
+    PendingIntent prevIntent = PendingIntent.getService(this, 0, new Intent(this, MusicService.class).setAction("ACTION_PREV"), PendingIntent.FLAG_UPDATE_CURRENT);
+
 
     public interface OnMediaPreparedListener {
         void onPrepared(int duration);
@@ -56,9 +64,20 @@ public class MusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        NotificationUtils.createNotificationChannel(getApplicationContext());
+        Notification notification = new NotificationCompat.Builder(this, NotificationUtils.CHANNEL_ID)
+                .setContentTitle("Đang phát nhạc")
+                .setContentText("Music")
+                .setSmallIcon(R.drawable.iconfloatingactionbutton)
+                .build();
+
         Log.d(TAG, "Service created");
+        // Tạo và hiển thị notification dưới dạng foreground service
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(1, notification); // Bắt đầu foreground service
+        }
         initMediaPlayer();
-        createNotificationChannel();
+
     }
 
     private void initMediaPlayer() {
