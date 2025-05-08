@@ -43,13 +43,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
-        if (!isLoggedIn) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish(); // Không cho quay lại MainActivity
-        }
         initView();
         init();
         setupNowPlayingToolbar();
@@ -58,19 +51,15 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Permission: " + hasPermission, Toast.LENGTH_SHORT).show();
 
 
-        btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences.Editor editor = getSharedPreferences("UserPrefs", MODE_PRIVATE).edit();
-                editor.putBoolean("isLoggedIn", false);
-                editor.apply();
 
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        btnLogout = findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
+
     }
 
     private void initView() {
