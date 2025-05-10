@@ -1,5 +1,8 @@
 package com.ngdat.mymusic.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +33,15 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
     View view;
     RecyclerView mRecyclerView;
     BaiHatAdapter mAdapter;
+    DatabaseHelper databaseHelper;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bai_hat_yeuthich, container, false);
         mRecyclerView = view.findViewById(R.id.myRecycleBaiHatYeuThich);
+        databaseHelper = new DatabaseHelper(getContext());
         GetData();
         return view;
     }
@@ -45,8 +52,22 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
         mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
             @Override
             public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
-                ArrayList<BaiHatYeuThich> baiHatYeuThichArrayList = (ArrayList<BaiHatYeuThich>) response.body();
-                mAdapter = new BaiHatAdapter(getActivity(), baiHatYeuThichArrayList);
+
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                int userId = sharedPreferences.getInt("userId", -1);  // -1 là giá trị mặc định nếu không tìm thấy key "userId"
+
+
+                ArrayList<BaiHatYeuThich> allSongs = (ArrayList<BaiHatYeuThich>) response.body();
+                List<Integer> favoriteSongIds = databaseHelper.getFavoriteSongs(userId);
+                //lọc các bài hát yêu thương
+                ArrayList<BaiHatYeuThich> favoriteSongs = new ArrayList<>();
+                for (BaiHatYeuThich baiHat : allSongs) {
+                    if (favoriteSongIds.contains(Integer.parseInt(baiHat.getIdBaiHat()))) {
+                        favoriteSongs.add(baiHat);
+                    }
+                }
+
+                mAdapter = new BaiHatAdapter(getActivity(), favoriteSongs);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(layoutManager);

@@ -1,7 +1,10 @@
 package com.ngdat.mymusic.Adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,18 +19,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ngdat.mymusic.Activity.PlayMusicActivity;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.Service.APIService;
-import com.ngdat.mymusic.Service.DataService;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAdapter.ViewHolder> {
     Context mContext;
     List<BaiHatYeuThich> list;
+
 
     public DanhSachBaiHatAdapter(Context mContext, List<BaiHatYeuThich> list) {
         this.mContext = mContext;
@@ -71,24 +70,6 @@ public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAd
                 @Override
                 public void onClick(View v) {
                     imgYeuThich.setImageResource(R.drawable.iconloved);
-                    DataService dataService = APIService.getService();
-                    Call<String> mCall = dataService.getDataLuotLikeBaiHat("1", list.get(getPosition()).getIdBaiHat());
-                    mCall.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            String resuilt = response.body();
-                            if (resuilt.equals("OK")) {
-                                Toast.makeText(mContext, "Đã Thích Cám Ơn", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(mContext, "Please Check Again !", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            Log.d("TAG", t.toString());
-                        }
-                    });
                 }
             });
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -101,4 +82,6 @@ public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAd
             });
         }
     }
+
+
 }

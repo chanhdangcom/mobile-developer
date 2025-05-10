@@ -11,10 +11,11 @@ import com.ngdat.mymusic.Model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "MyMusic.db";
     private static final int DATABASE_VERSION = 1;
 
+    // Bảng users
     public static final String TABLE_USERS = "users";
     public static final String COL_ID = "id";
     public static final String COL_FULLNAME = "fullName";
@@ -23,27 +24,42 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_PASSWORD = "password";
     public static final String COL_ROLE = "role";
 
-    public UserDatabaseHelper(Context context) {
+    // Bảng favorites
+    public static final String TABLE_FAVORITES = "favorites";
+    public static final String COL_FAV_ID = "id";
+    public static final String COL_SONG_ID = "song_id";
+    public static final String COL_USER_ID = "user_id";
+
+    public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_USERS + " (" +
+        String createUsersTable = "CREATE TABLE " + TABLE_USERS + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_FULLNAME + " TEXT, " +
                 COL_USERNAME + " TEXT UNIQUE, " +
                 COL_EMAIL + " TEXT, " +
                 COL_PASSWORD + " TEXT, " +
                 COL_ROLE + " TEXT)";
-        db.execSQL(createTable);
+        db.execSQL(createUsersTable);
+
+        String createFavoritesTable = "CREATE TABLE " + TABLE_FAVORITES + " (" +
+                COL_FAV_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_SONG_ID + " INTEGER, " +
+                COL_USER_ID + " INTEGER)";
+        db.execSQL(createFavoritesTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITES);
         onCreate(db);
     }
+
+    // ==== XỬ LÝ USERS ====
 
     public boolean insertUser(String fullName, String username, String email, String password, String role) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -74,7 +90,7 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM users", null);
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_USERS, null);
 
         if (c.moveToFirst()) {
             do {
@@ -91,17 +107,48 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         c.close();
         return list;
     }
-    public boolean deleteUser(String username) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        // Xóa người dùng theo username
-        int result = db.delete(TABLE_USERS, COL_USERNAME + " = ?", new String[]{username});
-        return result > 0; // Nếu xóa thành công, sẽ trả về true
-    }
+
     public boolean deleteUserById(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        // Xóa người dùng theo id
-        int result = db.delete(TABLE_USERS, COL_ID + " = ?", new String[]{String.valueOf(id)});
-        return result > 0; // Nếu xóa thành công, sẽ trả về true
+        return db.delete(TABLE_USERS, COL_ID + " = ?", new String[]{String.valueOf(id)}) > 0;
     }
 
+    // ==== XỬ LÝ FAVORITES ====
+
+    public boolean addFavorite(int userId, int songId) {
+        if (isFavoriteExists(userId, songId)) return false;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_USER_ID, userId);
+        values.put(COL_SONG_ID, songId);
+
+        long result = db.insert(TABLE_FAVORITES, null, values);
+        return result != -1;
+    }
+
+    public boolean isFavoriteExists(int userId, int songId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_FAVORITES + " WHERE " +
+                COL_USER_ID + " = ? AND " + COL_SONG_ID + " = ?", new String[]{String.valueOf(userId), String.valueOf(songId)});
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+    public List<Integer> getFavoriteSongs(int userId) {
+        List<Integer> songIds = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COL_SONG_ID + " FROM " + TABLE_FAVORITES +
+                " WHERE " + COL_USER_ID + " = ?", new String[]{String.valueOf(userId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                int songId = cursor.getInt(0);
+                songIds.add(songId);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return songIds;
+    }
 }

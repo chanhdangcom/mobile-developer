@@ -1,6 +1,7 @@
 package com.ngdat.mymusic.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,14 +10,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ngdat.mymusic.utils.UserDatabaseHelper;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.ngdat.mymusic.R;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword;
     Button btnLogin, btnSignup;
 
-    UserDatabaseHelper dbHelper;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnSignup = findViewById(R.id.btnSignup);
 
-        dbHelper = new UserDatabaseHelper(this);
+        dbHelper = new DatabaseHelper(this);
 
         btnLogin.setOnClickListener(v -> loginUser());
         btnSignup.setOnClickListener(v -> {
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Cursor cursor = dbHelper.getUser(username, password);
         if (cursor != null && cursor.moveToFirst()) {
+            int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
             String role = cursor.getString(cursor.getColumnIndexOrThrow("role"));
             Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
@@ -56,6 +58,10 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 startActivity(new Intent(this, MainActivity.class));
             }
+            SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("userId", userId);  // Lưu userId
+            editor.apply();
             finish();
         } else {
             Toast.makeText(this, "Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();

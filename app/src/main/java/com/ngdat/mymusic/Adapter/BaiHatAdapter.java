@@ -1,7 +1,11 @@
 package com.ngdat.mymusic.Adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +16,23 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 import com.ngdat.mymusic.Activity.PlayMusicActivity;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.Service.APIService;
-import com.ngdat.mymusic.Service.DataService;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder> {
     Context mContext;
     List<BaiHatYeuThich> baiHatYeuThichList;
+    DatabaseHelper databaseHelper;
 
     public BaiHatAdapter(Context mContext, List<BaiHatYeuThich> baiHatYeuThichList) {
         this.mContext = mContext;
         this.baiHatYeuThichList = baiHatYeuThichList;
+        databaseHelper = new DatabaseHelper(mContext);
     }
 
     @NonNull
@@ -79,24 +80,22 @@ public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
                     imgLuotThich.setImageResource(R.drawable.iconloved);
-                    DataService dataService = APIService.getService();
-                    Call<String> mCall = dataService.getDataLuotLikeBaiHat("1", baiHatYeuThichList.get(getPosition()).getIdBaiHat());
-                    mCall.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            String resuilt = response.body();
-                            if (resuilt.equals("OK")) {
-                                Toast.makeText(mContext, "Đã Thích Cám Ơn", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(mContext, "Please Check Again !", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                    int userId;
+                    SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                    userId = sharedPreferences.getInt("userId", -1);
+                    int songId = Integer.parseInt(baiHatYeuThichList.get(getPosition()).getIdBaiHat());
 
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
 
-                        }
-                    });
+                    boolean success = databaseHelper.addFavorite(userId, songId);
+                    if (success) {
+                        Toast.makeText(mContext, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+                        Log.d("FAVORITES", "Thêm thành công: userId=" + userId + ", songId=" + songId);
+                        Log.d("DEBUG", "userId: " + userId);
+
+                    } else {
+                        Toast.makeText(mContext, "Thêm thất bại (có thể đã tồn tại)", Toast.LENGTH_SHORT).show();
+                        Log.e("FAVORITES", "Thêm thất bại: userId=" + userId + ", songId=" + songId);
+                    }
                     imgLuotThich.setEnabled(false);
                 }
             });

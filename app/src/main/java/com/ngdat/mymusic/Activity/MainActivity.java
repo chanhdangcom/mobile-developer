@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.ngdat.mymusic.Adapter.CurrentSongHolder;
 import com.ngdat.mymusic.Adapter.ViewPagerAdapter;
+import com.ngdat.mymusic.Fragment.Fragment_DanhSachBaiHatYeuThich;
 import com.ngdat.mymusic.Fragment.Fragment_TimKiem;
 import com.ngdat.mymusic.Fragment.Fragment_TrangChu;
 import com.ngdat.mymusic.Fragment.Fragment_device_music;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
-        mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
+        mViewPagerAdapter.addFragment(new Fragment_DanhSachBaiHatYeuThich(), "Yêu thích");
         mViewPagerAdapter.addFragment(new Fragment_TimKiem(), "Tìm Kiếm");
         mViewPagerAdapter.addFragment(new Fragment_device_music(), "Device Music");
 
@@ -83,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
 
         if (mTabLayout.getTabAt(0) != null) mTabLayout.getTabAt(0).setIcon(R.drawable.icontrangchu);
-        if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
-        if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.device_mobile_speaker);
+        if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.icontrangchu);
+        if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
+        if (mTabLayout.getTabAt(3) != null) mTabLayout.getTabAt(3).setIcon(R.drawable.device_mobile_speaker);
 
     }
 

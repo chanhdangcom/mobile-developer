@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ngdat.mymusic.utils.UserDatabaseHelper;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.ngdat.mymusic.R;
 
 public class SignupActivity extends AppCompatActivity {
@@ -16,14 +16,14 @@ public class SignupActivity extends AppCompatActivity {
     Button btnRegister, btnLogin;
     Spinner spinnerRole;
 
-    UserDatabaseHelper dbHelper;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        dbHelper = new UserDatabaseHelper(this);
+        dbHelper = new DatabaseHelper(this);
         initView();
         handleEvents();
     }

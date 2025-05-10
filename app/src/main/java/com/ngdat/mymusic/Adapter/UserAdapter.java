@@ -1,9 +1,6 @@
 package com.ngdat.mymusic.Adapter;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -15,24 +12,21 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ngdat.mymusic.Activity.AdminActivity;
-import com.ngdat.mymusic.Activity.LoginActivity;
-import com.ngdat.mymusic.Activity.MainActivity;
 import com.ngdat.mymusic.Model.User;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.utils.UserDatabaseHelper;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     Context context;
-    UserDatabaseHelper databaseHelper;
+    DatabaseHelper databaseHelper;
     List<User> list;
 
     public UserAdapter(Context context,List<User> list) {
         this.context = context;
         this.list = list;
-        this.databaseHelper = new UserDatabaseHelper(context);  // Khởi tạo databaseHelper
+        this.databaseHelper = new DatabaseHelper(context);  // Khởi tạo databaseHelper
     }
 
     @NonNull

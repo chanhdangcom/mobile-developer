@@ -11,16 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ngdat.mymusic.Adapter.UserAdapter;
 import com.ngdat.mymusic.Model.User;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.utils.UserDatabaseHelper;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
     private List<User> userList;
-    private UserDatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;
     private Button btnLogout;
 
     @Override
@@ -31,7 +30,7 @@ public class AdminActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.myRecycleTaiKhoan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        dbHelper = new UserDatabaseHelper(this);
+        dbHelper = new DatabaseHelper(this);
         userList = dbHelper.getAllUsers();
 
         userAdapter = new UserAdapter(this, userList);
