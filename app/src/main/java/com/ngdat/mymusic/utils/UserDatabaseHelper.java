@@ -91,4 +91,17 @@ public class UserDatabaseHelper extends SQLiteOpenHelper {
         c.close();
         return list;
     }
+    public boolean deleteUser(String username) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Xóa người dùng theo username
+        int result = db.delete(TABLE_USERS, COL_USERNAME + " = ?", new String[]{username});
+        return result > 0; // Nếu xóa thành công, sẽ trả về true
+    }
+    public boolean deleteUserById(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Xóa người dùng theo id
+        int result = db.delete(TABLE_USERS, COL_ID + " = ?", new String[]{String.valueOf(id)});
+        return result > 0; // Nếu xóa thành công, sẽ trả về true
+    }
+
 }

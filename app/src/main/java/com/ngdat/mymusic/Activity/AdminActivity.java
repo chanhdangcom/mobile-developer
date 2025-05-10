@@ -1,8 +1,8 @@
 package com.ngdat.mymusic.Activity;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +21,7 @@ public class AdminActivity extends AppCompatActivity {
     private UserAdapter userAdapter;
     private List<User> userList;
     private UserDatabaseHelper dbHelper;
+    private Button btnLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,29 @@ public class AdminActivity extends AppCompatActivity {
 
         userAdapter = new UserAdapter(this, userList);
         recyclerView.setAdapter(userAdapter);
-    }
 
+        // Sửa phần này để gọi findViewById đúng cách
+        btnLogout = findViewById(R.id.btnLogout);  // Đảm bảo gọi đúng findViewById
+        btnLogout.setOnClickListener(view -> {
+            logout();
+        });
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        logout();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logout();
+    }
+    private void logout() {
+
+        // Điều hướng về LoginActivity
+        Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();  // Đóng AdminActivity
+    }
 }

@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
+        mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
         mViewPagerAdapter.addFragment(new Fragment_TimKiem(), "Tìm Kiếm");
         mViewPagerAdapter.addFragment(new Fragment_device_music(), "Device Music");
 
