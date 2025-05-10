@@ -126,7 +126,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_FAVORITES, null, values);
         return result != -1;
     }
-
+    public boolean deleteFavorite(int userId, int songId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Corrected WHERE clause to delete from the favorites table based on user_id and song_id
+        int result = db.delete(TABLE_FAVORITES, COL_USER_ID + " = ? AND " + COL_SONG_ID + " = ?", new String[]{String.valueOf(userId), String.valueOf(songId)});
+        // Close the database connection
+        db.close();
+        return result > 0;
+    }
     public boolean isFavoriteExists(int userId, int songId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_FAVORITES + " WHERE " +
