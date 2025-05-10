@@ -45,6 +45,11 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
         GetData();
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        GetData(); // gọi lại API hoặc load lại dữ liệu mỗi lần vào Fragment
+    }
 
     private void GetData() {
         DataService mDataService = APIService.getService();
