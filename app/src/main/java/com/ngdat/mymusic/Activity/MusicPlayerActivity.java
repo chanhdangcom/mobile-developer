@@ -18,10 +18,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.ngdat.mymusic.Adapter.CurrentSongHolder;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Model.Song;
+import com.ngdat.mymusic.Service.MediaPlayerService;
 import com.ngdat.mymusic.Service.MusicService;
 import com.ngdat.mymusic.utils.AudioPlayerUtils;
 import com.ngdat.mymusic.utils.MyMediaPlayer;
@@ -61,6 +63,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
         loadSongData();
         setupSeekBar();
         setupControlEvents();
+        Intent serviceIntent = new Intent(this, MediaPlayerService.class);
+        serviceIntent.setAction("service_play_song"); // hoặc action khác bạn xử lý
+        ContextCompat.startForegroundService(this, serviceIntent);
     }
 
     private void initViews() {

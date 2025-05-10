@@ -34,8 +34,6 @@ public class AudioPlayerUtils {
     public static void nextSong(Context context) {
         Intent nextIntent = new Intent(context, MediaPlayerService.class);
         nextIntent.setAction("service_next_song");
-        if (MyMediaPlayer.currentIndex < songsList.size() - 1) MyMediaPlayer.currentIndex++;
-        else MyMediaPlayer.currentIndex = 0;
         nextIntent.putExtra("media", songsList.get(MyMediaPlayer.currentIndex));
         context.startService(nextIntent);
     }
@@ -43,8 +41,6 @@ public class AudioPlayerUtils {
     public static void prevSong(Context context) {
         Intent prevIntent = new Intent(context, MediaPlayerService.class);
         prevIntent.setAction("service_prev_song");
-        if (MyMediaPlayer.currentIndex > 0) MyMediaPlayer.currentIndex--;
-        else MyMediaPlayer.currentIndex = songsList.size()-1;
         prevIntent.putExtra("media", songsList.get(MyMediaPlayer.currentIndex));
         context.startService(prevIntent);
     }
