@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyMusic</string>
+    <string name="app_name">DHQ Music</string>
     <string name="desc_shuffle">Phát ngẫu nhiên</string>
     <string name="desc_previous">Bài trước</string>
     <string name="desc_play_pause">Phát / Tạm dừng</string>

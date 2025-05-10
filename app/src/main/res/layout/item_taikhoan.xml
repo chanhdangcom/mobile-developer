@@ -31,7 +31,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="Họ tên"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:fontFamily="@font/montserrat_bold"
                 android:singleLine="true"
                 android:padding="8dp" />
