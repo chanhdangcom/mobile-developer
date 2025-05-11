@@ -7,29 +7,26 @@
         android:id="@+id/tv_titlePlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="3dp"
-
+        android:gravity="left|center_vertical"
         android:text="Playlist dành cho bạn"
         android:textColor="#000000"
         android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="10dp"
-        android:gravity="left|center_vertical"/>
+        android:textStyle="bold" />
 
-    <ListView
-        android:id="@+id/lv_playlist"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_playlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_titlePlaylist">
-
-    </ListView>
+        android:layout_below="@+id/tv_titlePlaylist" />
 
     <TextView
         android:id="@+id/tv_morePlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lv_playlist"
+        android:layout_below="@+id/rv_playlist"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="#c9c7c7"
@@ -41,4 +38,5 @@
         android:text="Xem Thêm Playlist"
         android:textColor="#000000"
         android:textSize="18sp" />
+
 </RelativeLayout>

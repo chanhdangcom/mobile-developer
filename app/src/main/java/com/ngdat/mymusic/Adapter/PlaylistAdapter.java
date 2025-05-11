@@ -4,50 +4,69 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
 import com.ngdat.mymusic.Model.Playlist;
 import com.ngdat.mymusic.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class PlaylistAdapter extends ArrayAdapter<Playlist> {
-    public PlaylistAdapter(@NonNull Context context, int resource, @NonNull List<Playlist> objects) {
-        super(context, resource, objects);
+public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.ViewHolder> {
 
+    Context context;
+    List<Playlist> mangPlaylist;
+    OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(Playlist playlist);
+    }
+
+    public PlaylistAdapter(Context context, List<Playlist> mangPlaylist, OnItemClickListener listener) {
+        this.context = context;
+        this.mangPlaylist = mangPlaylist;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder mViewHolder = null;
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.item_playlist, null);
-            mViewHolder = new ViewHolder();
-            mViewHolder.txtNamePlaylist = convertView.findViewById(R.id.tv_NamePlaylist);
-            mViewHolder.imgBackgroud = convertView.findViewById(R.id.img_backgroundPlaylist);
-            mViewHolder.imgPlaylist = convertView.findViewById(R.id.img_Playlist);
-            convertView.setTag(mViewHolder);
-        } else {
-            mViewHolder = (ViewHolder) convertView.getTag();
-
-        }
-        Playlist playlist = getItem(position);
-        Picasso.get().load(playlist.getHinhAnhPlaylist()).into(mViewHolder.imgBackgroud);
-        Picasso.get().load(playlist.getIcon()).into(mViewHolder.imgPlaylist);
-        mViewHolder.txtNamePlaylist.setText(playlist.getTen());
-        return convertView;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.item_playlist, parent, false);
+        return new ViewHolder(view);
     }
 
-    public class ViewHolder {
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Playlist playlist = mangPlaylist.get(position);
+        holder.txtNamePlaylist.setText(playlist.getTen());
+        Picasso.get().load(playlist.getHinhAnhPlaylist()).into(holder.imgBackgroud);
+        Picasso.get().load(playlist.getIcon()).into(holder.imgPlaylist);
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(playlist);
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return mangPlaylist.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtNamePlaylist;
         ImageView imgBackgroud, imgPlaylist;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtNamePlaylist = itemView.findViewById(R.id.tv_NamePlaylist);
+            imgBackgroud = itemView.findViewById(R.id.img_backgroundPlaylist);
+            imgPlaylist = itemView.findViewById(R.id.img_Playlist);
+        }
     }
 }

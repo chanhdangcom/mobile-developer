@@ -20,6 +20,7 @@ import com.ngdat.mymusic.Activity.PlayMusicActivity;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.utils.DatabaseHelper;
+import com.squareup.picasso.Picasso; // Import Picasso
 
 import java.util.List;
 
@@ -49,6 +50,8 @@ public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAd
         holder.txtTenBH.setText(baiHatYeuThich.getTenBaiHat());
         holder.txtSTT.setText(position + 1 + "");
 
+        // Load image using Picasso
+        Picasso.get().load(baiHatYeuThich.getHinhBaiHat()).into(holder.imgBaiHat);
     }
 
     @Override
@@ -59,6 +62,7 @@ public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgYeuThich;
         TextView txtSTT, txtTenBH, txtTenCS;
+        ImageView imgBaiHat; // Add ImageView
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -66,6 +70,7 @@ public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAd
             txtSTT = itemView.findViewById(R.id.tv_danhSachIndex);
             txtTenBH = itemView.findViewById(R.id.tv_tenCaKhuc);
             txtTenCS = itemView.findViewById(R.id.tv_TenCaSiBH);
+            imgBaiHat = itemView.findViewById(R.id.img_baiHat); // Initialize ImageView
             imgYeuThich.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,6 +87,4 @@ public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAd
             });
         }
     }
-
-
 }
