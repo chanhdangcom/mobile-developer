@@ -47,9 +47,15 @@ public class MainActivity extends AppCompatActivity {
         initView();
         init();
         setupNowPlayingToolbar();
+
+
         PermissionHelper.checkAndRequestPermissions(this);
+
         boolean hasPermission = PermissionHelper.hasPermissions(this);
-        Toast.makeText(this, "Permission: " + hasPermission, Toast.LENGTH_SHORT).show();
+        boolean hasNotificationPermission = PermissionHelper.hasNotificationPermission(this);
+
+        // Thông báo quyền audio và thông báo
+        Toast.makeText(this, "Audio Permission: " + hasPermission + "\nNotification Permission: " + hasNotificationPermission, Toast.LENGTH_SHORT).show();
 
 
 
@@ -60,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-
     }
 
     private void initView() {

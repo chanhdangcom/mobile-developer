@@ -32,7 +32,7 @@ public class MusicService extends Service {
 
     private static final String TAG = "MusicService";
     private static final String CHANNEL_ID = "music_channel";
-    private static final int NOTIFICATION_ID = 1;
+    static final int NOTIFICATION_ID = 1;
 
     private final IBinder binder = new LocalBinder();
     private MediaPlayer mediaPlayer;

@@ -1,5 +1,6 @@
 package com.ngdat.mymusic.Service;
 
+import static com.ngdat.mymusic.Service.MusicService.NOTIFICATION_ID;
 import static com.ngdat.mymusic.utils.SongLoader.songsList;
 
 import android.app.Notification;
@@ -8,12 +9,17 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.media.session.MediaButtonReceiver;
 
 import com.ngdat.mymusic.Model.Song;
 import com.ngdat.mymusic.R;
@@ -29,12 +35,15 @@ public class MediaPlayerService extends Service {
     private boolean isShuffle = false;
     private boolean isRepeat = false;
     private static final String CHANNEL_ID = "music_channel";
+    private MediaSessionCompat mediaSession;
 
 
     @Override
     public void onCreate() {
         super.onCreate();
         setupMediaPlayerCompletionListener();
+        mediaSession = new MediaSessionCompat(this, "MediaPlayerService");
+        mediaSession.setActive(true);
     }
 
     private void setupMediaPlayerCompletionListener() {
@@ -157,6 +166,13 @@ public class MediaPlayerService extends Service {
             mediaPlayer.setDataSource(song.getPath());
             mediaPlayer.prepare();
             mediaPlayer.start();
+            MediaMetadataCompat metadata = new MediaMetadataCompat.Builder()
+                    .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.getTitle())
+                    .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
+                            BitmapFactory.decodeResource(getResources(), R.drawable.logo)) // Hoặc hình bài hát
+                    .build();
+            mediaSession.setMetadata(metadata);
+
             Log.d("MediaPlayerService", "Playing song: " + song.getTitle());
             Intent intent = new Intent("ACTION_SONG_CHANGED");
             sendBroadcast(intent);
@@ -201,45 +217,96 @@ public class MediaPlayerService extends Service {
             mediaPlayer.release();
         }
     }
-    private void showNotification(boolean isPlaying) {
-        // Nút Previous
-        Intent prevIntent = new Intent(this, MediaPlayerService.class);
-        prevIntent.setAction("service_prev_song");
-        PendingIntent prevPendingIntent = PendingIntent.getService(
-                this, 2, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//    private void showNotification(boolean isPlaying) {
+//        // Nút Previous
+//        Intent prevIntent = new Intent(this, MediaPlayerService.class);
+//        prevIntent.setAction("service_prev_song");
+//        PendingIntent prevPendingIntent = PendingIntent.getService(
+//                this, 2, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//
+//        // Nút Play/Pause
+//        Intent playPauseIntent = new Intent(this, MediaPlayerService.class);
+//        playPauseIntent.setAction(isPlaying ? "service_pause_song" : "service_resume_song");
+//        PendingIntent playPausePendingIntent = PendingIntent.getService(
+//                this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//
+//        // Nút Next
+//        Intent nextIntent = new Intent(this, MediaPlayerService.class);
+//        nextIntent.setAction("service_next_song");
+//        PendingIntent nextPendingIntent = PendingIntent.getService(
+//                this, 1, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+//
+//        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+//                .setSmallIcon(R.drawable.no_music)
+//                .setContentTitle(currentSong.getTitle())
+//                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent) // 🔹 Previous
+//                .addAction(isPlaying ? R.drawable.baseline_pause_45 : R.drawable.baseline_play_arrow_50, isPlaying?"Pause":"PLay", playPausePendingIntent) // 🔹 Play/Pause
+//                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent) // 🔹 Next
+//                .setPriority(NotificationCompat.PRIORITY_LOW)
+//                .setOngoing(true)
+//                .build();
+//
+//        startForeground(1, notification);
+//    }
 
-        // Nút Play/Pause
-        Intent playPauseIntent = new Intent(this, MediaPlayerService.class);
-        playPauseIntent.setAction(isPlaying ? "service_pause_song" : "service_resume_song");
-        PendingIntent playPausePendingIntent = PendingIntent.getService(
-                this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-        // Nút Next
-        Intent nextIntent = new Intent(this, MediaPlayerService.class);
-        nextIntent.setAction("service_next_song");
-        PendingIntent nextPendingIntent = PendingIntent.getService(
-                this, 1, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.no_music)
-                .setContentTitle(currentSong.getTitle())
-                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent) // 🔹 Previous
-                .addAction(isPlaying ? R.drawable.baseline_pause_45 : R.drawable.baseline_play_arrow_50, isPlaying?"Pause":"PLay", playPausePendingIntent) // 🔹 Play/Pause
-                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent) // 🔹 Next
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setOngoing(true)
-                .build();
-
-        startForeground(1, notification);
-    }
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID, "Music Playback", NotificationManager.IMPORTANCE_LOW);
-            channel.setDescription("Notification for music playback");
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
+                    CHANNEL_ID,
+                    "Music Playback",
+                    NotificationManager.IMPORTANCE_LOW
+            );
+            channel.setDescription("Controls for music playback");
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
         }
     }
+
+    private void showNotification(boolean isPlaying) {
+        // Action: Previous
+        Intent prevIntent = new Intent(this, MediaPlayerService.class);
+        prevIntent.setAction("service_prev_song");
+        PendingIntent prevPendingIntent = PendingIntent.getService(
+                this, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // Action: Play/Pause
+        Intent playPauseIntent = new Intent(this, MediaPlayerService.class);
+        playPauseIntent.setAction(isPlaying ? "service_pause_song" : "service_resume_song");
+        PendingIntent playPausePendingIntent = PendingIntent.getService(
+                this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // Action: Next
+        Intent nextIntent = new Intent(this, MediaPlayerService.class);
+        nextIntent.setAction("service_next_song");
+        PendingIntent nextPendingIntent = PendingIntent.getService(
+                this, 2, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // Open App Intent
+        Intent openAppIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+        PendingIntent contentIntent = PendingIntent.getActivity(
+                this, 3, openAppIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Notification Builder
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.no_music)
+                .setContentTitle(currentSong.getTitle())
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo))
+                .setContentIntent(contentIntent)
+                .setOnlyAlertOnce(true)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent)
+                .addAction(isPlaying ? R.drawable.baseline_pause_45 : R.drawable.baseline_play_arrow_50,
+                        isPlaying ? "Pause" : "Play", playPausePendingIntent)
+                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(0, 1, 2))
+                .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        startForeground(NOTIFICATION_ID, builder.build());
+    }
+
 }
