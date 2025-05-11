@@ -9,6 +9,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -266,6 +267,9 @@ public class MediaPlayerService extends Service {
     }
 
     private void showNotification(boolean isPlaying) {
+        // Ensure MediaSession is initialized
+
+
         // Action: Previous
         Intent prevIntent = new Intent(this, MediaPlayerService.class);
         prevIntent.setAction("service_prev_song");
@@ -289,24 +293,37 @@ public class MediaPlayerService extends Service {
         PendingIntent contentIntent = PendingIntent.getActivity(
                 this, 3, openAppIntent, PendingIntent.FLAG_IMMUTABLE);
 
-        // Notification Builder
+        // Get embedded album art if available
+        byte[] imageBytes = currentSong.getEmbeddedPicture();
+        Bitmap albumArt = null;
+        if (imageBytes != null) {
+            albumArt = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+        }
+        if (albumArt == null) {
+            albumArt = BitmapFactory.decodeResource(getResources(), R.drawable.logo); // Default logo
+        }
+
+        // Build the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.no_music)
                 .setContentTitle(currentSong.getTitle())
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.logo))
+                .setLargeIcon(albumArt) // Set album art or default logo
                 .setContentIntent(contentIntent)
                 .setOnlyAlertOnce(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent)
-                .addAction(isPlaying ? R.drawable.baseline_pause_45 : R.drawable.baseline_play_arrow_50,
-                        isPlaying ? "Pause" : "Play", playPausePendingIntent)
-                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent)
-                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(0, 1, 2))
                 .setOngoing(true)
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent) // Previous button
+                .addAction(isPlaying ? R.drawable.baseline_pause_45 : R.drawable.baseline_play_arrow_50,
+                        isPlaying ? "Pause" : "Play", playPausePendingIntent) // Play/Pause button
+                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent); // Next button
 
+        // Media style for compatibility with compact view
+        builder.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                .setShowActionsInCompactView(0, 1, 2) // Show actions: Previous, Play/Pause, Next
+                .setMediaSession(mediaSession.getSessionToken())); // Link to media session
+
+        // Start the foreground service with the notification
         startForeground(NOTIFICATION_ID, builder.build());
     }
-
 }
