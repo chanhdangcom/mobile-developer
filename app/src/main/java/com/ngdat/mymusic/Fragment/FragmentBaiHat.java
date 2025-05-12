@@ -40,6 +40,7 @@ public class FragmentBaiHat extends Fragment {
     }
 
     private void GetData() {
+        // Gọi API để trả về danh sách bài hát.
         DataService mDataService = APIService.getService();
         Call<List<BaiHatYeuThich>> mCall = mDataService.getDataBaiHatDuocYeuThich();
         mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {

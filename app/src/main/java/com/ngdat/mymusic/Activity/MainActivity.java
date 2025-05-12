@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity {
         if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
 
     }
-
-
     private void setupNowPlayingToolbar() {
         nowPlayingToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
 
         updateNowPlayingText();
     }
-
     private void updateNowPlayingText() {
         if (MyMediaPlayer.currentIndex >= 0 && MyMediaPlayer.currentIndex < songsList.size()) {
             // Dữ liệu từ songsList và MyMediaPlayer
