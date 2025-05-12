@@ -1,6 +1,5 @@
 package com.ngdat.mymusic.Activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.ngdat.mymusic.R;
 
 public class SignupActivity extends AppCompatActivity {
@@ -16,11 +16,14 @@ public class SignupActivity extends AppCompatActivity {
     Button btnRegister, btnLogin;
     Spinner spinnerRole;
 
+    DatabaseHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        dbHelper = new DatabaseHelper(this);
         initView();
         handleEvents();
     }
@@ -37,8 +40,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void handleEvents() {
-        btnRegister.setOnClickListener(view -> registerUser());// Gọi registerUser() để dùng SharedPreferences lưu
-        btnLogin.setOnClickListener(view -> finish()); // Quay lại LoginActivity
+        btnRegister.setOnClickListener(view -> registerUser());
+        btnLogin.setOnClickListener(view -> finish());
     }
 
     private void registerUser() {
@@ -64,17 +67,17 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("fullName", fullName);
-        editor.putString("username", username);
-        editor.putString("email", email);
-        editor.putString("password", password);
-        editor.putString("role", selectedRole);
-        editor.apply();
+        if (dbHelper.checkUsernameExists(username)) {
+            Toast.makeText(this, "Tên người dùng đã tồn tại", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-        finish();
+        boolean success = dbHelper.insertUser(fullName, username, email, password, selectedRole);
+        if (success) {
+            Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            Toast.makeText(this, "Đăng ký thất bại!", Toast.LENGTH_SHORT).show();
+        }
     }
-
 }

@@ -1,7 +1,11 @@
 package com.ngdat.mymusic.Adapter;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,26 +16,27 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 import com.ngdat.mymusic.Activity.PlayMusicActivity;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.Service.APIService;
-import com.ngdat.mymusic.Service.DataService;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder> {
     Context mContext;
     List<BaiHatYeuThich> baiHatYeuThichList;
+    DatabaseHelper databaseHelper;
+    int userId; // User ID should be retrieved once and kept as a class member
 
     public BaiHatAdapter(Context mContext, List<BaiHatYeuThich> baiHatYeuThichList) {
         this.mContext = mContext;
         this.baiHatYeuThichList = baiHatYeuThichList;
+        databaseHelper = new DatabaseHelper(mContext);
+        // Retrieve userId once when the adapter is created
+        SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        userId = sharedPreferences.getInt("userId", -1);
     }
 
     @NonNull
@@ -40,6 +45,7 @@ public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View v = inflater.inflate(R.layout.item_bai_hat_yeu_thich, parent, false);
         ViewHolder mViewHolder = new ViewHolder(v);
+        // userId is already retrieved in the constructor, no need to do it here
         return mViewHolder;
     }
 
@@ -50,6 +56,60 @@ public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder
         holder.txtTenBaiHat.setText(baiHatYeuThich.getTenBaiHat());
         Picasso.get().load(baiHatYeuThich.getHinhBaiHat()).into(holder.imghinhBaihat);
 
+        // --- Determine songId and initial favorite status for THIS specific item ---
+        // Declare songId as a final local variable within onBindViewHolder
+        final int songId = Integer.parseInt(baiHatYeuThich.getIdBaiHat());
+        // Determine initial favorite status
+        boolean initialIsFavorited = databaseHelper.isFavoriteExists(userId, songId);
+
+        // Update the heart icon based on the initial favorite status
+        if (initialIsFavorited) {
+            holder.imgLuotThich.setImageResource(R.drawable.iconloved);
+        } else {
+            holder.imgLuotThich.setImageResource(R.drawable.iconlove);
+        }
+
+        // --- Set up the click listener for the favorite button ---
+        holder.imgLuotThich.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userId == -1) {
+                    Toast.makeText(mContext, "Please log in to favorite songs.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Re-check the current favorite status when clicked, using the correct final songId
+                boolean currentIsFavorited = databaseHelper.isFavoriteExists(userId, songId);
+
+                if (currentIsFavorited) {
+                    // Song is currently favorited, so unfavorite it
+                    boolean success = databaseHelper.deleteFavorite(userId, songId);
+                    if (success) {
+                        Toast.makeText(mContext, "Đã xoá yêu thích", Toast.LENGTH_SHORT).show();
+                        Log.d("FAVORITES", "Xoá thành công: userId=" + userId + ", songId=" + songId);
+                        holder.imgLuotThich.setImageResource(R.drawable.iconlove); // Update icon immediately
+                        // Optional: Remove the item from the list and notify the adapter
+                        // if this adapter is used to display only favorite songs
+                        // baiHatYeuThichList.remove(holder.getAdapterPosition());
+                        // notifyItemRemoved(holder.getAdapterPosition());
+                    } else {
+                        Toast.makeText(mContext, "Xoá thất bại", Toast.LENGTH_SHORT).show();
+                        Log.e("FAVORITES", "Xoá thất bại: userId=" + userId + ", songId=" + songId);
+                    }
+                } else {
+                    // Song is not favorited, so favorite it
+                    boolean success = databaseHelper.addFavorite(userId, songId);
+                    if (success) {
+                        Toast.makeText(mContext, "Đã thêm vào yêu thích", Toast.LENGTH_SHORT).show();
+                        Log.d("FAVORITES", "Thêm thành công: userId=" + userId + ", songId=" + songId);
+                        holder.imgLuotThich.setImageResource(R.drawable.iconloved); // Update icon immediately
+                    } else {
+                        Toast.makeText(mContext, "Thêm thất bại (có thể đã tồn tại)", Toast.LENGTH_SHORT).show();
+                        Log.e("FAVORITES", "Thêm thất bại: userId=" + userId + ", songId=" + songId);
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -67,40 +127,26 @@ public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder
             imgLuotThich = itemView.findViewById(R.id.img_luotthich);
             txtTenBaiHat = itemView.findViewById(R.id.tv_tenBaiHat);
             txtTenCaSi = itemView.findViewById(R.id.tv_tenCaSi);
+
+            // Set up the click listener for the entire item view
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext, PlayMusicActivity.class);
-                    intent.putExtra("cakhuc", baiHatYeuThichList.get(getPosition()));
-                    mContext.startActivity(intent);
+                    int position = getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        Intent intent = new Intent(mContext, PlayMusicActivity.class);
+                        intent.putExtra("cakhuc", baiHatYeuThichList.get(position));
+                        mContext.startActivity(intent);
+                    }
                 }
             });
-            imgLuotThich.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    imgLuotThich.setImageResource(R.drawable.iconloved);
-                    DataService dataService = APIService.getService();
-                    Call<String> mCall = dataService.getDataLuotLikeBaiHat("1", baiHatYeuThichList.get(getPosition()).getIdBaiHat());
-                    mCall.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            String resuilt = response.body();
-                            if (resuilt.equals("OK")) {
-                                Toast.makeText(mContext, "Đã Thích Cám Ơn", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(mContext, "Please Check Again !", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
-                        }
-                    });
-                    imgLuotThich.setEnabled(false);
-                }
-            });
-
+            // The favorite button click listener is now set in onBindViewHolder
+            // to ensure it uses the correct data for each item.
         }
     }
+    // Removed unused class members songId and isFavorited
+    /*
+    int userId, songId;
+    boolean isFavorited;
+    */
 }

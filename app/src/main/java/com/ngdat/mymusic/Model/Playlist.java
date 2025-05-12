@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Playlist implements Serializable {
 
@@ -19,6 +20,9 @@ public class Playlist implements Serializable {
     @SerializedName("Icon")
     @Expose
     private String icon;
+    @SerializedName("DanhSachBaiHat")
+    @Expose
+    private List<BaiHatYeuThich> danhSachBaiHat;
 
     public String getIdPlaylist() {
         return idPlaylist;
@@ -52,4 +56,11 @@ public class Playlist implements Serializable {
         this.icon = icon;
     }
 
+    public List<BaiHatYeuThich> getDanhSachBaiHat() {
+        return danhSachBaiHat;
+    }
+
+    public void setDanhSachBaiHat(List<BaiHatYeuThich> danhSachBaiHat) {
+        this.danhSachBaiHat = danhSachBaiHat;
+    }
 }

@@ -19,12 +19,12 @@
             android:id="@+id/myCollapsingToolLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@mipmap/ic_launcher_foreground"
             android:fitsSystemWindows="true"
             app:expandedTitleGravity="center|bottom"
             app:expandedTitleMarginBottom="35dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:titleEnabled="false">
+
 
             <ImageView
                 android:id="@+id/img_danhSachbaihat"
@@ -41,6 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:elevation="6dp"
+                android:background="@android:color/transparent"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -87,5 +88,15 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <ImageView
+        android:id="@+id/img_toolbarBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:scaleType="centerCrop"
+        app:layout_anchor="@+id/myAppbarLayout"
+        app:layout_anchorGravity="center"
+        app:layout_collapseMode="parallax" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

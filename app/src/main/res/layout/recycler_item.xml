@@ -14,12 +14,12 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="5dp"
         android:layout_marginHorizontal="10dp"
-        android:background="@drawable/song_item_bg_round">
+        android:background="@drawable/rounded_corner">
 
         <ImageView
             android:id="@+id/artworkView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="15dp"
             android:layout_centerVertical="true"
             android:background="@drawable/song_img_rect"
@@ -39,12 +39,13 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/song_title_text_view"
-                android:textColor="@color/white"
+                android:textColor="@color/BLACK"
                 android:fontFamily="@font/montserrat_medium"
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:padding="8dp"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/durationView"
@@ -54,7 +55,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:padding="8dp"
                 android:text="@string/_15_30"
-                android:textColor="#CCCCCC"
+                android:textColor="@color/BLACK"
                 android:fontFamily="@font/montserrat_light"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.ngdat.mymusic.Adapter.CurrentSongHolder;
 import com.ngdat.mymusic.Adapter.ViewPagerAdapter;
+import com.ngdat.mymusic.Fragment.Fragment_DanhSachBaiHatYeuThich;
 import com.ngdat.mymusic.Fragment.Fragment_TimKiem;
 import com.ngdat.mymusic.Fragment.Fragment_TrangChu;
 import com.ngdat.mymusic.Fragment.Fragment_device_music;
@@ -43,33 +44,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        boolean isLoggedIn = prefs.getBoolean("isLoggedIn", false);
-        if (!isLoggedIn) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish(); // Không cho quay lại MainActivity
-        }
         initView();
         init();
         setupNowPlayingToolbar();
+
+
         PermissionHelper.checkAndRequestPermissions(this);
+
         boolean hasPermission = PermissionHelper.hasPermissions(this);
-        Toast.makeText(this, "Permission: " + hasPermission, Toast.LENGTH_SHORT).show();
+        boolean hasNotificationPermission = PermissionHelper.hasNotificationPermission(this);
+
+        // Thông báo quyền audio và thông báo
+        Toast.makeText(this, "Audio Permission: " + hasPermission + "\nNotification Permission: " + hasNotificationPermission, Toast.LENGTH_SHORT).show();
+
 
 
         btnLogout = findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SharedPreferences.Editor editor = getSharedPreferences("UserPrefs", MODE_PRIVATE).edit();
-                editor.putBoolean("isLoggedIn", false);
-                editor.apply();
-
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        btnLogout.setOnClickListener(view -> {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -85,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPagerAdapter.addFragment(new Fragment_TrangChu(), "Trang Chủ");
+        mViewPagerAdapter.addFragment(new Fragment_DanhSachBaiHatYeuThich(), "Yêu thích");
         mViewPagerAdapter.addFragment(new Fragment_TimKiem(), "Tìm Kiếm");
         mViewPagerAdapter.addFragment(new Fragment_device_music(), "Device Music");
 
@@ -93,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
         mTabLayout.setupWithViewPager(mViewPager);
 
         if (mTabLayout.getTabAt(0) != null) mTabLayout.getTabAt(0).setIcon(R.drawable.icontrangchu);
-        if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.ic_search);
+        if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.heart_fill);
         if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
+        if (mTabLayout.getTabAt(3) != null) mTabLayout.getTabAt(3).setIcon(R.drawable.device_mobile_speaker);
 
     }
     private void setupNowPlayingToolbar() {

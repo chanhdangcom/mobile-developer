@@ -3,13 +3,42 @@
     "IdPlaylist": "1",
     "Ten": "Nhạc Trẻ Hot",
     "hinhAnhPlaylist": "https://media.istockphoto.com/id/1144987766/vector/popular-music-concept-banner-header.jpg?s=170667a&w=0&k=20&c=Ygfp4CiZXXUGtFat8sEcL_ovti6ry6Ul1Qwwk__utSA=",
-    "Icon": "https://media.istockphoto.com/id/1396074026/vector/classic-80s-90s-elements-stickers-vector-icons.jpg?s=612x612&w=0&k=20&c=Ja4ZmR0tpve49BsQ_h_VAssjgA1Bri0D56fHdtNuO8Y="
+    "Icon": "https://media.istockphoto.com/id/1396074026/vector/classic-80s-90s-elements-stickers-vector-icons.jpg?s=612x612&w=0&k=20&c=Ja4ZmR0tpve49BsQ_h_VAssjgA1Bri0D56fHdtNuO8Y=",
+    "DanhSachBaiHat": [
+      {
+        "IdBaiHat": "1",
+        "TenBaiHat": "Anh chưa một lần nói",
+        "HinhBaiHat": "https://cdn.chanhdang.com/singer_khanh_vin.jpg",
+        "CaSi": "Ê Kê Vin",
+        "LinkBaiHat": "https://cdn.chanhdang.com/music_rap_with_tran_nha.mp3",
+        "LuotThich": "765384"
+      }
+    ]
   },
+
   {
     "IdPlaylist": "2",
     "Ten": "Acoustic Việt",
     "hinhAnhPlaylist": "https://i.pinimg.com/originals/12/5f/24/125f240406307e86944af329408638c8.jpg",
-    "Icon": "https://media.istockphoto.com/id/689660242/vector/banner-for-live-music-with-acoustic-guitar.jpg?s=612x612&w=is&k=20&c=yV8jSCWEbhzcZLE8DJ0gR2Ub0eHSFuXVPCd4NMRyJVI="
+    "Icon": "https://media.istockphoto.com/id/689660242/vector/banner-for-live-music-with-acoustic-guitar.jpg?s=612x612&w=is&k=20&c=yV8jSCWEbhzcZLE8DJ0gR2Ub0eHSFuXVPCd4NMRyJVI=",
+    "DanhSachBaiHat": [
+      {
+        "IdBaiHat": "1",
+        "TenBaiHat": "Anh chưa một lần nói",
+        "HinhBaiHat": "https://cdn.chanhdang.com/singer_khanh_vin.jpg",
+        "CaSi": "Ê Kê Vin",
+        "LinkBaiHat": "https://cdn.chanhdang.com/music_rap_with_tran_nha.mp3",
+        "LuotThich": "765384"
+      },
+      {
+        "IdBaiHat": "2",
+        "TenBaiHat": "Tháp drill tự do",
+        "HinhBaiHat": "https://cdn.chanhdang.com/cover_thap_drill_tu_do.jpg",
+        "CaSi": "Ê Kê Vin",
+        "LinkBaiHat": "https://cdn.chanhdang.com/music_thap_drill_tu_do.mp3",
+        "LuotThich": "765344"
+      }
+    ]
   },
   {
     "IdPlaylist": "3",
@@ -22,11 +51,5 @@
     "Ten": "EDM Sôi Động",
     "hinhAnhPlaylist": "https://d1csarkz8obe9u.cloudfront.net/posterpreviews/edm-music-banner-design-template-a7a04b8182bac4dd9ea57f6b14e3601e_screen.jpg?ts=1599558499",
     "Icon": "https://thumbs.dreamstime.com/b/edm-club-music-party-template-dance-party-flyer-brochure-night-party-club-sound-banner-poster-72485529.jpg"
-  },
-  {
-    "IdPlaylist": "5",
-    "Ten": "Nhạc Không Lời",
-    "hinhAnhPlaylist": "https://png.pngtree.com/thumb_back/fh260/back_our/20190622/ourmid/pngtree-purple-minimalist-music-note-banner-background-image_210612.jpg",
-    "Icon": "https://thumbs.dreamstime.com/b/listen-to-music-hipster-beard-listenning-fun-avatar-concept-vector-flat-design-illustration-51005480.jpg"
   }
 ]
