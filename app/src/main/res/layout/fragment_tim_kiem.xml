@@ -11,8 +11,8 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbartimkiembaihat"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-
+            android:layout_height="?attr/actionBarSize"
+            android:background="#FFFFFF">
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -20,16 +20,16 @@
         android:id="@+id/recycleviewTimKiem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/appbarLayoutTimKiem" />
+        android:layout_below="@id/appbarLayoutTimKiem"
+        android:importantForAccessibility="no"/>
 
     <TextView
-
         android:id="@+id/tv_DataNull"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="Bài Hát Hiện Tại Chưa Có"
-        android:textColor="#ff002f"
+        android:text="Không tìm thấy bài hát"
+        android:textColor="#CCCCCC"
         android:textSize="35sp"
         android:visibility="gone" />
 </RelativeLayout>

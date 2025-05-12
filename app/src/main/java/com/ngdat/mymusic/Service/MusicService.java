@@ -32,7 +32,7 @@ public class MusicService extends Service {
     private static final String CHANNEL_ID = "music_channel";
 
     private final IBinder binder = new LocalBinder();
-    private MediaPlayer mediaPlayer;
+    static MediaPlayer mediaPlayer;
     private OnMediaPreparedListener onMediaPreparedListener;
     // PendingIntent cho các nút điều khiển
     PendingIntent playPauseIntent = PendingIntent.getService(this, 0, new Intent(this, MusicService.class).setAction("ACTION_PLAY_PAUSE"), PendingIntent.FLAG_UPDATE_CURRENT);

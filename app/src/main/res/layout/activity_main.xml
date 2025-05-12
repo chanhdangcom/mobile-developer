@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Activity.MainActivity">
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/custom_button"
+        android:text="Đăng xuất"
+        android:textColor="@android:color/black" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/myViewPager"

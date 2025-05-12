@@ -3,6 +3,7 @@ package com.ngdat.mymusic.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,6 +24,7 @@ import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.MusicService;
 import com.ngdat.mymusic.Service.MusicService.LocalBinder;
+import com.ngdat.mymusic.utils.MyMediaPlayer;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class PlayMusicActivity extends AppCompatActivity implements MusicService.OnMediaPreparedListener {
 
     private MusicService musicService;
+    private MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
     private boolean serviceBound = false;
     private ArrayList<BaiHatYeuThich> baiHatList = new ArrayList<>();
     private int position = 0;
@@ -50,7 +53,12 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_music);
-
+        if(MyMediaPlayer.currentIndex!=-1) {
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+                MyMediaPlayer.currentIndex=-1;
+            }
+        }
         initView();
         GetDataFromIntent();
         init();
