@@ -22,6 +22,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.ngdat.mymusic.Adapter.CurrentSongHolder;
 import com.ngdat.mymusic.Adapter.ViewPagerAdapter;
 import com.ngdat.mymusic.Fragment.Fragment_DanhSachBaiHatYeuThich;
+import com.ngdat.mymusic.Fragment.Fragment_History;
 import com.ngdat.mymusic.Fragment.Fragment_TimKiem;
 import com.ngdat.mymusic.Fragment.Fragment_TrangChu;
 import com.ngdat.mymusic.Fragment.Fragment_device_music;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPagerAdapter.addFragment(new Fragment_DanhSachBaiHatYeuThich(), "Yêu thích");
         mViewPagerAdapter.addFragment(new Fragment_TimKiem(), "Tìm Kiếm");
         mViewPagerAdapter.addFragment(new Fragment_device_music(), "Device Music");
+        mViewPagerAdapter.addFragment(new Fragment_History(), "Gần đây");
 
 
         mViewPager.setAdapter(mViewPagerAdapter);
@@ -92,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.heart_fill);
         if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
         if (mTabLayout.getTabAt(3) != null) mTabLayout.getTabAt(3).setIcon(R.drawable.device_mobile_speaker);
+        if (mTabLayout.getTabAt(4) != null) mTabLayout.getTabAt(4).setIcon(R.drawable.iconsyned1);
 
     }
     private void setupNowPlayingToolbar() {
