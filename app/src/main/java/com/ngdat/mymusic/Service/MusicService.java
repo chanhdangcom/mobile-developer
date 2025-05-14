@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -14,12 +15,13 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import com.ngdat.mymusic.utils.DatabaseHelper;
+
 
 import com.ngdat.mymusic.R;
-
-import java.io.IOException;
 
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 
@@ -31,6 +33,7 @@ public class MusicService extends Service {
     private final IBinder binder = new LocalBinder();
     static MediaPlayer mediaPlayer;
     private OnMediaPreparedListener onMediaPreparedListener;
+    private DatabaseHelper databaseHelper;
 
     public interface OnMediaPreparedListener {
         void onPrepared(int duration);
@@ -58,6 +61,8 @@ public class MusicService extends Service {
         super.onCreate();
         Log.d(TAG, "Service created");
         initMediaPlayer();
+        //
+        databaseHelper = new DatabaseHelper(this);
         createNotificationChannel();
     }
 
@@ -81,13 +86,26 @@ public class MusicService extends Service {
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             }
 
-            mediaPlayer.setOnPreparedListener(mp -> {
+                mediaPlayer.setOnPreparedListener(mp -> {
                 mp.start();
                 Log.d(TAG, "Playing: " + CurrentSongHolder.currentSong.getTenBaiHat() + ", Duration: " + mp.getDuration());
 
                 if (onMediaPreparedListener != null) {
                     onMediaPreparedListener.onPrepared(mp.getDuration());
                 }
+                // Ghi vào lịch sử
+                    if (CurrentSongHolder.currentSong != null) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                        int userId = sharedPreferences.getInt("userId", -1); // -1 là mặc định nếu không tìm thấy
+
+                        if (userId != -1) { // đảm bảo đã đăng nhập
+                            int songId = Integer.parseInt(CurrentSongHolder.currentSong.getIdBaiHat());
+                            boolean added = databaseHelper.addToHistory(userId, songId);
+                            Log.d(TAG, "addToHistory: " + (added ? "success" : "fail") + " | Song ID: " + songId);
+                        } else {
+                            Log.d(TAG, "User ID not found in SharedPreferences!");
+                        }
+                    }
 
                 // Cập nhật bài hát hiện tại
                 CurrentSongHolder.currentSong = getCurrentPlayingSong(); // Đảm bảo currentSong được cập nhật

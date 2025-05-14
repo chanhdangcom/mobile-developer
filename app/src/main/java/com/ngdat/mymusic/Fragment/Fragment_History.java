@@ -46,26 +46,26 @@ public class Fragment_History extends Fragment {
         GetData(); // gọi lại API hoặc load lại dữ liệu mỗi lần vào Fragment
     }
     private void GetData() {
-        DataService dataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatDuocYeuThich(); // hoặc API khác nếu cần
-
-        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        DataService mDataService = APIService.getService();
+        Call<List<BaiHatYeuThich>> mCall = mDataService.getDataBaiHatDuocYeuThich();
+        mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
             @Override
             public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
                 SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 int userId = prefs.getInt("userId", -1);
 
                 ArrayList<BaiHatYeuThich> allSongs = (ArrayList<BaiHatYeuThich>) response.body();
-                List<Integer> historyIds = databaseHelper.getHistorySongs(userId);
 
+                List<Integer> historyIds = databaseHelper.getHistorySongIds(userId);
+                // lọc lichj sử nghe
                 ArrayList<BaiHatYeuThich> historySongs = new ArrayList<>();
-                for (BaiHatYeuThich baiHat : allSongs) {
+                for (BaiHatYeuThich baiHat : allSongs)
+                {
                     if (historyIds.contains(Integer.parseInt(baiHat.getIdBaiHat()))) {
                         historySongs.add(baiHat);
                     }
                 }
-
-                 mAdapter = new HistoryAdapter(getActivity(), historySongs);
+                mAdapter = new HistoryAdapter(getActivity(), historySongs);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(layoutManager);

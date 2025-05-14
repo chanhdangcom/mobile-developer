@@ -30,10 +30,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_SONG_ID = "song_id";
     public static final String COL_USER_ID = "user_id";
     // Bảng HISTORY
-    public static final String TABLE_HISTORY = "History";
+    public static final String TABLE_HISTORY = "history";
     public static final String COL_HIS_ID = "id";
-    public static final String COL_HIS_SONGID = "hissong_ID";
-    public static final String COL_HIS_USERID = "hisUser_ID";
+    public static final String COL_HIS_SONGID = "song_id";
+    public static final String COL_HIS_USERID = "user_id";
+    public static final String COL_PLAYED_AT = "played_at";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -60,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_HIS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COL_HIS_SONGID + " INTEGER, " +
                 COL_HIS_USERID + " INTEGER, " +
-                "played_at DATETIME DEFAULT CURRENT_TIMESTAMP)";
+                COL_PLAYED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP)";
         db.execSQL(createHistoryTable);
     }
 
@@ -178,55 +179,71 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // ==== XỬ LÝ HISTORY ====
     public boolean addToHistory(int userId, int songId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COL_HIS_USERID, userId);
-        values.put(COL_HIS_SONGID, songId);
 
-        long result = db.insert(TABLE_HISTORY, null, values);
-        return result != -1;
+        try {
+            // Xoá nếu bài này đã có (để cập nhật lại thời gian)
+            db.delete(TABLE_HISTORY, COL_HIS_SONGID + "=? AND " + COL_HIS_USERID + "=?",
+                    new String[]{String.valueOf(songId), String.valueOf(userId)});
+
+            ContentValues values = new ContentValues();
+            values.put(COL_HIS_USERID, userId);
+            values.put(COL_HIS_SONGID, songId);
+            long result = db.insert(TABLE_HISTORY, null, values);  // Kiểm tra kết quả chèn vào cơ sở dữ liệu
+
+            // Giới hạn chỉ 3 bài gần nhất
+            db.execSQL("DELETE FROM " + TABLE_HISTORY +
+                            " WHERE " + COL_HIS_ID + " NOT IN (" +
+                            "SELECT " + COL_HIS_ID + " FROM " + TABLE_HISTORY +
+                            " WHERE " + COL_HIS_USERID + " = ?" +
+                            " ORDER BY " + COL_PLAYED_AT + " DESC LIMIT 3)",
+                    new String[]{String.valueOf(userId)});
+
+            // Kiểm tra kết quả của câu lệnh insert
+            return result != -1;  // Nếu result == -1, tức là việc chèn vào cơ sở dữ liệu không thành công
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;  // Nếu có lỗi, trả về false
+        }
     }
 
-    public List<Integer> getHistorySongs(int userId) {
+
+    public List<Integer> getHistorySongIds(int userId) {
         List<Integer> songIds = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COL_HIS_SONGID + " FROM " + TABLE_HISTORY +
+                        " WHERE " + COL_HIS_USERID + " = ?" +
+                        " ORDER BY " + COL_PLAYED_AT + " DESC",
+                new String[]{String.valueOf(userId)}
+        );
 
-        // Truy vấn lịch sử bài hát với người dùng, giới hạn 3 bài gần nhất
-        String query = "SELECT " + COL_HIS_SONGID +
-                " FROM " + TABLE_HISTORY +
-                " WHERE " + COL_HIS_USERID + " = ?" +
-                " ORDER BY played_at DESC" +
-                " LIMIT 3";
-
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
         if (cursor.moveToFirst()) {
             do {
-                int songId = cursor.getInt(0);
-                songIds.add(songId);
+                songIds.add(cursor.getInt(0));
             } while (cursor.moveToNext());
         }
 
         cursor.close();
-        db.close();
         return songIds;
     }
     // Thêm bài hát vào danh sách nghe gần đây
-    public boolean addRecentlyPlayed(int songId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("song_id", songId);
-        values.put("timestamp", System.currentTimeMillis());
-        long result = db.insert("recently_played", null, values);
-        return result != -1;
-    }
+//    public boolean addRecentlyPlayed(int songId) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put("song_id", songId);
+//        values.put("timestamp", System.currentTimeMillis());
+//        long result = db.insert("recently_played", null, values);
+//        return result != -1;
+//    }
 
     // Kiểm tra bài hát có trong danh sách nghe gần đây không
-    public boolean isRecentlyPlayed(int songId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM recently_played WHERE song_id = ?", new String[]{String.valueOf(songId)});
-        boolean exists = cursor.getCount() > 0;
-        cursor.close();
-        return exists;
-    }
+//    public boolean isRecentlyPlayed(int songId) {
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery("SELECT * FROM recently_played WHERE song_id = ?", new String[]{String.valueOf(songId)});
+//        boolean exists = cursor.getCount() > 0;
+//        cursor.close();
+//        return exists;
+//    }
 
 
 }
