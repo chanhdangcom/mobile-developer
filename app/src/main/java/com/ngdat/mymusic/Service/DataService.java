@@ -3,12 +3,7 @@ package com.ngdat.mymusic.Service;
 
 import com.ngdat.mymusic.Model.Album;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
-import com.ngdat.mymusic.Model.ChuDe;
-import com.ngdat.mymusic.Model.ChuDeAndTheLoai;
 import com.ngdat.mymusic.Model.Playlist;
-import com.ngdat.mymusic.Model.PlaylistAll;
-import com.ngdat.mymusic.Model.Quangcao;
-import com.ngdat.mymusic.Model.TheLoai;
 
 import java.util.List;
 
@@ -23,16 +18,12 @@ import retrofit2.http.POST;
 // nó sẽ trả dữ liệu về cho thằng này ==> thằng này dùng để gửi phướng thức và dữ liệu từ phía server về.
 public interface DataService {
 
-    @GET("songbanner.php")
+
 
         // nhận dữ liệu
-    Call<List<Quangcao>> getDataBanner();
 
     @GET("PlaylistSong.php")
     Call<List<Playlist>> getDataPlaylist();
-
-    @GET("chudeandTheLoai.php")
-    Call<ChuDeAndTheLoai> getDataChuDeTheLoai();
 
     @GET("albumSong.php")
     Call<List<Album>> getDataAlbum();
@@ -50,22 +41,15 @@ public interface DataService {
         // tương tác và gửi data lên và nhận về
     Call<List<BaiHatYeuThich>> getDataBaiHatTheoPlaylist(@Field("idplaylist") String idplaylist);
 
-    @GET("DanhSachAllPlaylist.php")
-    Call<List<PlaylistAll>> getAllPlaylist();
-
     @FormUrlEncoded
     @POST("DanhSachBaiHatPlaylist.php")
         // tương tác và gửi data lên và nhận về
     Call<List<BaiHatYeuThich>> getDataBaiHatTheoTheLoai(@Field("idtheloai") String idtheloai);
 
-    @GET("chuDeAll.php")
-    Call<List<ChuDe>> getAllChuDe();
-
 
     @FormUrlEncoded
     @POST("TheLoaiTheoChuDe.php")
         // tương tác và gửi data lên và nhận về
-    Call<List<TheLoai>> getTheLoaiTheoChuDe(@Field("idchude") String idchude);
 
     @GET("AlbumAll.php")
     Call<List<Album>> getAllAlbum();

@@ -1,61 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/tvRank"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="1"
-        android:textSize="25sp"
-        android:visibility="gone" />
+    android:layout_height="wrap_content"
+    android:padding="12dp"
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/img_baihatyeuthich"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_margin="5dp"
-        android:layout_toRightOf="@id/tvRank"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:scaleType="centerCrop"
         android:clipToOutline="true"
-        android:background="@drawable/rounded_corner" />
+
+        android:background="@drawable/rounded_corner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/tv_tenBaiHat"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="7dp"
-        android:layout_toRightOf="@id/img_baihatyeuthich"
+        android:text="Tên bài hát"
+        android:textSize="16sp"
+        android:textColor="#000000"
+
+        android:textStyle="bold"
         android:maxLines="2"
-        android:text="Khi Phải Xa Em"
-        android:textColor="#000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:ellipsize="end"
+        app:layout_constraintStart_toEndOf="@id/img_baihatyeuthich"
+        app:layout_constraintTop_toTopOf="@id/img_baihatyeuthich"
+        app:layout_constraintEnd_toStartOf="@id/img_luotthich"
+        android:layout_marginStart="16dp" />
 
     <TextView
         android:id="@+id/tv_tenCaSi"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_tenBaiHat"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="7dp"
-        android:layout_toRightOf="@id/img_baihatyeuthich"
-        android:singleLine="true"
-        android:text="Trần Đình Trí"
-        android:textColor="#494949"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:text="Tên ca sĩ"
+        android:textSize="14sp"
+        android:textColor="#666666"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintStart_toStartOf="@id/tv_tenBaiHat"
+        app:layout_constraintTop_toBottomOf="@id/tv_tenBaiHat"
+        app:layout_constraintEnd_toEndOf="@id/tv_tenBaiHat"
+        android:layout_marginTop="4dp"
+        />
 
     <ImageView
         android:id="@+id/img_luotthich"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/iconlove" />
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/iconlove"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

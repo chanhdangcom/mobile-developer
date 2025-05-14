@@ -30,11 +30,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 public class FragmentPlaylist extends Fragment {
     View view;
     RecyclerView rvPlaylist;
-    TextView txtTiltlePlaylist, txtPlaylistGanDay;
+    TextView txtTiltlePlaylist;
     PlaylistAdapter playlistAdapter;
     List<Playlist> mList;
 
@@ -44,24 +45,13 @@ public class FragmentPlaylist extends Fragment {
         view = inflater.inflate(R.layout.fragment_playlist, container, false);
         intitView();
         GetData();
-        ActionView();
-        return view;
-    }
 
-    private void ActionView() {
-        txtPlaylistGanDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), PlaylistActivity.class);
-                startActivity(intent);
-            }
-        });
+        return view;
     }
 
     private void intitView() {
         rvPlaylist = view.findViewById(R.id.rv_playlist);
         txtTiltlePlaylist = view.findViewById(R.id.tv_titlePlaylist);
-        txtPlaylistGanDay = view.findViewById(R.id.tv_morePlaylist);
     }
 
     private void GetData() {
@@ -86,7 +76,8 @@ public class FragmentPlaylist extends Fragment {
                         }
                     }
                 });
-                rvPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
+//                rvPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
+                rvPlaylist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                 rvPlaylist.setAdapter(playlistAdapter);
             }
 

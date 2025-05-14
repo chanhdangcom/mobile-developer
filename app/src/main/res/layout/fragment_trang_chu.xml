@@ -12,13 +12,6 @@
         android:orientation="vertical">
 
         <fragment
-            android:id="@+id/fragmentQuangCao"
-            android:name="com.ngdat.mymusic.Fragment.Fragment_QuangCao"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"/>
-
-        <fragment
             android:id="@+id/fragmentPlaylist"
             android:name="com.ngdat.mymusic.Fragment.FragmentPlaylist"
             android:layout_width="match_parent"

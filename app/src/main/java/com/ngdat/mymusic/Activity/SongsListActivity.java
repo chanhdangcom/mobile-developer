@@ -1,9 +1,6 @@
 package com.ngdat.mymusic.Activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -23,17 +20,11 @@ import com.ngdat.mymusic.Adapter.DanhSachBaiHatAdapter;
 import com.ngdat.mymusic.Model.Album;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 import com.ngdat.mymusic.Model.Playlist;
-import com.ngdat.mymusic.Model.PlaylistAll;
-import com.ngdat.mymusic.Model.Quangcao;
-import com.ngdat.mymusic.Model.TheLoai;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,12 +41,9 @@ public class SongsListActivity extends AppCompatActivity {
     Button mButtonNgheTatCa;
     ImageView mImageView;
     ImageView mImageViewToolbarBackground; // Thêm ImageView cho background toolbar
-    Quangcao mQuangcao;
     List<BaiHatYeuThich> listBaiHat;
     DanhSachBaiHatAdapter mAdapterBaiHatPlaylist; // Adapter cho danh sách bài hát của playlist
     Playlist mPlaylist;
-    PlaylistAll mPlaylistAll;
-    TheLoai mTheLoai;
     Album mAlbum;
 
     @Override
@@ -69,7 +57,6 @@ public class SongsListActivity extends AppCompatActivity {
         }
 
         DataItent();
-        logIntentData();
         initView();
         initToolbar();
 
@@ -83,26 +70,6 @@ public class SongsListActivity extends AppCompatActivity {
             Log.d("SongsListActivity", "Đã hiển thị danh sách bài hát từ playlist: " + danhSachBaiHatTuPlaylist.size() + " bài hát.");
         } else {
             Log.w("SongsListActivity", "Không có dữ liệu bài hát từ playlist để hiển thị, tải theo intent ban đầu.");
-            if (mQuangcao != null && !mQuangcao.getTenbaihat().equals("")) {
-                setValuesInView(mQuangcao.getTenbaihat(), mQuangcao.getHinhbaihat());
-                getDataQuangCao(mQuangcao.getIdQuangCao());
-            }
-            if (mPlaylist != null && !mPlaylist.getTen().equals("")) {
-                setValuesInView(mPlaylist.getTen(), mPlaylist.getHinhAnhPlaylist());
-                getDataPlaylist(mPlaylist.getIdPlaylist());
-            }
-            if (mPlaylistAll != null && !mPlaylistAll.getTen().equals("")) {
-                setValuesInView(mPlaylistAll.getTen(), mPlaylistAll.getHinhNen());
-                getDataPlaylist(mPlaylistAll.getIdPlaylist()); // Sử dụng getDataPlaylist cho PlaylistAll
-            }
-            if (mTheLoai != null && !mTheLoai.getTenTheLoai().equals("")) {
-                setValuesInView(mTheLoai.getTenTheLoai(), mTheLoai.getHinhTheLoai());
-                getDataTheLoai(mTheLoai.getIDTheLoai());
-            }
-            if (mAlbum != null && !mAlbum.getTenAlbum().equals("")) {
-                setValuesInView(mAlbum.getTenAlbum(), mAlbum.getHinhAlbum());
-                getDataAlbum(mAlbum.getIdAlbum());
-            }
         }
     }
 
@@ -297,17 +264,8 @@ public class SongsListActivity extends AppCompatActivity {
     private void DataItent() {
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent.hasExtra("quangcao")) {
-                mQuangcao = (Quangcao) intent.getSerializableExtra("quangcao");
-            }
             if (intent.hasExtra("itemPlaylist")) {
                 mPlaylist = (Playlist) intent.getSerializableExtra("itemPlaylist");
-            }
-            if (intent.hasExtra("itemPlaylistAll")) {
-                mPlaylistAll = (PlaylistAll) intent.getSerializableExtra("itemPlaylistAll");
-            }
-            if (intent.hasExtra("idtheloai")) {
-                mTheLoai = (TheLoai) intent.getSerializableExtra("idtheloai");
             }
             if (intent.hasExtra("album")) {
                 mAlbum = (Album) intent.getSerializableExtra("album");
@@ -315,21 +273,4 @@ public class SongsListActivity extends AppCompatActivity {
         }
     }
 
-    private void logIntentData() {
-        if (mQuangcao != null) {
-            Log.d("SongsListActivity", "Nhận mQuangcao: " + mQuangcao.getTenbaihat() + ", ID: " + mQuangcao.getIdQuangCao());
-        }
-        if (mPlaylist != null) {
-            Log.d("SongsListActivity", "Nhận mPlaylist: " + mPlaylist.getTen() + ", ID: " + mPlaylist.getIdPlaylist() + ", Hình ảnh: " + mPlaylist.getHinhAnhPlaylist());
-        }
-        if (mPlaylistAll != null) {
-            Log.d("SongsListActivity", "Nhận mPlaylistAll: " + mPlaylistAll.getTen() + ", ID: " + mPlaylistAll.getIdPlaylist() + ", Hình nền: " + mPlaylistAll.getHinhNen());
-        }
-        if (mTheLoai != null) {
-            Log.d("SongsListActivity", "Nhận mTheLoai: " + mTheLoai.getTenTheLoai() + ", ID: " + mTheLoai.getIDTheLoai() + ", Hình ảnh: " + mTheLoai.getHinhTheLoai());
-        }
-        if (mAlbum != null) {
-            Log.d("SongsListActivity", "Nhận mAlbum: " + mAlbum.getTenAlbum() + ", ID: " + mAlbum.getIdAlbum() + ", Hình ảnh: " + mAlbum.getHinhAlbum());
-        }
-    }
 }

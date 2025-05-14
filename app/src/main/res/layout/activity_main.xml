@@ -5,28 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#F9F9F9"
     tools:context=".Activity.MainActivity">
 
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:padding="12dp"
         android:gravity="center_vertical"
-        android:background="#EEEEEE"
->
+        android:background="#FFFFFF"
+        android:elevation="2dp">
 
         <ImageView
             android:id="@+id/imgProfile"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/logo"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:scaleType="centerCrop"
-            android:layout_marginStart="20dp"
+            android:background="@drawable/rounded_corner"
             android:clipToOutline="true" />
 
-        <!-- View tách khoảng để đẩy button sang phải -->
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -37,13 +39,16 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:background="@drawable/rounded_corner_background"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:layout_marginEnd="20dp"
             android:text="Đăng xuất"
-            android:textColor="#FF0000" />
+            android:textColor="#FF3B30"
+            android:textStyle="bold"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:elevation="2dp"
+            android:layout_marginEnd="12dp" />
     </LinearLayout>
 
+    <!-- ViewPager -->
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/myViewPager"
         android:layout_width="match_parent"
@@ -51,14 +56,14 @@
         android:layout_weight="1"
         android:contentDescription="Trang hiển thị bài hát và CD nhạc" />
 
+    <!-- Mini Player / Now Playing -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/nowPlayingToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_margin="8dp"
         android:background="@drawable/rounded_corner"
+        android:elevation="4dp"
         android:clipToOutline="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -67,18 +72,17 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="start|center_vertical"
-            >
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/imgNowPlaying"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:src="@drawable/no_music"
                 android:scaleType="centerCrop"
-                android:layout_marginEnd="8dp"
                 android:background="@drawable/rounded_corner"
                 android:clipToOutline="true"
-                />
+                android:layout_marginEnd="10dp" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -102,8 +106,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ca sĩ"
-                    android:textColor="#666666"
-                    android:textSize="12sp"
+                    android:textColor="#555555"
+                    android:textSize="13sp"
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:textStyle="bold"/>
@@ -115,20 +119,23 @@
                 android:layout_height="wrap_content"
                 android:text="0:00"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:layout_marginStart="8dp" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- Tabs -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/myTablayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:contentDescription="Chọn bài hát hoặc CD nhạc"
-        app:tabIndicatorColor="#8b47d9"
-        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorColor="#8B47D9"
+        app:tabIndicatorHeight="3dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#333333"
-        android:background="#E0E0E0"
+        app:tabTextColor="#999999"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
         />
-
 </LinearLayout>

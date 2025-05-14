@@ -8,8 +8,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ngdat.mymusic.Adapter.DanhSachAllPlaylistAdapter;
-import com.ngdat.mymusic.Model.PlaylistAll;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
@@ -24,10 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.ngdat.mymusic.Adapter.BaiHatAdapter;
 import com.ngdat.mymusic.Model.BaiHatYeuThich;
 
+
 public class PlaylistActivity extends AppCompatActivity {
-    RecyclerView mRecyclerView;
     Toolbar mToolbar;
-    DanhSachAllPlaylistAdapter mAdapter;
     RecyclerView recyclerViewBaiHat;
     BaiHatAdapter baiHatAdapter;
     ArrayList<BaiHatYeuThich> baiHatYeuThichArrayList;
@@ -37,32 +34,11 @@ public class PlaylistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist);
         initView();
-        init();
-        Getdata();
+        initToolbar();
         loadBaiHatYeuThich();
     }
 
-    private void Getdata() {
-        DataService mDataService = APIService.getService();
-        Call<List<PlaylistAll>> callBack = mDataService.getAllPlaylist();
-        callBack.enqueue(new Callback<List<PlaylistAll>>() {
-            @Override
-            public void onResponse(Call<List<PlaylistAll>> call, Response<List<PlaylistAll>> response) {
-                ArrayList<PlaylistAll> playlists = (ArrayList<PlaylistAll>) response.body();
-                mAdapter = new DanhSachAllPlaylistAdapter(PlaylistActivity.this, playlists);
-                mRecyclerView.setHasFixedSize(true);
-                mRecyclerView.setLayoutManager(new GridLayoutManager(PlaylistActivity.this, 2));
-                mRecyclerView.setAdapter(mAdapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<PlaylistAll>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void init() {
+    private void initToolbar() {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Playlist");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -97,13 +73,14 @@ public class PlaylistActivity extends AppCompatActivity {
         ));
 
         baiHatAdapter = new BaiHatAdapter(this, baiHatYeuThichArrayList);
-        recyclerViewBaiHat.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewBaiHat.setHasFixedSize(true);
+        recyclerViewBaiHat.setLayoutManager(new GridLayoutManager(this, 2)); // 2 cột
         recyclerViewBaiHat.setAdapter(baiHatAdapter);
+
     }
 
     private void initView() {
-        mRecyclerView = findViewById(R.id.myRecycleViewPlaylist);
-        mToolbar = findViewById(R.id.toobarPlaylist);
-        recyclerViewBaiHat = findViewById(R.id.recyclerViewBaiHat);
+//        mToolbar = findViewById(R.id.toobarPlaylist); // không được comment
+        recyclerViewBaiHat = findViewById(R.id.rv_playlist); // hoặc R.id.recyclerViewBaiHat nếu bạn dùng layout cũ
     }
 }

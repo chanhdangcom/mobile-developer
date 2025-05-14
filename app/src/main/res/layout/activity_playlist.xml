@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activity.PlaylistActivity">
+    android:background="#F5F5F5">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toobarPlaylist"
+    <TextView
+        android:id="@+id/tv_titlePlaylist"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-    </androidx.appcompat.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:text="Playlist dành cho bạn"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myRecycleViewPlaylist"
+        android:id="@+id/rv_playlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toobarPlaylist"
-        android:layout_marginTop="5dp">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_below="@id/tv_titlePlaylist"
+        android:layout_marginTop="12dp"
+        android:paddingHorizontal="8dp"
+        android:clipToPadding="false" />
 </RelativeLayout>
