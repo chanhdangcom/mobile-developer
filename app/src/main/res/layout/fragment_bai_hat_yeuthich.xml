@@ -1,36 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#F9F9F9"
-    android:padding="12dp">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/black">
 
-    <!-- Header -->
-    <RelativeLayout
-        android:id="@+id/relativeBaiHatYeuThich"
-        android:layout_width="match_parent"
+    <!-- Tiêu đề -->
+    <TextView
+        android:id="@+id/tvFavoriteTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:background="#E5E5EA">
+        android:text="🎧 Bài hát yêu thích"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginBottom="8dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🎧 Danh sách bài hát yêu thích"
-            android:textColor="#1C1C1E"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_centerVertical="true" />
-    </RelativeLayout>
-
-    <!-- Danh sách bài hát -->
+    <!-- RecyclerView ngang -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myRecycleBaiHatYeuThich"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/relativeBaiHatYeuThich"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="8dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         android:clipToPadding="false"
-        android:paddingBottom="8dp" />
-</RelativeLayout>
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp" />
+</LinearLayout>

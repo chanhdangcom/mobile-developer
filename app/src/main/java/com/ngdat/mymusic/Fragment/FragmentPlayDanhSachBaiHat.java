@@ -28,6 +28,7 @@ public class FragmentPlayDanhSachBaiHat extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_play_danh_sach_bai_hat, container, false);
         mRecyclerView = view.findViewById(R.id.recyclePlayDanhSachBH);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         if (getActivity() instanceof PlayMusicActivity) {
             PlayMusicActivity playMusicActivity = (PlayMusicActivity) getActivity();
@@ -41,4 +42,5 @@ public class FragmentPlayDanhSachBaiHat extends Fragment {
 
         return view;
     }
+
 }

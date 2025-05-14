@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#121212">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbarLayoutTimKiem"
@@ -12,8 +13,8 @@
             android:id="@+id/toolbartimkiembaihat"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#FFFFFF">
-        </androidx.appcompat.widget.Toolbar>
+            android:background="#1E1E1E"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/appbarLayoutTimKiem"
-        android:importantForAccessibility="no"/>
+        android:background="#121212"
+        android:importantForAccessibility="no" />
 
     <TextView
         android:id="@+id/tv_DataNull"
@@ -29,7 +31,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Không tìm thấy bài hát"
-        android:textColor="#CCCCCC"
+        android:textColor="#AAAAAA"
         android:textSize="35sp"
         android:visibility="gone" />
 </RelativeLayout>

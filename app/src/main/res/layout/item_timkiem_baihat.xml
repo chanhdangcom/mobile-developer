@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="#1E1E1E">
 
     <ImageView
         android:id="@+id/img_timkiem"
@@ -9,7 +11,7 @@
         android:layout_height="80dp"
         android:layout_margin="3dp"
         android:clipToOutline="true"
-        android:background="@drawable/rounded_corner"
+        android:background="@drawable/rounded_corner_background_grey"
         android:scaleType="fitXY" />
 
     <TextView
@@ -22,8 +24,8 @@
         android:ellipsize="end"
         android:maxWidth="250dp"
         android:singleLine="true"
-        android:text="Ten Bài Hát"
-        android:textColor="#000"
+        android:text="Tên Bài Hát"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -38,8 +40,8 @@
         android:ellipsize="end"
         android:maxWidth="250dp"
         android:singleLine="true"
-        android:text="Ten Ca Sĩ"
-        android:textColor="#494848"
+        android:text="Tên Ca Sĩ"
+        android:textColor="#AAAAAA"
         android:textSize="15sp"
         android:textStyle="bold" />
 

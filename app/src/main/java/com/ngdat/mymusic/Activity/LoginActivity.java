@@ -6,16 +6,18 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.ngdat.mymusic.R;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword;
-    Button btnLogin, btnSignup;
+    Button btnLogin;
+    TextView btnSignup; // đã đổi từ Button sang TextView
 
     DatabaseHelper dbHelper;
 
@@ -27,11 +29,12 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.edtUsername);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnSignup = findViewById(R.id.btnSignup);
+        btnSignup = findViewById(R.id.btnSignup); // TextView trong layout
 
         dbHelper = new DatabaseHelper(this);
 
         btnLogin.setOnClickListener(v -> loginUser());
+
         btnSignup.setOnClickListener(v -> {
             startActivity(new Intent(this, SignupActivity.class));
         });
@@ -52,16 +55,19 @@ public class LoginActivity extends AppCompatActivity {
             String role = cursor.getString(cursor.getColumnIndexOrThrow("role"));
             Toast.makeText(this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 
-            // Chuyển sang giao diện phù hợp với quyền
+            // Lưu thông tin người dùng
+            SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt("userId", userId);
+            editor.apply();
+
+            // Chuyển đến giao diện phù hợp với vai trò
             if (role.equalsIgnoreCase("admin")) {
                 startActivity(new Intent(this, AdminActivity.class));
             } else {
                 startActivity(new Intent(this, MainActivity.class));
             }
-            SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putInt("userId", userId);  // Lưu userId
-            editor.apply();
+
             finish();
         } else {
             Toast.makeText(this, "Sai tên đăng nhập hoặc mật khẩu", Toast.LENGTH_SHORT).show();

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,8 @@ import com.ngdat.mymusic.R;
 
 public class SignupActivity extends AppCompatActivity {
     EditText edtFullName, edtUsername, edtEmail, edtPassword, edtConfirmPassword;
-    Button btnRegister, btnLogin;
+    Button btnRegister;
+    TextView btnLogin; // Đã đổi từ Button sang TextView
     Spinner spinnerRole;
 
     DatabaseHelper dbHelper;
@@ -35,13 +37,13 @@ public class SignupActivity extends AppCompatActivity {
         edtPassword = findViewById(R.id.edtPassword);
         edtConfirmPassword = findViewById(R.id.edtConfirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
-        btnLogin = findViewById(R.id.btnLogin);
+        btnLogin = findViewById(R.id.btnLogin); // TextView
         spinnerRole = findViewById(R.id.spinnerRole);
     }
 
     private void handleEvents() {
         btnRegister.setOnClickListener(view -> registerUser());
-        btnLogin.setOnClickListener(view -> finish());
+        btnLogin.setOnClickListener(view -> finish()); // Quay về LoginActivity
     }
 
     private void registerUser() {
@@ -75,7 +77,7 @@ public class SignupActivity extends AppCompatActivity {
         boolean success = dbHelper.insertUser(fullName, username, email, password, selectedRole);
         if (success) {
             Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-            finish();
+            finish(); // Quay về LoginActivity
         } else {
             Toast.makeText(this, "Đăng ký thất bại!", Toast.LENGTH_SHORT).show();
         }

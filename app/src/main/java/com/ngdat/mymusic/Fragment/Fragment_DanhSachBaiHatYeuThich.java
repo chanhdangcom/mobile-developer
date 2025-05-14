@@ -35,7 +35,6 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
     BaiHatAdapter mAdapter;
     DatabaseHelper databaseHelper;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,26 +44,26 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
         GetData();
         return view;
     }
+
     @Override
     public void onResume() {
         super.onResume();
-        GetData(); // gọi lại API hoặc load lại dữ liệu mỗi lần vào Fragment
+        GetData();
     }
 
     private void GetData() {
         DataService mDataService = APIService.getService();
         Call<List<BaiHatYeuThich>> mCall = mDataService.getDataBaiHatDuocYeuThich();
+
         mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
             @Override
             public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
-
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
-                int userId = sharedPreferences.getInt("userId", -1);  // -1 là giá trị mặc định nếu không tìm thấy key "userId"
-
+                int userId = sharedPreferences.getInt("userId", -1);
 
                 ArrayList<BaiHatYeuThich> allSongs = (ArrayList<BaiHatYeuThich>) response.body();
                 List<Integer> favoriteSongIds = databaseHelper.getFavoriteSongs(userId);
-                //lọc các bài hát yêu thương
+
                 ArrayList<BaiHatYeuThich> favoriteSongs = new ArrayList<>();
                 for (BaiHatYeuThich baiHat : allSongs) {
                     if (favoriteSongIds.contains(Integer.parseInt(baiHat.getIdBaiHat()))) {
@@ -73,15 +72,14 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
                 }
 
                 mAdapter = new BaiHatAdapter(getActivity(), favoriteSongs);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 mRecyclerView.setLayoutManager(layoutManager);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
             public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
-                Toast.makeText(getActivity(), " Please Check Your Internet Again !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Vui lòng kiểm tra kết nối mạng!", Toast.LENGTH_SHORT).show();
             }
         });
     }
