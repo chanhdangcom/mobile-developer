@@ -14,7 +14,7 @@
         android:padding="5dp"
         android:text="@string/device_music"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"/>
 

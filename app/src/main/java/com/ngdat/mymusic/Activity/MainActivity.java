@@ -92,9 +92,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (mTabLayout.getTabAt(0) != null) mTabLayout.getTabAt(0).setIcon(R.drawable.icontrangchu);
         if (mTabLayout.getTabAt(1) != null) mTabLayout.getTabAt(1).setIcon(R.drawable.heart_fill);
-        if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.ic_search);
-        if (mTabLayout.getTabAt(3) != null) mTabLayout.getTabAt(3).setIcon(R.drawable.device_mobile_speaker);
-        if (mTabLayout.getTabAt(4) != null) mTabLayout.getTabAt(4).setIcon(R.drawable.iconsyned1);
+        if (mTabLayout.getTabAt(2) != null) mTabLayout.getTabAt(2).setIcon(R.drawable.icontimkiem1);
+        if (mTabLayout.getTabAt(3) != null) mTabLayout.getTabAt(3).setIcon(R.drawable.device_mobile_speaker_fill);
+        if (mTabLayout.getTabAt(4) != null) mTabLayout.getTabAt(4).setIcon(R.drawable.clock_counter_clockwise_bold);
     }
 
     private void setupNowPlayingToolbar() {
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
             imgNowPlaying.setImageResource(R.drawable.no_music);
         }
     }
-
 
     @Override
     protected void onResume() {
