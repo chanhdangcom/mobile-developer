@@ -63,7 +63,7 @@ public class Fragment_TimKiem extends Fragment {
         // Thêm EditText vào Toolbar программно
         EditText edtSearch = new EditText(getContext());
         edtSearch.setHint("Nhập tên bài hát");
-        edtSearch.setTextColor(getResources().getColor(android.R.color.black));
+        edtSearch.setTextColor(getResources().getColor(android.R.color.white));
         edtSearch.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
         Toolbar.LayoutParams params = new Toolbar.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,

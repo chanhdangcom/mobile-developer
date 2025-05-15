@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="10dp">
+    android:elevation="10dp"
+    android:background="@drawable/rounded_corner_background_grey"
+    android:layout_margin="10dp">
 
     <RelativeLayout
         android:id="@+id/song_panel"
@@ -14,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="5dp"
         android:layout_marginHorizontal="10dp"
-        android:background="@drawable/rounded_corner">
+        android:background="#1E1E1E">
 
         <ImageView
             android:id="@+id/artworkView"
@@ -39,7 +41,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/song_title_text_view"
-                android:textColor="@color/BLACK"
+                android:textColor="#FFFFFF"
                 android:fontFamily="@font/montserrat_medium"
                 android:ellipsize="end"
                 android:singleLine="true"
@@ -55,7 +57,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:padding="8dp"
                 android:text="@string/_15_30"
-                android:textColor="@color/BLACK"
+                android:textColor="#CCCCCC"
                 android:fontFamily="@font/montserrat_light"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
