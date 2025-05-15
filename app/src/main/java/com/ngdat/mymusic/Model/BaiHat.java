@@ -6,17 +6,17 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BaiHatYeuThich implements Parcelable {
+public class BaiHat implements Parcelable {
 
-    public static final Creator<BaiHatYeuThich> CREATOR = new Creator<BaiHatYeuThich>() {
+    public static final Creator<BaiHat> CREATOR = new Creator<BaiHat>() {
         @Override
-        public BaiHatYeuThich createFromParcel(Parcel in) {
-            return new BaiHatYeuThich(in);
+        public BaiHat createFromParcel(Parcel in) {
+            return new BaiHat(in);
         }
 
         @Override
-        public BaiHatYeuThich[] newArray(int size) {
-            return new BaiHatYeuThich[size];
+        public BaiHat[] newArray(int size) {
+            return new BaiHat[size];
         }
     };
     @SerializedName("IdBaiHat")
@@ -38,7 +38,7 @@ public class BaiHatYeuThich implements Parcelable {
     @Expose
     private String luotThich;
 
-    protected BaiHatYeuThich(Parcel in) {
+    protected BaiHat(Parcel in) {
         idBaiHat = in.readString();
         tenBaiHat = in.readString();
         hinhBaiHat = in.readString();
@@ -110,7 +110,7 @@ public class BaiHatYeuThich implements Parcelable {
         dest.writeString(luotThich);
     }
 
-    public BaiHatYeuThich(String idBaiHat, String tenBaiHat, String hinhBaiHat, String caSi, String linkBaiHat, String luotThich) {
+    public BaiHat(String idBaiHat, String tenBaiHat, String hinhBaiHat, String caSi, String linkBaiHat, String luotThich) {
         this.idBaiHat = idBaiHat;
         this.tenBaiHat = tenBaiHat;
         this.hinhBaiHat = hinhBaiHat;

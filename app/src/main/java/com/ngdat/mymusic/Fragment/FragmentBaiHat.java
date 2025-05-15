@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ngdat.mymusic.Adapter.BaiHatAdapter;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
@@ -41,12 +41,12 @@ public class FragmentBaiHat extends Fragment {
 
     private void GetData() {
         DataService mDataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> mCall = mDataService.getDataBaiHatDuocYeuThich();
-        mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        Call<List<BaiHat>> mCall = mDataService.getDataBaiHatDuocYeuThich();
+        mCall.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
-                ArrayList<BaiHatYeuThich> baiHatYeuThichArrayList = (ArrayList<BaiHatYeuThich>) response.body();
-                mAdapter = new BaiHatAdapter(getActivity(), baiHatYeuThichArrayList);
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
+                ArrayList<BaiHat> baiHatArrayList = (ArrayList<BaiHat>) response.body();
+                mAdapter = new BaiHatAdapter(getActivity(), baiHatArrayList);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(layoutManager);
@@ -54,7 +54,7 @@ public class FragmentBaiHat extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
                 Toast.makeText(getActivity(), " Please Check Your Internet Again !", Toast.LENGTH_SHORT).show();
             }
         });
