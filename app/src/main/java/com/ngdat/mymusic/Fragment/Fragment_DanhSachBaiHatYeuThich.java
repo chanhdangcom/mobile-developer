@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ngdat.mymusic.Adapter.BaiHatAdapter;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
@@ -53,20 +53,20 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
 
     private void GetData() {
         DataService mDataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> mCall = mDataService.getDataBaiHatDuocYeuThich();
-        mCall.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        Call<List<BaiHat>> mCall = mDataService.getDataBaiHatDuocYeuThich();
+        mCall.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
 
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 int userId = sharedPreferences.getInt("userId", -1);  // -1 là giá trị mặc định nếu không tìm thấy key "userId"
 
 
-                ArrayList<BaiHatYeuThich> allSongs = (ArrayList<BaiHatYeuThich>) response.body();
+                ArrayList<BaiHat> allSongs = (ArrayList<BaiHat>) response.body();
                 List<Integer> favoriteSongIds = databaseHelper.getFavoriteSongs(userId);
                 //lọc các bài hát yêu thương
-                ArrayList<BaiHatYeuThich> favoriteSongs = new ArrayList<>();
-                for (BaiHatYeuThich baiHat : allSongs) {
+                ArrayList<BaiHat> favoriteSongs = new ArrayList<>();
+                for (BaiHat baiHat : allSongs) {
                     if (favoriteSongIds.contains(Integer.parseInt(baiHat.getIdBaiHat()))) {
                         favoriteSongs.add(baiHat);
                     }
@@ -80,7 +80,7 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
                 Toast.makeText(getActivity(), " Please Check Your Internet Again !", Toast.LENGTH_SHORT).show();
             }
         });

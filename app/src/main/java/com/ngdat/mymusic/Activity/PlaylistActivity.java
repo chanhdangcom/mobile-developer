@@ -22,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.ngdat.mymusic.Adapter.BaiHatAdapter;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 
 public class PlaylistActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
@@ -30,7 +30,7 @@ public class PlaylistActivity extends AppCompatActivity {
     DanhSachAllPlaylistAdapter mAdapter;
     RecyclerView recyclerViewBaiHat;
     BaiHatAdapter baiHatAdapter;
-    ArrayList<BaiHatYeuThich> baiHatYeuThichArrayList;
+    ArrayList<BaiHat> baiHatArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,9 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     private void loadBaiHatYeuThich() {
-        baiHatYeuThichArrayList = new ArrayList<>();
+        baiHatArrayList = new ArrayList<>();
 
-        baiHatYeuThichArrayList.add(new BaiHatYeuThich(
+        baiHatArrayList.add(new BaiHat(
                 "1",
                 "Anh chưa một lần nói",
                 "https://cdn.chanhdang.com/singer_khanh_vin.jpg",
@@ -87,7 +87,7 @@ public class PlaylistActivity extends AppCompatActivity {
                 "765384"
         ));
 
-        baiHatYeuThichArrayList.add(new BaiHatYeuThich(
+        baiHatArrayList.add(new BaiHat(
                 "2",
                 "Tháp drill tự do",
                 "https://cdn.chanhdang.com/cover_thap_drill_tu_do.jpg",
@@ -96,7 +96,7 @@ public class PlaylistActivity extends AppCompatActivity {
                 "765344"
         ));
 
-        baiHatAdapter = new BaiHatAdapter(this, baiHatYeuThichArrayList);
+        baiHatAdapter = new BaiHatAdapter(this, baiHatArrayList);
         recyclerViewBaiHat.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewBaiHat.setAdapter(baiHatAdapter);
     }

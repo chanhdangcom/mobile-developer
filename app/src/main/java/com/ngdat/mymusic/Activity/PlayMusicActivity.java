@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -20,7 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.ngdat.mymusic.Adapter.CurrentSongHolder;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.MusicService;
 import com.ngdat.mymusic.Service.MusicService.LocalBinder;
@@ -34,7 +33,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
     private MusicService musicService;
     private MediaPlayer mediaPlayer = MyMediaPlayer.getInstance();
     private boolean serviceBound = false;
-    private ArrayList<BaiHatYeuThich> baiHatList = new ArrayList<>();
+    private ArrayList<BaiHat> baiHatList = new ArrayList<>();
     private int position = 0;
     private boolean isRandom = false;
     private boolean isLoop = false;
@@ -80,7 +79,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
             musicService.setOnMediaPreparedListener(PlayMusicActivity.this); // Set callback
 
             if (baiHatList.size() > 0) {
-                BaiHatYeuThich baiHat = baiHatList.get(position);
+                BaiHat baiHat = baiHatList.get(position);
                 startPlaying(baiHat);
             } else if (CurrentSongHolder.currentSong != null) {
                 updateUI(CurrentSongHolder.currentSong);
@@ -124,7 +123,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
         toobarPlayNhac.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    public ArrayList<BaiHatYeuThich> getBaiHatList() {
+    public ArrayList<BaiHat> getBaiHatList() {
         return baiHatList;
     }
 
@@ -198,7 +197,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
                 position = 0; // Lặp lại danh sách
             }
         }
-        BaiHatYeuThich baiHat = baiHatList.get(position);
+        BaiHat baiHat = baiHatList.get(position);
         startPlaying(baiHat);
         updateUI(baiHat);
     }
@@ -215,12 +214,12 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
                 position = baiHatList.size() - 1; // Lặp lại danh sách
             }
         }
-        BaiHatYeuThich baiHat = baiHatList.get(position);
+        BaiHat baiHat = baiHatList.get(position);
         startPlaying(baiHat);
         updateUI(baiHat);
     }
 
-    private void startPlaying(BaiHatYeuThich baiHat) {
+    private void startPlaying(BaiHat baiHat) {
         if (serviceBound && musicService != null && baiHat != null) {
             musicService.playSong(baiHat);
             btnPlay.setImageResource(R.drawable.iconpause);
@@ -230,7 +229,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
         }
     }
 
-    private void updateUI(BaiHatYeuThich baiHat) {
+    private void updateUI(BaiHat baiHat) {
         tvSongName.setText(baiHat.getTenBaiHat());
         tvSingerName.setText(baiHat.getCaSi());
         Glide.with(this)
@@ -244,7 +243,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
     private void GetDataFromIntent() {
         Intent intent = getIntent();
         if (intent != null) {
-            BaiHatYeuThich newBaiHat = intent.getParcelableExtra("cakhuc");
+            BaiHat newBaiHat = intent.getParcelableExtra("cakhuc");
             if (newBaiHat != null) {
                 Log.d("PlayMusicActivity", "GetDataFromIntent: Received song - " + newBaiHat.getTenBaiHat());
 

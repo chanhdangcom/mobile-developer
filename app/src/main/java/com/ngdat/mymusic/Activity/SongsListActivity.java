@@ -1,9 +1,6 @@
 package com.ngdat.mymusic.Activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -21,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.ngdat.mymusic.Adapter.DanhSachBaiHatAdapter;
 import com.ngdat.mymusic.Model.Album;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.Model.Playlist;
 import com.ngdat.mymusic.Model.PlaylistAll;
 import com.ngdat.mymusic.Model.Quangcao;
@@ -31,9 +28,6 @@ import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +45,7 @@ public class SongsListActivity extends AppCompatActivity {
     ImageView mImageView;
     ImageView mImageViewToolbarBackground; // Thêm ImageView cho background toolbar
     Quangcao mQuangcao;
-    List<BaiHatYeuThich> listBaiHat;
+    List<BaiHat> listBaiHat;
     DanhSachBaiHatAdapter mAdapterBaiHatPlaylist; // Adapter cho danh sách bài hát của playlist
     Playlist mPlaylist;
     PlaylistAll mPlaylistAll;
@@ -73,7 +67,7 @@ public class SongsListActivity extends AppCompatActivity {
         initView();
         initToolbar();
 
-        ArrayList<BaiHatYeuThich> danhSachBaiHatTuPlaylist = getIntent().getParcelableArrayListExtra("allbaihatfromplaylist");
+        ArrayList<BaiHat> danhSachBaiHatTuPlaylist = getIntent().getParcelableArrayListExtra("allbaihatfromplaylist");
 
         if (danhSachBaiHatTuPlaylist != null && !danhSachBaiHatTuPlaylist.isEmpty()) {
             // Sử dụng DanhSachBaiHatAdapter để hiển thị
@@ -106,17 +100,17 @@ public class SongsListActivity extends AppCompatActivity {
         }
     }
 
-    private void addTestSong(List<BaiHatYeuThich> list) {
-        BaiHatYeuThich baiHatMoi = new BaiHatYeuThich("test_id", "Bài hát thử nghiệm", "test_hinh", "Nghệ sĩ thử nghiệm", "test_link", "100");
+    private void addTestSong(List<BaiHat> list) {
+        BaiHat baiHatMoi = new BaiHat("test_id", "Bài hát thử nghiệm", "test_hinh", "Nghệ sĩ thử nghiệm", "test_link", "100");
         list.add(0, baiHatMoi);
     }
 
     private void getDataAlbum(String idAlbum) {
         DataService dataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoAlbum(idAlbum);
-        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        Call<List<BaiHat>> call = dataService.getDataBaiHatTheoAlbum(idAlbum);
+        call.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 listBaiHat = response.body();
                 if (listBaiHat != null && !listBaiHat.isEmpty()) {
                     mAdapterBaiHatPlaylist = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
@@ -134,7 +128,7 @@ public class SongsListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
                 Log.e("SongsListActivity", "getDataAlbum Error: " + t.getMessage());
                 listBaiHat = new ArrayList<>();
                 addTestSong(listBaiHat);
@@ -148,10 +142,10 @@ public class SongsListActivity extends AppCompatActivity {
 
     private void getDataTheLoai(String idtheloai) {
         DataService dataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoTheLoai(idtheloai);
-        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        Call<List<BaiHat>> call = dataService.getDataBaiHatTheoTheLoai(idtheloai);
+        call.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 listBaiHat = response.body();
                 if (listBaiHat != null && !listBaiHat.isEmpty()) {
                     mAdapterBaiHatPlaylist = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
@@ -169,7 +163,7 @@ public class SongsListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
                 Log.e("SongsListActivity", "getDataTheLoai Error: " + t.getMessage());
                 listBaiHat = new ArrayList<>();
                 addTestSong(listBaiHat);
@@ -183,10 +177,10 @@ public class SongsListActivity extends AppCompatActivity {
 
     private void getDataPlaylist(String idplaylist) {
         DataService dataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoPlaylist(idplaylist);
-        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        Call<List<BaiHat>> call = dataService.getDataBaiHatTheoPlaylist(idplaylist);
+        call.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 listBaiHat = response.body();
                 if (listBaiHat != null && !listBaiHat.isEmpty()) {
                     mAdapterBaiHatPlaylist = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
@@ -204,7 +198,7 @@ public class SongsListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
                 Log.e("SongsListActivity", "getDataPlaylist Error: " + t.getMessage());
                 listBaiHat = new ArrayList<>();
                 addTestSong(listBaiHat);
@@ -218,10 +212,10 @@ public class SongsListActivity extends AppCompatActivity {
 
     private void getDataQuangCao(String idquangcao) {
         DataService dataService = APIService.getService();
-        Call<List<BaiHatYeuThich>> call = dataService.getDataBaiHatTheoQuangCao(idquangcao);
-        call.enqueue(new Callback<List<BaiHatYeuThich>>() {
+        Call<List<BaiHat>> call = dataService.getDataBaiHatTheoQuangCao(idquangcao);
+        call.enqueue(new Callback<List<BaiHat>>() {
             @Override
-            public void onResponse(Call<List<BaiHatYeuThich>> call, Response<List<BaiHatYeuThich>> response) {
+            public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
                 listBaiHat = response.body();
                 if (listBaiHat != null && !listBaiHat.isEmpty()) {
                     mAdapterBaiHatPlaylist = new DanhSachBaiHatAdapter(SongsListActivity.this, listBaiHat);
@@ -239,7 +233,7 @@ public class SongsListActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<BaiHatYeuThich>> call, Throwable t) {
+            public void onFailure(Call<List<BaiHat>> call, Throwable t) {
                 Log.e("SongsListActivity", "getDataQuangCao Error: " + t.getMessage());
                 listBaiHat = new ArrayList<>();
                 addTestSong(listBaiHat);

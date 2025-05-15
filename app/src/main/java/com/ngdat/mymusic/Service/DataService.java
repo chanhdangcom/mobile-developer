@@ -2,7 +2,7 @@ package com.ngdat.mymusic.Service;
 
 
 import com.ngdat.mymusic.Model.Album;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.Model.ChuDe;
 import com.ngdat.mymusic.Model.ChuDeAndTheLoai;
 import com.ngdat.mymusic.Model.Playlist;
@@ -38,17 +38,17 @@ public interface DataService {
     Call<List<Album>> getDataAlbum();
 
     @GET("BaiHatDuocYeuThich.php")
-    Call<List<BaiHatYeuThich>> getDataBaiHatDuocYeuThich();
+    Call<List<BaiHat>> getDataBaiHatDuocYeuThich();
 
     @FormUrlEncoded
     @POST("DanhSachBaiHat.php")
         // tương tác và gửi data lên và nhận về
-    Call<List<BaiHatYeuThich>> getDataBaiHatTheoQuangCao(@Field("idquangcao") String idquangcao);
+    Call<List<BaiHat>> getDataBaiHatTheoQuangCao(@Field("idquangcao") String idquangcao);
 
     @FormUrlEncoded
     @POST("DanhSachBaiHatPlaylist.php")
         // tương tác và gửi data lên và nhận về
-    Call<List<BaiHatYeuThich>> getDataBaiHatTheoPlaylist(@Field("idplaylist") String idplaylist);
+    Call<List<BaiHat>> getDataBaiHatTheoPlaylist(@Field("idplaylist") String idplaylist);
 
     @GET("DanhSachAllPlaylist.php")
     Call<List<PlaylistAll>> getAllPlaylist();
@@ -56,7 +56,7 @@ public interface DataService {
     @FormUrlEncoded
     @POST("DanhSachBaiHatPlaylist.php")
         // tương tác và gửi data lên và nhận về
-    Call<List<BaiHatYeuThich>> getDataBaiHatTheoTheLoai(@Field("idtheloai") String idtheloai);
+    Call<List<BaiHat>> getDataBaiHatTheoTheLoai(@Field("idtheloai") String idtheloai);
 
     @GET("chuDeAll.php")
     Call<List<ChuDe>> getAllChuDe();
@@ -73,7 +73,7 @@ public interface DataService {
     @FormUrlEncoded
     @POST("DanhSachBaiHatPlaylist.php")
         // tương tác và gửi data lên và nhận về
-    Call<List<BaiHatYeuThich>> getDataBaiHatTheoAlbum(@Field("idalbum") String idalbum);
+    Call<List<BaiHat>> getDataBaiHatTheoAlbum(@Field("idalbum") String idalbum);
 
     @FormUrlEncoded
     @POST("UpdateLuotLike.php")
@@ -83,5 +83,5 @@ public interface DataService {
     @FormUrlEncoded
     @POST("SearchBH.php")
         // tương tác và gửi data lên và nhận về
-    Call<List<BaiHatYeuThich>> getSearchBaiHat(@Field("keyword") String keyword);
+    Call<List<BaiHat>> getSearchBaiHat(@Field("keyword") String keyword);
 }

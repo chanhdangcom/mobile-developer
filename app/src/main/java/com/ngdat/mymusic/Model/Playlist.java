@@ -22,7 +22,7 @@ public class Playlist implements Serializable {
     private String icon;
     @SerializedName("DanhSachBaiHat")
     @Expose
-    private List<BaiHatYeuThich> danhSachBaiHat;
+    private List<BaiHat> danhSachBaiHat;
 
     public String getIdPlaylist() {
         return idPlaylist;
@@ -56,11 +56,11 @@ public class Playlist implements Serializable {
         this.icon = icon;
     }
 
-    public List<BaiHatYeuThich> getDanhSachBaiHat() {
+    public List<BaiHat> getDanhSachBaiHat() {
         return danhSachBaiHat;
     }
 
-    public void setDanhSachBaiHat(List<BaiHatYeuThich> danhSachBaiHat) {
+    public void setDanhSachBaiHat(List<BaiHat> danhSachBaiHat) {
         this.danhSachBaiHat = danhSachBaiHat;
     }
 }
