@@ -306,6 +306,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
     }
 
     private void startUpdateTimeHandler() {
+        stopUpdateTimeHandler(); // Đảm bảo không chạy nhiều runnable song song
         updateTimeRunnable = new Runnable() {
             @Override
             public void run() {
@@ -353,6 +354,10 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (serviceBound) {
+            unbindService(serviceConnection);
+            serviceBound = false;
+        }
         stopUpdateTimeHandler(); // Đảm bảo handler dừng khi Activity bị destroy
     }
 }
