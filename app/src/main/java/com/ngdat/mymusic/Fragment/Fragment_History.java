@@ -1,5 +1,8 @@
 package com.ngdat.mymusic.Fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,28 +29,45 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FragmentBaiHat extends Fragment {
+public class Fragment_History extends Fragment {
     View view;
     RecyclerView mRecyclerView;
     BaiHatAdapter mAdapter;
-
+    DatabaseHelper databaseHelper;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_bai_hat_yeuthich, container, false);
-        mRecyclerView = view.findViewById(R.id.myRecycleBaiHatYeuThich);
+        view = inflater.inflate(R.layout.fragment_history_songs, container, false);
+        mRecyclerView = view.findViewById(R.id.myRecycleHistory);
+        databaseHelper = new DatabaseHelper(getContext());
         GetData();
         return view;
     }
-
+    public void onResume() {
+        super.onResume();
+        GetData(); // gọi lại API hoặc load lại dữ liệu mỗi lần vào Fragment
+    }
     private void GetData() {
         DataService mDataService = APIService.getService();
         Call<List<BaiHat>> mCall = mDataService.getDataBaiHatDuocYeuThich();
         mCall.enqueue(new Callback<List<BaiHat>>() {
             @Override
             public void onResponse(Call<List<BaiHat>> call, Response<List<BaiHat>> response) {
-                ArrayList<BaiHat> baiHatArrayList = (ArrayList<BaiHat>) response.body();
-                mAdapter = new BaiHatAdapter(getActivity(), baiHatArrayList);
+                SharedPreferences prefs = getActivity().getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                int userId = prefs.getInt("userId", -1);
+
+                ArrayList<BaiHat> allSongs = (ArrayList<BaiHat>) response.body();
+
+                List<Integer> historyIds = databaseHelper.getHistorySongIds(userId);
+                // lọc lichj sử nghe
+                ArrayList<BaiHat> historySongs = new ArrayList<>();
+                for (BaiHat baiHat : allSongs)
+                {
+                    if (historyIds.contains(Integer.parseInt(baiHat.getIdBaiHat()))) {
+                        historySongs.add(baiHat);
+                    }
+                }
+                mAdapter = new BaiHatAdapter(getActivity(), historySongs);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                 mRecyclerView.setLayoutManager(layoutManager);
@@ -55,8 +76,9 @@ public class FragmentBaiHat extends Fragment {
 
             @Override
             public void onFailure(Call<List<BaiHat>> call, Throwable t) {
-                Toast.makeText(getActivity(), " Please Check Your Internet Again !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Failed to load history", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 }

@@ -1,35 +1,29 @@
 package com.ngdat.mymusic.Adapter;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ngdat.mymusic.Activity.PlayMusicActivity;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
-import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.squareup.picasso.Picasso; // Import Picasso
 
 import java.util.List;
 
 public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAdapter.ViewHolder> {
     Context mContext;
-    List<BaiHatYeuThich> list;
+    List<BaiHat> list;
 
 
-    public DanhSachBaiHatAdapter(Context mContext, List<BaiHatYeuThich> list) {
+    public DanhSachBaiHatAdapter(Context mContext, List<BaiHat> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -45,13 +39,13 @@ public class DanhSachBaiHatAdapter extends RecyclerView.Adapter<DanhSachBaiHatAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BaiHatYeuThich baiHatYeuThich = list.get(position);
-        holder.txtTenCS.setText(baiHatYeuThich.getCaSi());
-        holder.txtTenBH.setText(baiHatYeuThich.getTenBaiHat());
+        BaiHat baiHat = list.get(position);
+        holder.txtTenCS.setText(baiHat.getCaSi());
+        holder.txtTenBH.setText(baiHat.getTenBaiHat());
         holder.txtSTT.setText(position + 1 + "");
 
         // Load image using Picasso
-        Picasso.get().load(baiHatYeuThich.getHinhBaiHat()).into(holder.imgBaiHat);
+        Picasso.get().load(baiHat.getHinhBaiHat()).into(holder.imgBaiHat);
     }
 
     @Override

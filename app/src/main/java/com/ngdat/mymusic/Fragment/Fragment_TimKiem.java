@@ -1,6 +1,5 @@
 package com.ngdat.mymusic.Fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ngdat.mymusic.Adapter.SearchBaiHatAdapter;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 
 import java.io.IOException;
@@ -38,8 +37,8 @@ public class Fragment_TimKiem extends Fragment {
     RecyclerView recyclerViewTimKiem;
     TextView tvDataNull;
     SearchBaiHatAdapter searchBaiHatAdapter;
-    List<BaiHatYeuThich> tatCaBaiHat; // Danh sách tất cả bài hát từ JSON
-    List<BaiHatYeuThich> mangBaiHatTimKiem; // Danh sách kết quả tìm kiếm
+    List<BaiHat> tatCaBaiHat; // Danh sách tất cả bài hát từ JSON
+    List<BaiHat> mangBaiHatTimKiem; // Danh sách kết quả tìm kiếm
 
     @Nullable
     @Override
@@ -113,7 +112,7 @@ public class Fragment_TimKiem extends Fragment {
             String json = new String(buffer, StandardCharsets.UTF_8);
 
             Gson gson = new Gson();
-            Type listType = new TypeToken<List<BaiHatYeuThich>>() {}.getType();
+            Type listType = new TypeToken<List<BaiHat>>() {}.getType();
             tatCaBaiHat = gson.fromJson(json, listType);
 
             if (tatCaBaiHat == null || tatCaBaiHat.isEmpty()) {
@@ -130,7 +129,7 @@ public class Fragment_TimKiem extends Fragment {
         mangBaiHatTimKiem.clear();
         if (tatCaBaiHat != null && !tatCaBaiHat.isEmpty()) {
             keyword = keyword.toLowerCase(Locale.getDefault());
-            for (BaiHatYeuThich baiHat : tatCaBaiHat) {
+            for (BaiHat baiHat : tatCaBaiHat) {
                 if (baiHat.getTenBaiHat().toLowerCase(Locale.getDefault()).contains(keyword)) {
                     mangBaiHatTimKiem.add(baiHat);
                 }

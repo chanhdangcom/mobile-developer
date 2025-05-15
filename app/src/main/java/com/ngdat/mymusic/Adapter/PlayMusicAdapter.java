@@ -9,16 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 
 import java.util.List;
 
 public class PlayMusicAdapter extends RecyclerView.Adapter<PlayMusicAdapter.ViewHolder> {
     Context mContext;
-    List<BaiHatYeuThich> listBH;
+    List<BaiHat> listBH;
 
-    public PlayMusicAdapter(Context mContext, List<BaiHatYeuThich> listBH) {
+    public PlayMusicAdapter(Context mContext, List<BaiHat> listBH) {
         this.mContext = mContext;
         this.listBH = listBH;
     }
@@ -33,7 +33,7 @@ public class PlayMusicAdapter extends RecyclerView.Adapter<PlayMusicAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BaiHatYeuThich baihat = listBH.get(position);
+        BaiHat baihat = listBH.get(position);
         holder.txtTenCaSi.setText(baihat.getCaSi());
         holder.txtTenBaiHat.setText(baihat.getTenBaiHat());
         holder.txtIndex.setText(position + 1 + "");

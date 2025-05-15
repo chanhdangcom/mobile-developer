@@ -2,7 +2,6 @@ package com.ngdat.mymusic.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ngdat.mymusic.Activity.PlaylistActivity;
 import com.ngdat.mymusic.Activity.SongsListActivity;
 import com.ngdat.mymusic.Adapter.PlaylistAdapter;
 import com.ngdat.mymusic.Model.Playlist;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +62,7 @@ public class FragmentPlaylist extends Fragment {
                     @Override
                     public void onItemClick(Playlist playlist) {
                         Intent intent = new Intent(getActivity(), SongsListActivity.class);
-                        ArrayList<BaiHatYeuThich> danhSachBaiHat = (ArrayList<BaiHatYeuThich>) playlist.getDanhSachBaiHat();
+                        ArrayList<BaiHat> danhSachBaiHat = (ArrayList<BaiHat>) playlist.getDanhSachBaiHat();
                         intent.putParcelableArrayListExtra("allbaihatfromplaylist", danhSachBaiHat);
                         startActivity(intent);
                         Log.d("FragmentPlaylist", "Đã click vào playlist: " + playlist.getTen());

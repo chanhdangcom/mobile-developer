@@ -29,6 +29,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_FAV_ID = "id";
     public static final String COL_SONG_ID = "song_id";
     public static final String COL_USER_ID = "user_id";
+    // Bảng HISTORY
+    public static final String TABLE_HISTORY = "history";
+    public static final String COL_HIS_ID = "id";
+    public static final String COL_HIS_SONGID = "song_id";
+    public static final String COL_HIS_USERID = "user_id";
+    public static final String COL_PLAYED_AT = "played_at";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,12 +56,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_SONG_ID + " INTEGER, " +
                 COL_USER_ID + " INTEGER)";
         db.execSQL(createFavoritesTable);
+
+        String createHistoryTable = "CREATE TABLE " + TABLE_HISTORY + " (" +
+                COL_HIS_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL_HIS_SONGID + " INTEGER, " +
+                COL_HIS_USERID + " INTEGER, " +
+                COL_PLAYED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP)";
+        db.execSQL(createHistoryTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_FAVORITES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HISTORY);
         onCreate(db);
     }
 
@@ -126,6 +140,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_FAVORITES, null, values);
         return result != -1;
     }
+
     public boolean deleteFavorite(int userId, int songId) {
         SQLiteDatabase db = this.getWritableDatabase();
         // Corrected WHERE clause to delete from the favorites table based on user_id and song_id
@@ -134,6 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return result > 0;
     }
+
     public boolean isFavoriteExists(int userId, int songId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_FAVORITES + " WHERE " +
@@ -142,6 +158,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return exists;
     }
+
     public List<Integer> getFavoriteSongs(int userId) {
         List<Integer> songIds = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -152,6 +169,57 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 int songId = cursor.getInt(0);
                 songIds.add(songId);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        return songIds;
+    }
+
+    // ==== XỬ LÝ HISTORY ====
+    public boolean addToHistory(int userId, int songId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            // Xoá nếu bài này đã có (để cập nhật lại thời gian)
+            db.delete(TABLE_HISTORY, COL_HIS_SONGID + "=? AND " + COL_HIS_USERID + "=?",
+                    new String[]{String.valueOf(songId), String.valueOf(userId)});
+
+            ContentValues values = new ContentValues();
+            values.put(COL_HIS_USERID, userId);
+            values.put(COL_HIS_SONGID, songId);
+            long result = db.insert(TABLE_HISTORY, null, values);  // Kiểm tra kết quả chèn vào cơ sở dữ liệu
+
+            // Giới hạn chỉ 3 bài gần nhất
+            db.execSQL("DELETE FROM " + TABLE_HISTORY +
+                            " WHERE " + COL_HIS_ID + " NOT IN (" +
+                            "SELECT " + COL_HIS_ID + " FROM " + TABLE_HISTORY +
+                            " WHERE " + COL_HIS_USERID + " = ?" +
+                            " ORDER BY " + COL_PLAYED_AT + " DESC LIMIT 5)",
+                    new String[]{String.valueOf(userId)});
+
+            // Kiểm tra kết quả của câu lệnh insert
+            return result != -1;  // Nếu result == -1, tức là việc chèn vào cơ sở dữ liệu không thành công
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;  // Nếu có lỗi, trả về false
+        }
+    }
+
+
+    public List<Integer> getHistorySongIds(int userId) {
+        List<Integer> songIds = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COL_HIS_SONGID + " FROM " + TABLE_HISTORY +
+                        " WHERE " + COL_HIS_USERID + " = ?" +
+                        " ORDER BY " + COL_PLAYED_AT + " DESC",
+                new String[]{String.valueOf(userId)}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                songIds.add(cursor.getInt(0));
             } while (cursor.moveToNext());
         }
 

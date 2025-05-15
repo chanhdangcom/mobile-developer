@@ -1,6 +1,5 @@
 package com.ngdat.mymusic.Service;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,7 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.media.session.MediaButtonReceiver;
 
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 
 import java.io.IOException;
@@ -138,7 +137,7 @@ public class MusicService extends Service {
 //        MediaButtonReceiver.setMediaSession(mediaSession);
     }
 
-    private MediaMetadataCompat buildMediaMetadata(BaiHatYeuThich song) {
+    private MediaMetadataCompat buildMediaMetadata(BaiHat song) {
         if (song == null) return null;
         return new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.getTenBaiHat())
@@ -147,7 +146,7 @@ public class MusicService extends Service {
                 .build();
     }
 
-    private void updateMediaMetadata(BaiHatYeuThich song) {
+    private void updateMediaMetadata(BaiHat song) {
         mediaSession.setMetadata(buildMediaMetadata(song));
     }
 
@@ -272,7 +271,7 @@ public class MusicService extends Service {
         Log.d(TAG, "onStartCommand called");
         MediaButtonReceiver.handleIntent(mediaSession, intent);
 
-        BaiHatYeuThich song = (BaiHatYeuThich) intent.getSerializableExtra("cakhuc");
+        BaiHat song = (BaiHat) intent.getSerializableExtra("cakhuc");
         if (song != null) {
             Log.d(TAG, "Received song: " + song.getTenBaiHat());
             CurrentSongHolder.currentSong = song;
@@ -288,7 +287,7 @@ public class MusicService extends Service {
         return START_STICKY;
     }
 
-    public void playSong(BaiHatYeuThich song) {
+    public void playSong(BaiHat song) {
         Log.d(TAG, "Attempting to play song: " + song.getLinkBaiHat());
         try {
             if (mediaPlayer == null) {
@@ -343,7 +342,7 @@ public class MusicService extends Service {
         stopSelf();
     }
 
-    public BaiHatYeuThich getCurrentPlayingSong() {
+    public BaiHat getCurrentPlayingSong() {
         return CurrentSongHolder.currentSong;
     }
 
@@ -362,7 +361,7 @@ public class MusicService extends Service {
     }
 
     public static class CurrentSongHolder {
-        public static BaiHatYeuThich currentSong;
+        public static BaiHat currentSong;
     }
 
     @Override
