@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.ngdat.mymusic.Activity.PlayMusicActivity;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 import com.ngdat.mymusic.Service.APIService;
 import com.ngdat.mymusic.Service.DataService;
@@ -27,9 +27,9 @@ import retrofit2.Response;
 
 public class SearchBaiHatAdapter extends RecyclerView.Adapter<SearchBaiHatAdapter.ViewHolder> {
     Context mContext;
-    List<BaiHatYeuThich> list;
+    List<BaiHat> list;
 
-    public SearchBaiHatAdapter(Context mContext, List<BaiHatYeuThich> list) {
+    public SearchBaiHatAdapter(Context mContext, List<BaiHat> list) {
         this.mContext = mContext;
         this.list = list;
     }
@@ -44,10 +44,10 @@ public class SearchBaiHatAdapter extends RecyclerView.Adapter<SearchBaiHatAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BaiHatYeuThich baiHatYeuThich = list.get(position);
-        holder.txtTenBaiHat.setText(baiHatYeuThich.getTenBaiHat());
-        holder.txtCasi.setText(baiHatYeuThich.getCaSi());
-        Picasso.get().load(baiHatYeuThich.getHinhBaiHat()).into(holder.imgBaiHat);
+        BaiHat baiHat = list.get(position);
+        holder.txtTenBaiHat.setText(baiHat.getTenBaiHat());
+        holder.txtCasi.setText(baiHat.getCaSi());
+        Picasso.get().load(baiHat.getHinhBaiHat()).into(holder.imgBaiHat);
     }
 
     @Override

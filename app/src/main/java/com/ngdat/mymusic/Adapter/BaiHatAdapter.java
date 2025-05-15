@@ -19,20 +19,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ngdat.mymusic.utils.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 import com.ngdat.mymusic.Activity.PlayMusicActivity;
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
 
 import java.util.List;
 
 public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder> {
     Context mContext;
-    List<BaiHatYeuThich> baiHatYeuThichList;
+    List<BaiHat> baiHatList;
     DatabaseHelper databaseHelper;
     int userId; // User ID should be retrieved once and kept as a class member
 
-    public BaiHatAdapter(Context mContext, List<BaiHatYeuThich> baiHatYeuThichList) {
+    public BaiHatAdapter(Context mContext, List<BaiHat> baiHatList) {
         this.mContext = mContext;
-        this.baiHatYeuThichList = baiHatYeuThichList;
+        this.baiHatList = baiHatList;
         databaseHelper = new DatabaseHelper(mContext);
         // Retrieve userId once when the adapter is created
         SharedPreferences sharedPreferences = mContext.getSharedPreferences("UserPrefs", MODE_PRIVATE);
@@ -51,14 +51,14 @@ public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        BaiHatYeuThich baiHatYeuThich = baiHatYeuThichList.get(position);
-        holder.txtTenCaSi.setText(baiHatYeuThich.getCaSi());
-        holder.txtTenBaiHat.setText(baiHatYeuThich.getTenBaiHat());
-        Picasso.get().load(baiHatYeuThich.getHinhBaiHat()).into(holder.imghinhBaihat);
+        BaiHat baiHat = baiHatList.get(position);
+        holder.txtTenCaSi.setText(baiHat.getCaSi());
+        holder.txtTenBaiHat.setText(baiHat.getTenBaiHat());
+        Picasso.get().load(baiHat.getHinhBaiHat()).into(holder.imghinhBaihat);
 
         // --- Determine songId and initial favorite status for THIS specific item ---
         // Declare songId as a final local variable within onBindViewHolder
-        final int songId = Integer.parseInt(baiHatYeuThich.getIdBaiHat());
+        final int songId = Integer.parseInt(baiHat.getIdBaiHat());
         // Determine initial favorite status
         boolean initialIsFavorited = databaseHelper.isFavoriteExists(userId, songId);
 
@@ -114,7 +114,7 @@ public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return baiHatYeuThichList.size();
+        return baiHatList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -135,7 +135,7 @@ public class BaiHatAdapter extends RecyclerView.Adapter<BaiHatAdapter.ViewHolder
                     int position = getAdapterPosition();
                     if (position != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(mContext, PlayMusicActivity.class);
-                        intent.putExtra("cakhuc", baiHatYeuThichList.get(position));
+                        intent.putExtra("cakhuc", baiHatList.get(position));
                         mContext.startActivity(intent);
                     }
                 }

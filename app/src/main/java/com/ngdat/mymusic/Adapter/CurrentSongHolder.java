@@ -1,7 +1,7 @@
 package com.ngdat.mymusic.Adapter;
 
-import com.ngdat.mymusic.Model.BaiHatYeuThich;
+import com.ngdat.mymusic.Model.BaiHat;
 
 public class CurrentSongHolder {
-    public static BaiHatYeuThich currentSong;
+    public static BaiHat currentSong;
 }
