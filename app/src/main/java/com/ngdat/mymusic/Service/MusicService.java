@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -24,6 +25,7 @@ import androidx.media.session.MediaButtonReceiver;
 
 import com.ngdat.mymusic.Model.BaiHat;
 import com.ngdat.mymusic.R;
+import com.ngdat.mymusic.utils.DatabaseHelper;
 
 import java.io.IOException;
 
@@ -32,6 +34,8 @@ public class MusicService extends Service {
     private static final String TAG = "MusicService";
     private static final String CHANNEL_ID = "music_channel";
     static final int NOTIFICATION_ID = 1;
+    private DatabaseHelper databaseHelper;
+
 
     private final IBinder binder = new LocalBinder();
     private MediaPlayer mediaPlayer;
@@ -67,6 +71,7 @@ public class MusicService extends Service {
         initMediaPlayer();
         initMediaSession();
         createNotificationChannel();
+        databaseHelper = new DatabaseHelper(this);
     }
 
     private void initMediaSession() {
@@ -299,6 +304,18 @@ public class MusicService extends Service {
             mediaPlayer.setDataSource(this, Uri.parse(song.getLinkBaiHat()));
             mediaPlayer.prepareAsync();
             updateMediaMetadata(song);
+            if (CurrentSongHolder.currentSong != null) {
+                SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+                int userId = sharedPreferences.getInt("userId", -1); // -1 là mặc định nếu không tìm thấy
+
+                if (userId != -1) { // đảm bảo đã đăng nhập
+                    int songId = Integer.parseInt(CurrentSongHolder.currentSong.getIdBaiHat());
+                    boolean added = databaseHelper.addToHistory(userId, songId);
+                    Log.d(TAG, "addToHistory: " + (added ? "success" : "fail") + " | Song ID: " + songId);
+                } else {
+                    Log.d(TAG, "User ID not found in SharedPreferences!");
+                }
+            }
         } catch (IOException e) {
             Log.e(TAG, "Error playing song", e);
         }
