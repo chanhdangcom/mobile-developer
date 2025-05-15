@@ -24,11 +24,9 @@ public class MockInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        // Kiểm tra nếu đang ở chế độ mock
         if (mockMode) {
             try {
                 String encodedPath = request.url().encodedPath();
-                // Tạo đường dẫn đến file JSON mock, thay thế dấu `/` bằng `_` nếu cần
                 String mockFilePath = "mock" + encodedPath + ".json";
 
                 String json = loadJSONFromAsset(mockFilePath);
@@ -40,15 +38,11 @@ public class MockInterceptor implements Interceptor {
                         .body(ResponseBody.create(MediaType.parse("application/json"), json))
                         .build();
             } catch (IOException e) {
-                // Nếu không tìm thấy file mock, gọi API thật
                 return chain.proceed(request);
             }
         }
-        // Nếu không ở chế độ mock, gọi API thật
         return chain.proceed(request);
     }
-
-    // Hàm đọc file JSON từ thư mục assets
     private String loadJSONFromAsset(String fileName) throws IOException {
         InputStream is = context.getAssets().open(fileName);
         int size = is.available();

@@ -73,7 +73,6 @@ public class FragmentPlaylist extends Fragment {
                         }
                     }
                 });
-//                rvPlaylist.setLayoutManager(new LinearLayoutManager(getActivity()));
                 rvPlaylist.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                 rvPlaylist.setAdapter(playlistAdapter);
             }

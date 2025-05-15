@@ -72,7 +72,6 @@ public class Fragment_DanhSachBaiHatYeuThich extends Fragment {
                 }
 
                 mAdapter = new BaiHatAdapter(getActivity(), favoriteSongs);
-//                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                 mRecyclerView.setLayoutManager(layoutManager);
                 mRecyclerView.setAdapter(mAdapter);

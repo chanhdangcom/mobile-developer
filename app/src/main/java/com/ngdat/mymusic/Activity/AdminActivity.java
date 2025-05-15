@@ -25,7 +25,7 @@ public class AdminActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin); // layout chứa RecyclerView
+        setContentView(R.layout.activity_admin);
 
         recyclerView = findViewById(R.id.myRecycleTaiKhoan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -36,7 +36,6 @@ public class AdminActivity extends AppCompatActivity {
         userAdapter = new UserAdapter(this, userList);
         recyclerView.setAdapter(userAdapter);
 
-        // Sửa phần này để gọi findViewById đúng cách
         btnLogout = findViewById(R.id.btnLogout);  // Đảm bảo gọi đúng findViewById
         btnLogout.setOnClickListener(view -> {
             logout();
@@ -54,7 +53,6 @@ public class AdminActivity extends AppCompatActivity {
     }
     private void logout() {
 
-        // Điều hướng về LoginActivity
         Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

@@ -37,8 +37,8 @@ public class Fragment_TimKiem extends Fragment {
     RecyclerView recyclerViewTimKiem;
     TextView tvDataNull;
     SearchBaiHatAdapter searchBaiHatAdapter;
-    List<BaiHat> tatCaBaiHat; // Danh sách tất cả bài hát từ JSON
-    List<BaiHat> mangBaiHatTimKiem; // Danh sách kết quả tìm kiếm
+    List<BaiHat> tatCaBaiHat;
+    List<BaiHat> mangBaiHatTimKiem;
 
     @Nullable
     @Override
@@ -55,11 +55,10 @@ public class Fragment_TimKiem extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setSupportActionBar();
         initRecyclerView();
-        loadBaiHatFromJSON(); // Đọc dữ liệu từ JSON khi Fragment được tạo
+        loadBaiHatFromJSON();
     }
 
     private void setSupportActionBar() {
-        // Thêm EditText vào Toolbar программно
         EditText edtSearch = new EditText(getContext());
         edtSearch.setHint("Nhập tên bài hát");
         edtSearch.setTextColor(getResources().getColor(android.R.color.white));
@@ -79,7 +78,7 @@ public class Fragment_TimKiem extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() > 1) { // Bắt đầu tìm kiếm khi người dùng nhập ít nhất 2 ký tự
+                if (s.length() > 1) {
                     timKiemBaiHat(s.toString());
                 } else {
                     mangBaiHatTimKiem.clear();

@@ -73,7 +73,7 @@ public class PlaylistActivity extends AppCompatActivity {
     }
 
     private void initView() {
-//        mToolbar = findViewById(R.id.toobarPlaylist); // không được comment
-        recyclerViewBaiHat = findViewById(R.id.rv_playlist); // hoặc R.id.recyclerViewBaiHat nếu bạn dùng layout cũ
+//        mToolbar = findViewById(R.id.toobarPlaylist);
+        recyclerViewBaiHat = findViewById(R.id.rv_playlist);
     }
 }

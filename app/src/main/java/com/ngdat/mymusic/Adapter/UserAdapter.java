@@ -26,7 +26,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     public UserAdapter(Context context,List<User> list) {
         this.context = context;
         this.list = list;
-        this.databaseHelper = new DatabaseHelper(context);  // Khởi tạo databaseHelper
+        this.databaseHelper = new DatabaseHelper(context);
     }
 
     @NonNull
@@ -45,17 +45,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         h.tvRole.setText(u.getRole());
 
         h.itemView.setOnLongClickListener(v -> {
-            h.btnDelete.setTranslationX(200); // Di chuyển sang phải (ẩn ngoài màn hình)
-            h.btnDelete.setAlpha(0f);         // Ẩn
+            h.btnDelete.setTranslationX(200);
+            h.btnDelete.setAlpha(0f);
             h.btnDelete.setVisibility(View.VISIBLE);
 
             h.btnDelete.animate()
-                    .translationX(0)          // Di chuyển về vị trí gốc
-                    .alpha(1f)                // Hiện mờ dần
+                    .translationX(0)
+                    .alpha(1f)
                     .setDuration(300)
                     .start();
 
-            // Tự động ẩn sau 3s
+
             new Handler().postDelayed(() -> {
                 h.btnDelete.animate()
                         .translationX(200)
@@ -71,19 +71,17 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
 
 
         h.btnDelete.setOnClickListener(v -> {
-            int userId = u.getId(); // Lấy ID của người dùng cần xóa
-            if (userId != 0) { // Kiểm tra nếu ID không phải là 0
-                boolean isDeleted = databaseHelper.deleteUserById(userId); // Gọi phương thức xóa
+            int userId = u.getId();
+            if (userId != 0) {
+                boolean isDeleted = databaseHelper.deleteUserById(userId);
                 if (isDeleted) {
-                    list.remove(pos); // Xóa người dùng khỏi danh sách
-                    notifyItemRemoved(pos); // Cập nhật lại danh sách
-                    notifyItemRangeChanged(pos, list.size()); // Cập nhật lại các vị trí còn lại
+                    list.remove(pos);
+                    notifyItemRemoved(pos);
+                    notifyItemRangeChanged(pos, list.size());
                 } else {
-                    // Hiển thị thông báo nếu không xóa được
                     Toast.makeText(context, "Xóa thất bại!", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                // Thông báo nếu ID không hợp lệ
                 Toast.makeText(context, "ID không hợp lệ!", Toast.LENGTH_SHORT).show();
             }
         });

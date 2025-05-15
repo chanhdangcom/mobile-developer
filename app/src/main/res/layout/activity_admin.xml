@@ -8,7 +8,6 @@
     android:background="#F5F5F5"
     tools:context=".Activity.MainActivity">
 
-    <!-- Header: Logo + Admin + Logout -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

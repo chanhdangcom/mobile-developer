@@ -36,13 +36,13 @@ public class SongsListActivity extends AppCompatActivity {
     CoordinatorLayout mCoordinatorLayout;
     CollapsingToolbarLayout mCollapsingToolbarLayout;
     Toolbar mToolbar;
-    RecyclerView mRecyclerView; // Có thể không dùng đến, xem lại layout
-    RecyclerView recyclerViewBaiHat; // RecyclerView để hiển thị bài hát từ playlist
+    RecyclerView mRecyclerView;
+    RecyclerView recyclerViewBaiHat;
     Button mButtonNgheTatCa;
     ImageView mImageView;
-    ImageView mImageViewToolbarBackground; // Thêm ImageView cho background toolbar
+    ImageView mImageViewToolbarBackground;
     List<BaiHat> listBaiHat;
-    DanhSachBaiHatAdapter mAdapterBaiHatPlaylist; // Adapter cho danh sách bài hát của playlist
+    DanhSachBaiHatAdapter mAdapterBaiHatPlaylist;
     Playlist mPlaylist;
     Album mAlbum;
 
@@ -63,7 +63,7 @@ public class SongsListActivity extends AppCompatActivity {
         ArrayList<BaiHat> danhSachBaiHatTuPlaylist = getIntent().getParcelableArrayListExtra("allbaihatfromplaylist");
 
         if (danhSachBaiHatTuPlaylist != null && !danhSachBaiHatTuPlaylist.isEmpty()) {
-            // Sử dụng DanhSachBaiHatAdapter để hiển thị
+
             mAdapterBaiHatPlaylist = new DanhSachBaiHatAdapter(SongsListActivity.this, danhSachBaiHatTuPlaylist);
             recyclerViewBaiHat.setLayoutManager(new LinearLayoutManager(this));
             recyclerViewBaiHat.setAdapter(mAdapterBaiHatPlaylist);
@@ -219,9 +219,6 @@ public class SongsListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerViews() {
-        // Có thể không cần dùng đến nếu chỉ hiển thị danh sách bài hát từ playlist
-        // mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // mRecyclerView.setAdapter(mAdapter);
 
         recyclerViewBaiHat.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewBaiHat.setAdapter(mAdapterBaiHatPlaylist);
@@ -229,7 +226,7 @@ public class SongsListActivity extends AppCompatActivity {
 
     private void setValuesInView(String name, String image) {
         mCollapsingToolbarLayout.setTitle(name);
-        Log.d("SongsListActivity", "Đang tải ảnh: " + image); // Log để kiểm tra URL
+        Log.d("SongsListActivity", "Đang tải ảnh: " + image);
         Picasso.get().load(image).into(mImageView);
         Picasso.get().load(image).into(mImageViewToolbarBackground);
     }

@@ -15,7 +15,7 @@ import com.ngdat.mymusic.R;
 public class SignupActivity extends AppCompatActivity {
     EditText edtFullName, edtUsername, edtEmail, edtPassword, edtConfirmPassword;
     Button btnRegister;
-    TextView btnLogin; // Đã đổi từ Button sang TextView
+    TextView btnLogin;
     Spinner spinnerRole;
 
     DatabaseHelper dbHelper;
@@ -43,7 +43,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void handleEvents() {
         btnRegister.setOnClickListener(view -> registerUser());
-        btnLogin.setOnClickListener(view -> finish()); // Quay về LoginActivity
+        btnLogin.setOnClickListener(view -> finish());
     }
 
     private void registerUser() {

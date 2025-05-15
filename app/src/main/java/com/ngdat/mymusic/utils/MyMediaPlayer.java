@@ -6,7 +6,6 @@ public class MyMediaPlayer extends MediaPlayer
 {
     static MediaPlayer instance;
 
-    // Create and return a singleton instance of the MediaPlayer
     public static MediaPlayer getInstance() {
         if (instance == null) {
             instance = new MediaPlayer();

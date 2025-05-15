@@ -50,13 +50,12 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.ViewHo
         String duration = formatDuration(songData.getDuration());
         holder.durationTextView.setText(duration);
 
-        // Gán ảnh nếu có
         byte[] imageBytes = songData.getEmbeddedPicture();
         if (imageBytes != null) {
             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
             holder.iconImageView.setImageBitmap(bitmap);
         } else {
-            holder.iconImageView.setImageResource(R.drawable.no_music); // Ảnh mặc định nếu không có
+            holder.iconImageView.setImageResource(R.drawable.no_music);
         }
 
         holder.itemView.setOnClickListener(view -> {

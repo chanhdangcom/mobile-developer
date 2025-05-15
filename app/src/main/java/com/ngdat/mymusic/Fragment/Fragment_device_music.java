@@ -67,7 +67,7 @@ public class Fragment_device_music extends Fragment implements SongListAdapter.O
         AudioPlayerUtils.playAudio(requireContext());
 
         Intent intent = new Intent(requireContext(), MusicPlayerActivity.class);
-        intent.putExtra("selected_song", song); // nhớ song phải implements Serializable hoặc Parcelable
+        intent.putExtra("selected_song", song);
         startActivity(intent);
     }
 }

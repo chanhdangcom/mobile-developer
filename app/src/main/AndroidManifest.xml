@@ -2,14 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Quyền cần thiết -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
-
-    <!-- Quyền đọc file nhạc -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -29,19 +26,16 @@
         android:fullBackupContent="@xml/backup_rules"
         android:requestLegacyExternalStorage="true">
 
-        <!-- Service phát nhạc -->
         <service
             android:name=".Service.MusicService"
             android:exported="false"
             android:foregroundServiceType="mediaPlayback" />
 
-        <!-- Service MediaPlayerService -->
         <service
             android:name=".Service.MediaPlayerService"
             android:foregroundServiceType="mediaPlayback"
             android:exported="false"/>
 
-        <!-- Launcher -->
         <activity
             android:name=".Activity.SplashScreenActivity"
             android:exported="true">
@@ -50,8 +44,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Các Activity khác -->
         <activity android:name=".Activity.MainActivity" android:exported="false"/>
         <activity android:name=".Activity.SongsListActivity" android:exported="false"/>
         <activity android:name=".Activity.PlaylistActivity" android:exported="false"/>

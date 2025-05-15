@@ -22,7 +22,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FragmentCDMusic extends Fragment {
     View view;
     private CircleImageView mCircleImageView;
-    // khi click nó tạo ra các hình ảnh
     private ObjectAnimator mObjectAnimator;
 
     private boolean aLive = false;

@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat;
 public class PermissionHelper {
 
     private static final int DEFAULT_REQUEST_CODE = 123;
-    private static final int NOTIFICATION_REQUEST_CODE = 124; // Mã yêu cầu cho quyền thông báo
+    private static final int NOTIFICATION_REQUEST_CODE = 124;
 
     private static String getAudioPermission() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
@@ -30,12 +30,9 @@ public class PermissionHelper {
     }
 
     public static void checkAndRequestPermissions(Activity activity, int requestCode) {
-        // Kiểm tra quyền audio
         if (!hasPermissions(activity)) {
             requestPermission(activity, requestCode);
         }
-
-        // Kiểm tra quyền thông báo cho Android 13+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !hasNotificationPermission(activity)) {
             requestNotificationPermission(activity);
         }
@@ -51,7 +48,7 @@ public class PermissionHelper {
             return ContextCompat.checkSelfPermission(activity, getNotificationPermission())
                     == PackageManager.PERMISSION_GRANTED;
         }
-        return true; // Không cần kiểm tra quyền thông báo cho Android < 13
+        return true;
     }
 
     public static void requestPermission(Activity activity) {

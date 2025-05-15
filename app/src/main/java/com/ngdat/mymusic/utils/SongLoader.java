@@ -14,18 +14,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SongLoader {
-
-    // Biến tĩnh để lưu trữ danh sách bài hát
     public static ArrayList<Song> songsList = null;
 
-    // Phương thức để lấy danh sách bài hát
     public static ArrayList<Song> loadSongs(Context context) {
-        // Nếu danh sách bài hát đã được tải trước đó, trả về luôn
         if (songsList != null) {
             return songsList;
         }
-
-        // Nếu chưa, tải danh sách bài hát từ bộ nhớ
         songsList = new ArrayList<>();
 
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -50,7 +44,6 @@ public class SongLoader {
 
                 File songFile = new File(songPath);
                 if (songFile.exists()) {
-                    // Lấy ảnh nhúng trong MP3
                     byte[] embeddedPicture = getEmbeddedPicture(songPath);
 
                     Song song = new Song(songPath, songTitle, songDuration, embeddedPicture);
@@ -67,7 +60,7 @@ public class SongLoader {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         try {
             retriever.setDataSource(filePath);
-            return retriever.getEmbeddedPicture(); // Có thể là null nếu không có ảnh
+            return retriever.getEmbeddedPicture();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -80,8 +73,7 @@ public class SongLoader {
         }
     }
 
-    // Phương thức để làm mới dữ liệu (nếu cần)
     public static void refreshSongsList() {
-        songsList = null; // Xóa danh sách cũ để lần sau tải lại
+        songsList = null;
     }
 }

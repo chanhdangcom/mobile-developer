@@ -76,7 +76,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
             LocalBinder binder = (LocalBinder) service;
             musicService = binder.getService();
             serviceBound = true;
-            musicService.setOnMediaPreparedListener(PlayMusicActivity.this); // Set callback
+            musicService.setOnMediaPreparedListener(PlayMusicActivity.this);
 
             if (baiHatList.size() > 0) {
                 BaiHat baiHat = baiHatList.get(position);
@@ -96,7 +96,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
         @Override
         public void onServiceDisconnected(ComponentName name) {
             serviceBound = false;
-            musicService.setOnMediaPreparedListener(null); // Clear callback
+            musicService.setOnMediaPreparedListener(null);
         }
     };
 
@@ -118,7 +118,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
 
         setSupportActionBar(toobarPlayNhac);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false); // Ẩn chữ "MyMusic"
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toobarPlayNhac.setNavigationIcon(R.drawable.iconback);
         toobarPlayNhac.setNavigationOnClickListener(v -> onBackPressed());
     }
@@ -157,12 +157,12 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                stopUpdateTimeHandler(); // Dừng cập nhật khi người dùng bắt đầu kéo
+                stopUpdateTimeHandler();
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                startUpdateTimeHandler(); // Tiếp tục cập nhật khi người dùng thả tay
+                startUpdateTimeHandler();
             }
         });
 
@@ -194,7 +194,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
             if (position < baiHatList.size() - 1) {
                 position++;
             } else {
-                position = 0; // Lặp lại danh sách
+                position = 0;
             }
         }
         BaiHat baiHat = baiHatList.get(position);
@@ -211,7 +211,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
             if (position > 0) {
                 position--;
             } else {
-                position = baiHatList.size() - 1; // Lặp lại danh sách
+                position = baiHatList.size() - 1;
             }
         }
         BaiHat baiHat = baiHatList.get(position);
@@ -270,7 +270,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
                         startPlaying(newBaiHat);
                     } else {
                         Intent startIntent = new Intent(this, MusicService.class);
-                        startIntent.putExtra("cakhuc", newBaiHat); // Truyền đối tượng BaiHatYeuThich
+                        startIntent.putExtra("cakhuc", newBaiHat);
                         startService(startIntent);
                     }
                     // updateSeekBar(); // Gọi sau khi onPrepared
@@ -282,11 +282,10 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
 
     @Override
     public void onPrepared(int duration) {
-        // Callback từ MusicService khi media đã được chuẩn bị
         Log.d("PlayMusicActivity", "onPrepared: Duration = " + duration);
-        updateSeekBar(); // Cập nhật SeekBar và tổng thời gian
+        updateSeekBar();
         if (serviceBound && musicService != null && musicService.isPlaying()) {
-            startUpdateTimeHandler(); // Bắt đầu cập nhật thời gian hiện tại
+            startUpdateTimeHandler();
         }
     }
 
@@ -314,7 +313,7 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
                     seekbarSong.setProgress(currentPosition);
                     tvTimeSong.setText(formatTime(currentPosition));
                 }
-                handler.postDelayed(this, 1000); // Cập nhật sau mỗi giây
+                handler.postDelayed(this, 1000);
             }
         };
         handler.postDelayed(updateTimeRunnable, 1000);
@@ -346,13 +345,13 @@ public class PlayMusicActivity extends AppCompatActivity implements MusicService
         if (serviceBound) {
             unbindService(serviceConnection);
             serviceBound = false;
-            stopUpdateTimeHandler(); // Dừng handler khi Activity dừng
+            stopUpdateTimeHandler();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopUpdateTimeHandler(); // Đảm bảo handler dừng khi Activity bị destroy
+        stopUpdateTimeHandler();
     }
 }

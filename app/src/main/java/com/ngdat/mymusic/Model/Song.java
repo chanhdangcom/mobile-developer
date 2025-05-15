@@ -7,7 +7,7 @@ public class Song implements Serializable {
     private String path;
     private String title;
     private String duration;
-    private byte[] embeddedPicture; // Ảnh nhúng trong file MP3
+    private byte[] embeddedPicture;
 
     public Song(String path, String title, String duration, byte[] embeddedPicture) {
         this.path = path;

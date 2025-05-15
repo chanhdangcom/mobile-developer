@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateNowPlayingText() {
         if (MyMediaPlayer.currentIndex >= 0 && MyMediaPlayer.currentIndex < songsList.size()) {
-            // Dữ liệu từ songsList và MyMediaPlayer
+
             Song song = songsList.get(MyMediaPlayer.currentIndex);
             tvNowPlaying.setText(song.getTitle());
             tvNowPlayingSinger.setText(""); // Không có ca sĩ
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else if (CurrentSongHolder.currentSong != null) {
-            // Dữ liệu từ CurrentSongHolder
+
             tvNowPlaying.setText(CurrentSongHolder.currentSong.getTenBaiHat());
             tvNowPlayingSinger.setText(CurrentSongHolder.currentSong.getCaSi());
 
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 imgNowPlaying.setImageResource(R.drawable.no_music);
             }
         } else {
-            // Không có bài hát nào đang phát
+
             tvNowPlaying.setText("Bài hát");
             tvNowPlayingSinger.setText("Ca sĩ");
             imgNowPlaying.setImageResource(R.drawable.no_music);

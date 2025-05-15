@@ -121,7 +121,7 @@ public class MusicService extends Service {
             @Override
             public void onSkipToPrevious() {
                 super.onSkipToPrevious();
-                // Xử lý chuyển bài trước đó (nếu có logic)
+
             }
 
             @Override
@@ -138,8 +138,6 @@ public class MusicService extends Service {
 
         mediaSession.setMetadata(buildMediaMetadata(CurrentSongHolder.currentSong));
         mediaSession.setActive(true);
-
-//        MediaButtonReceiver.setMediaSession(mediaSession);
     }
 
     private MediaMetadataCompat buildMediaMetadata(BaiHat song) {
@@ -147,7 +145,6 @@ public class MusicService extends Service {
         return new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.getTenBaiHat())
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, song.getCaSi())
-                // Thêm thông tin khác như album art nếu có
                 .build();
     }
 
@@ -198,12 +195,11 @@ public class MusicService extends Service {
                 updatePlaybackState(PlaybackStateCompat.STATE_STOPPED);
                 stopForeground(true);
                 stopSelf();
-                // Xử lý khi bài hát kết thúc
             });
 
             mediaPlayer.setOnErrorListener((mp, what, extra) -> {
                 Log.e(TAG, "MediaPlayer Error: what=" + what + ", extra=" + extra);
-                return false; // Trả về false để gọi OnCompletionListener
+                return false;
             });
 
         } catch (Exception e) {
@@ -238,7 +234,7 @@ public class MusicService extends Service {
                 .setOnlyAlertOnce(true)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setMediaSession(mediaSession.getSessionToken())
-                        .setShowActionsInCompactView(0, 1, 2) // Hiển thị Play/Pause, Next ở chế độ thu gọn
+                        .setShowActionsInCompactView(0, 1, 2)
                 );
 
         int playPauseIcon = (playbackState != null && playbackState.getState() == PlaybackStateCompat.STATE_PLAYING) ?
@@ -308,7 +304,7 @@ public class MusicService extends Service {
                 SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
                 int userId = sharedPreferences.getInt("userId", -1); // -1 là mặc định nếu không tìm thấy
 
-                if (userId != -1) { // đảm bảo đã đăng nhập
+                if (userId != -1) {
                     int songId = Integer.parseInt(CurrentSongHolder.currentSong.getIdBaiHat());
                     boolean added = databaseHelper.addToHistory(userId, songId);
                     Log.d(TAG, "addToHistory: " + (added ? "success" : "fail") + " | Song ID: " + songId);

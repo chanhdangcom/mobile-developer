@@ -45,7 +45,7 @@ public class Fragment_History extends Fragment {
     }
     public void onResume() {
         super.onResume();
-        GetData(); // gọi lại API hoặc load lại dữ liệu mỗi lần vào Fragment
+        GetData();
     }
     private void GetData() {
         DataService mDataService = APIService.getService();
@@ -59,7 +59,6 @@ public class Fragment_History extends Fragment {
                 ArrayList<BaiHat> allSongs = (ArrayList<BaiHat>) response.body();
 
                 List<Integer> historyIds = databaseHelper.getHistorySongIds(userId);
-                // lọc lichj sử nghe
                 ArrayList<BaiHat> historySongs = new ArrayList<>();
                 for (BaiHat baiHat : allSongs)
                 {

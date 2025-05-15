@@ -132,12 +132,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         suffleButton.setOnClickListener(v -> {
             AudioPlayerUtils.toggleShuffle(this);
-            updateShuffleIcon(); // cập nhật icon
+            updateShuffleIcon();
         });
 
         repeatButton.setOnClickListener(v -> {
             AudioPlayerUtils.toggleRepeat(this);
-            updateRepeatIcon(); // cập nhật icon
+            updateRepeatIcon();
         });
     }
 
@@ -167,7 +167,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(songChangedReceiver);  // Hủy đăng ký khi không còn cần nhận broadcast
+        unregisterReceiver(songChangedReceiver);
     }
 
     private void updatePlayPauseIcon() {

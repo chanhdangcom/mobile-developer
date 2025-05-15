@@ -181,28 +181,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         try {
-            // Xoá nếu bài này đã có (để cập nhật lại thời gian)
             db.delete(TABLE_HISTORY, COL_HIS_SONGID + "=? AND " + COL_HIS_USERID + "=?",
                     new String[]{String.valueOf(songId), String.valueOf(userId)});
 
             ContentValues values = new ContentValues();
             values.put(COL_HIS_USERID, userId);
             values.put(COL_HIS_SONGID, songId);
-            long result = db.insert(TABLE_HISTORY, null, values);  // Kiểm tra kết quả chèn vào cơ sở dữ liệu
-
-            // Giới hạn chỉ 3 bài gần nhất
+            long result = db.insert(TABLE_HISTORY, null, values);
             db.execSQL("DELETE FROM " + TABLE_HISTORY +
                             " WHERE " + COL_HIS_ID + " NOT IN (" +
                             "SELECT " + COL_HIS_ID + " FROM " + TABLE_HISTORY +
                             " WHERE " + COL_HIS_USERID + " = ?" +
                             " ORDER BY " + COL_PLAYED_AT + " DESC LIMIT 5)",
                     new String[]{String.valueOf(userId)});
-
-            // Kiểm tra kết quả của câu lệnh insert
-            return result != -1;  // Nếu result == -1, tức là việc chèn vào cơ sở dữ liệu không thành công
+            return result != -1;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;  // Nếu có lỗi, trả về false
+            return false;
         }
     }
 

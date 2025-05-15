@@ -50,13 +50,13 @@ public class MediaPlayerService extends Service {
     private void setupMediaPlayerCompletionListener() {
         mediaPlayer.setOnCompletionListener(mp -> {
             if (isRepeat) {
-                playSong(currentSong); // Lặp lại bài hiện tại
+                playSong(currentSong);
             } else {
-                Song nextSong = getNextSong(); // Bài kế tiếp
+                Song nextSong = getNextSong();
                 if (nextSong != null) {
                     playSong(nextSong);
                 } else {
-                    stopSelf(); // Hết danh sách thì dừng
+                    stopSelf();
                 }
             }
         });
@@ -70,12 +70,12 @@ public class MediaPlayerService extends Service {
             int randomIndex;
             do {
                 randomIndex = random.nextInt(songsList.size());
-            } while (randomIndex == currentIndex && songsList.size() > 1); // Không lặp lại cùng bài
+            } while (randomIndex == currentIndex && songsList.size() > 1);
             MyMediaPlayer.currentIndex = randomIndex;
         } else {
             currentIndex++;
             if (currentIndex >= songsList.size()) {
-                return null; // Hết danh sách
+                return null;
             }
             MyMediaPlayer.currentIndex = currentIndex;
         }
@@ -153,7 +153,7 @@ public class MediaPlayerService extends Service {
         } else {
             currentIndex--;
             if (currentIndex < 0) {
-                return null; // Đầu danh sách
+                return null;
             }
             MyMediaPlayer.currentIndex = currentIndex;
         }
@@ -170,7 +170,7 @@ public class MediaPlayerService extends Service {
             MediaMetadataCompat metadata = new MediaMetadataCompat.Builder()
                     .putString(MediaMetadataCompat.METADATA_KEY_TITLE, song.getTitle())
                     .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART,
-                            BitmapFactory.decodeResource(getResources(), R.drawable.logo)) // Hoặc hình bài hát
+                            BitmapFactory.decodeResource(getResources(), R.drawable.logo))
                     .build();
             mediaSession.setMetadata(metadata);
 
@@ -218,39 +218,6 @@ public class MediaPlayerService extends Service {
             mediaPlayer.release();
         }
     }
-//    private void showNotification(boolean isPlaying) {
-//        // Nút Previous
-//        Intent prevIntent = new Intent(this, MediaPlayerService.class);
-//        prevIntent.setAction("service_prev_song");
-//        PendingIntent prevPendingIntent = PendingIntent.getService(
-//                this, 2, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-//
-//        // Nút Play/Pause
-//        Intent playPauseIntent = new Intent(this, MediaPlayerService.class);
-//        playPauseIntent.setAction(isPlaying ? "service_pause_song" : "service_resume_song");
-//        PendingIntent playPausePendingIntent = PendingIntent.getService(
-//                this, 0, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-//
-//        // Nút Next
-//        Intent nextIntent = new Intent(this, MediaPlayerService.class);
-//        nextIntent.setAction("service_next_song");
-//        PendingIntent nextPendingIntent = PendingIntent.getService(
-//                this, 1, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-//
-//        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-//                .setSmallIcon(R.drawable.no_music)
-//                .setContentTitle(currentSong.getTitle())
-//                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent) // 🔹 Previous
-//                .addAction(isPlaying ? R.drawable.baseline_pause_45 : R.drawable.baseline_play_arrow_50, isPlaying?"Pause":"PLay", playPausePendingIntent) // 🔹 Play/Pause
-//                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent) // 🔹 Next
-//                .setPriority(NotificationCompat.PRIORITY_LOW)
-//                .setOngoing(true)
-//                .build();
-//
-//        startForeground(1, notification);
-//    }
-
-
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -267,10 +234,6 @@ public class MediaPlayerService extends Service {
     }
 
     private void showNotification(boolean isPlaying) {
-        // Ensure MediaSession is initialized
-
-
-        // Action: Previous
         Intent prevIntent = new Intent(this, MediaPlayerService.class);
         prevIntent.setAction("service_prev_song");
         PendingIntent prevPendingIntent = PendingIntent.getService(
@@ -300,30 +263,27 @@ public class MediaPlayerService extends Service {
             albumArt = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
         }
         if (albumArt == null) {
-            albumArt = BitmapFactory.decodeResource(getResources(), R.drawable.logo); // Default logo
+            albumArt = BitmapFactory.decodeResource(getResources(), R.drawable.logo);
         }
 
-        // Build the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.no_music)
                 .setContentTitle(currentSong.getTitle())
-                .setLargeIcon(albumArt) // Set album art or default logo
+                .setLargeIcon(albumArt)
                 .setContentIntent(contentIntent)
                 .setOnlyAlertOnce(true)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setOngoing(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent) // Previous button
+                .addAction(R.drawable.baseline_skip_previous_24, "Previous", prevPendingIntent)
                 .addAction(isPlaying ? R.drawable.baseline_pause_45 : R.drawable.baseline_play_arrow_50,
-                        isPlaying ? "Pause" : "Play", playPausePendingIntent) // Play/Pause button
-                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent); // Next button
+                        isPlaying ? "Pause" : "Play", playPausePendingIntent)
+                .addAction(R.drawable.baseline_skip_next_24, "Next", nextPendingIntent);
 
-        // Media style for compatibility with compact view
         builder.setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
-                .setShowActionsInCompactView(0, 1, 2) // Show actions: Previous, Play/Pause, Next
-                .setMediaSession(mediaSession.getSessionToken())); // Link to media session
+                .setShowActionsInCompactView(0, 1, 2)
+                .setMediaSession(mediaSession.getSessionToken()));
 
-        // Start the foreground service with the notification
         startForeground(NOTIFICATION_ID, builder.build());
     }
 }

@@ -17,7 +17,7 @@ import com.ngdat.mymusic.utils.DatabaseHelper;
 public class LoginActivity extends AppCompatActivity {
     EditText edtUsername, edtPassword;
     Button btnLogin;
-    TextView btnSignup; // đã đổi từ Button sang TextView
+    TextView btnSignup;
 
     DatabaseHelper dbHelper;
 
@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.edtUsername);
         edtPassword = findViewById(R.id.edtPassword);
         btnLogin = findViewById(R.id.btnLogin);
-        btnSignup = findViewById(R.id.btnSignup); // TextView trong layout
+        btnSignup = findViewById(R.id.btnSignup);
 
         dbHelper = new DatabaseHelper(this);
 
