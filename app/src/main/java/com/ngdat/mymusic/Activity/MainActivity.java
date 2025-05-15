@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void setupNowPlayingToolbar() {
         nowPlayingToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
